@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddRegistry">
+    tools:context=".AddRegistryActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -24,7 +24,9 @@
         android:layout_margin="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,30 +87,61 @@
                 android:layout_height="wrap_content"
                 android:hint="Porcentagem hora extra do dia"
                 android:inputType="number"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:windowSoftInputMode="stateHidden"/>
 
-            <RadioGroup
-                android:id="@+id/button_group"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:focusableInTouchMode="false"
+                android:focusable="false"
+                android:focusedByDefault="false">
 
-                <RadioButton
-                    android:id="@+id/button_atestado"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="Observação:"
+                    android:layout_weight="0.5"/>
+
+                <RadioGroup
+                    android:id="@+id/button_group"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Atestado"
-                    android:textSize="15sp" />
+                    android:orientation="vertical"
+                    android:layout_weight="1.5">
 
-                <RadioButton
-                    android:id="@+id/button_time_declaration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Declaração de Horas"
-                    android:textSize="15sp" />
+                    <RadioButton
+                        android:id="@+id/button_nothing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nenhuma"
+                        android:textSize="15sp"
+                        android:checked="true"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/button_atestado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Atestado"
+                        android:textSize="15sp"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/button_time_declaration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Declaração de Horas"
+                        android:textSize="15sp" />
 
 
-            </RadioGroup>
+                </RadioGroup>
+
+
+            </LinearLayout>
+
 
 
         </LinearLayout>
@@ -116,7 +149,7 @@
 
 
     <ImageButton
-        android:id="@+id/add_save_registry"
+        android:id="@+id/button_save_registry"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignParentRight="true"

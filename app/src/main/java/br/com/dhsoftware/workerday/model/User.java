@@ -1,8 +1,9 @@
 package br.com.dhsoftware.workerday.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     private String name; // obrigatório
     private String email; // obrigatório
     private Double salary; //verificar uma classe para substituir Double
@@ -13,5 +14,9 @@ public class User {
     public User(String name, String email) {
         this.name = name;
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
     }
 }

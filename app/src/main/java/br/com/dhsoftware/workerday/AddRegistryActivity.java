@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -22,12 +23,13 @@ import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.enumObservation;
 import br.com.dhsoftware.workerday.util.DateUtil;
 
-public class AddRegistry extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener, RadioGroup.OnCheckedChangeListener {
+public class AddRegistryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener, RadioGroup.OnCheckedChangeListener
+, Serializable {
 
     EditText dateWorked, entranceTime, entranceLunchTime, leaveLunchTime, leaveTime, requiredTime, percentExtraWork;
     EditText editTextSetDataOrTimeFromPicker;
     RadioGroup buttonGroup;
-    RadioButton radioButtonAtestado, radioButtonDeclaration;
+    RadioButton radioButtonAtestado, radioButtonDeclaration, radioButtonNothing;
     ImageButton saveButton;
     User user;
 
@@ -38,8 +40,8 @@ public class AddRegistry extends AppCompatActivity implements DatePickerDialog.O
         setContentView(R.layout.activity_add_registry);
         setView();
 
-        user = new User("Douglas", "douglas@hotmail.com");
-
+        user = (User) getIntent().getSerializableExtra("user");
+        System.out.println("Chegou da activity principal " + user.getName());
     }
 
 
@@ -70,8 +72,9 @@ public class AddRegistry extends AppCompatActivity implements DatePickerDialog.O
 
         radioButtonAtestado = findViewById(R.id.button_atestado);
         radioButtonDeclaration = findViewById(R.id.button_time_declaration);
+        radioButtonNothing = findViewById(R.id.button_nothing);
 
-        saveButton = findViewById(R.id.add_save_registry);
+        saveButton = findViewById(R.id.button_save_registry);
         saveButton.setOnClickListener(this);
 
 
@@ -88,16 +91,23 @@ public class AddRegistry extends AppCompatActivity implements DatePickerDialog.O
         editTextSetDataOrTimeFromPicker.setText(hourOfDay + ":" + minute);
     }
 
+
+
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonAtestado.getId())))
             enableEditText(false);
-
         else
             enableEditText(true);
 
+
+
+
         System.out.println(group.getCheckedRadioButtonId() +"----"+ radioButtonAtestado.getId());
     }
+
+
+
 
     @Override
     public void onClick(View v) {
@@ -129,7 +139,7 @@ public class AddRegistry extends AppCompatActivity implements DatePickerDialog.O
                 timePickerDialog();
                 setEditTextSetDataOrTimeFromPicker(requiredTime);
                 break;
-            case R.id.add_save_registry:
+            case R.id.button_save_registry:
                 validator();
                 break;
         }
@@ -171,9 +181,7 @@ public class AddRegistry extends AppCompatActivity implements DatePickerDialog.O
                 entranceTime.setHintTextColor(Color.GRAY);
             }else {
                 System.out.println("Salvou com atestado");
-
-
-                createObjectRegistry();
+                createObjectRegistryAtestado();
             }
         }else{
             if(dateWorked.getText().toString().equals("") && entranceTime.getText().toString().equals("")){
@@ -192,7 +200,7 @@ public class AddRegistry extends AppCompatActivity implements DatePickerDialog.O
         }
     }
 
-    private void createObjectRegistry() {
+    private void createObjectRegistryAtestado() {
         Registry registry = new Registry(user, DateUtil.getInstanceDateUtil().convertStringDataToCalendar(dateWorked.getText().toString()), enumObservation.ATESTADO);
         System.out.println(registry);
     }
