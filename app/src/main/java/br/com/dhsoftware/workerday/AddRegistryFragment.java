@@ -1,12 +1,17 @@
 package br.com.dhsoftware.workerday;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,61 +25,107 @@ import java.util.Locale;
 
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.model.User;
-import br.com.dhsoftware.workerday.util.enumObservation;
 import br.com.dhsoftware.workerday.util.DateUtil;
+import br.com.dhsoftware.workerday.util.enumObservation;
 
-public class AddRegistryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener, RadioGroup.OnCheckedChangeListener
-, Serializable {
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link AddRegistryFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class AddRegistryFragment extends Fragment implements  DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener, RadioGroup.OnCheckedChangeListener
+        , Serializable {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private  View view;
     EditText dateWorked, entranceTime, entranceLunchTime, leaveLunchTime, leaveTime, requiredTime, percentExtraWork;
     EditText editTextSetDataOrTimeFromPicker;
     RadioGroup buttonGroup;
     RadioButton radioButtonAtestado, radioButtonDeclaration, radioButtonNothing;
     ImageButton saveButton;
     User user;
+    Registry registry;
 
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_registry);
-        setView();
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
-        user = (User) getIntent().getSerializableExtra("user");
-        System.out.println("Chegou da activity principal " + user.getName());
+    public AddRegistryFragment() {
+        // Required empty public constructor
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment AddRegistryFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static AddRegistryFragment newInstance(String param1, String param2) {
+        AddRegistryFragment fragment = new AddRegistryFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_add_registry, container, false);
+
+        setView();
+
+        return view;
+    }
 
     public void setView(){
-        dateWorked = findViewById(R.id.date_worked);
+        dateWorked = view.findViewById(R.id.date_worked);
         dateWorked.setOnClickListener(this);
 
-        entranceTime = findViewById(R.id.entrance_time);
+        entranceTime = view.findViewById(R.id.entrance_time);
         entranceTime.setOnClickListener(this);
 
-        entranceLunchTime = findViewById(R.id.entrance_lunch_time);
+        entranceLunchTime = view.findViewById(R.id.entrance_lunch_time);
         entranceLunchTime.setOnClickListener(this);
 
-        leaveLunchTime = findViewById(R.id.leave_lunch_time);
+        leaveLunchTime = view.findViewById(R.id.leave_lunch_time);
         leaveLunchTime.setOnClickListener(this);
 
-        leaveTime = findViewById(R.id.leave_time);
+        leaveTime = view.findViewById(R.id.leave_time);
         leaveTime.setOnClickListener(this);
 
-        requiredTime = findViewById(R.id.required_time_to_work_time);
+        requiredTime = view.findViewById(R.id.required_time_to_work_time);
         requiredTime.setOnClickListener(this);
 
-        percentExtraWork = findViewById(R.id.porcent_extra_work);
+        percentExtraWork = view.findViewById(R.id.porcent_extra_work);
         percentExtraWork.setOnClickListener(this);
 
-        buttonGroup = findViewById(R.id.button_group);
+        buttonGroup = view.findViewById(R.id.button_group);
         buttonGroup.setOnCheckedChangeListener(this);
 
-        radioButtonAtestado = findViewById(R.id.button_atestado);
-        radioButtonDeclaration = findViewById(R.id.button_time_declaration);
-        radioButtonNothing = findViewById(R.id.button_nothing);
+        radioButtonAtestado = view.findViewById(R.id.button_atestado);
+        radioButtonDeclaration = view.findViewById(R.id.button_time_declaration);
+        radioButtonNothing = view.findViewById(R.id.button_nothing);
 
-        saveButton = findViewById(R.id.button_save_registry);
+        saveButton = view.findViewById(R.id.button_save_registry);
         saveButton.setOnClickListener(this);
 
 
@@ -149,7 +200,7 @@ public class AddRegistryActivity extends AppCompatActivity implements DatePicker
 
     private void timePickerDialog() {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, this,  calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), this,  calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
         timePickerDialog.show();
     }
 
@@ -157,7 +208,7 @@ public class AddRegistryActivity extends AppCompatActivity implements DatePicker
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         //calendar.setTime(date);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.DAY_OF_MONTH);
         datePickerDialog.show();
     }
 
@@ -182,6 +233,8 @@ public class AddRegistryActivity extends AppCompatActivity implements DatePicker
             }else {
                 System.out.println("Salvou com atestado");
                 createObjectRegistryAtestado();
+                goToFragmentListViewMain();
+
             }
         }else{
             if(dateWorked.getText().toString().equals("") && entranceTime.getText().toString().equals("")){
@@ -201,8 +254,13 @@ public class AddRegistryActivity extends AppCompatActivity implements DatePicker
     }
 
     private void createObjectRegistryAtestado() {
-        Registry registry = new Registry(user, DateUtil.getInstanceDateUtil().convertStringDataToCalendar(dateWorked.getText().toString()), enumObservation.ATESTADO);
+        registry = new Registry(user, DateUtil.getInstanceDateUtil().convertStringDataToCalendar(dateWorked.getText().toString()), enumObservation.ATESTADO);
         System.out.println(registry);
+    }
+
+    public void goToFragmentListViewMain(){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.popBackStack();
     }
 
 
@@ -213,6 +271,4 @@ public class AddRegistryActivity extends AppCompatActivity implements DatePicker
     public void setEditTextSetDataOrTimeFromPicker(EditText editTextSetDataOrTimeFromPicker) {
         this.editTextSetDataOrTimeFromPicker = editTextSetDataOrTimeFromPicker;
     }
-
-
 }

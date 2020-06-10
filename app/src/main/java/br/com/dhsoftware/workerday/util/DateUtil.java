@@ -18,6 +18,13 @@ public class DateUtil {
         return dateUtil;
     }
 
+    public String convertCalendarToStringDate(Calendar calendar){
+        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+        String a = s.format(calendar.getTime());
+        System.out.println("data = "+a);
+        return a;
+    }
+
 
     public Calendar convertStringDataAndTimeToCalendar(String date, String time){
         DateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -34,7 +41,29 @@ public class DateUtil {
         System.out.println(calendar.getTime());
 
         return calendar;
+    }
 
+    public String nameOfDay(Calendar calendar){
+        if(false)
+            return "Sexta-feira";
+
+        if(calendar.equals(Calendar.MONDAY))
+            return "Segunda-feira";
+
+        if(calendar.equals(Calendar.THURSDAY))
+            return "Quinta-feira";
+
+        if(calendar.equals(Calendar.TUESDAY))
+            return "Terça-feira";
+
+        if(calendar.equals(Calendar.WEDNESDAY))
+            return "Quarta-feira";
+
+        if(calendar.equals(Calendar.SUNDAY))
+            return "Domingo";
+
+        //if(calendar.equals(Calendar.SATURDAY))
+        return "Sábado";
     }
 
     public Calendar convertStringDataToCalendar(String date){
@@ -49,7 +78,7 @@ public class DateUtil {
         }
 
 
-        System.out.println(calendar.getTime());
+        System.out.println("ConvertStringDataToCalendar: " + calendar.getTime());
 
         return calendar;
     }

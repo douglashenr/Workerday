@@ -7,23 +7,14 @@
     tools:context=".MainActivity">
 
 
-    <ImageButton
-        android:id="@+id/button_add_registry"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/shape"
-        android:src="@mipmap/done"
-        android:elevation="6dp"
-        android:stateListAnimator="@null"
-        android:textColor="#ffffff"
-        android:textSize="40sp"
-        android:layout_margin="25dp"
+    <FrameLayout
+        android:id="@+id/frame_layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent">
 
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
