@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
+import br.com.dhsoftware.workerday.model.Registry;
 
 public class DateUtil {
 
@@ -20,11 +23,15 @@ public class DateUtil {
 
     public String convertCalendarToStringDate(Calendar calendar){
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
-        String a = s.format(calendar.getTime());
-        System.out.println("data = "+a);
-        return a;
+        String date = s.format(calendar.getTime());
+        return date;
     }
 
+    public String convertCalendarToStringTime(Calendar calendar){
+        SimpleDateFormat s = new SimpleDateFormat("HH:mm");
+        String date = s.format(calendar.getTime());
+        return date;
+    }
 
     public Calendar convertStringDataAndTimeToCalendar(String date, String time){
         DateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -44,22 +51,22 @@ public class DateUtil {
     }
 
     public String nameOfDay(Calendar calendar){
-        if(false)
+        if(calendar.get(Calendar.DAY_OF_WEEK) == 6)
             return "Sexta-feira";
 
-        if(calendar.equals(Calendar.MONDAY))
+        if(calendar.get(Calendar.DAY_OF_WEEK) == 2)
             return "Segunda-feira";
 
-        if(calendar.equals(Calendar.THURSDAY))
+        if(calendar.get(Calendar.DAY_OF_WEEK) == 5)
             return "Quinta-feira";
 
-        if(calendar.equals(Calendar.TUESDAY))
+        if(calendar.get(Calendar.DAY_OF_WEEK) == 3)
             return "Terça-feira";
 
-        if(calendar.equals(Calendar.WEDNESDAY))
+        if(calendar.get(Calendar.DAY_OF_WEEK) == 4)
             return "Quarta-feira";
 
-        if(calendar.equals(Calendar.SUNDAY))
+        if(calendar.get(Calendar.DAY_OF_WEEK) == 1)
             return "Domingo";
 
         //if(calendar.equals(Calendar.SATURDAY))
@@ -81,5 +88,44 @@ public class DateUtil {
         System.out.println("ConvertStringDataToCalendar: " + calendar.getTime());
 
         return calendar;
+    }
+
+    public long calculateTimeFromRegistryToLong(Registry registry){
+        if(registry.getObservation() == enumObservation.ATESTADO)
+            return -2;
+
+        if(registry.getLeave() == null )
+            return -1;
+
+        try {
+            long time = convertStringTimeToDateObject(convertCalendarToStringTime(registry.getLeave())).getTime()- convertStringTimeToDateObject(convertCalendarToStringTime(registry.getEntrance())).getTime();
+
+            return time;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public String calculateTimeFromRegistryToString(Registry registry){
+        if(calculateTimeFromRegistryToLong(registry) == -1)
+            return "00:00h";
+
+        if(calculateTimeFromRegistryToLong(registry) == -2)
+            return "00:00h (ATESTADO)";
+        int hour = (int) TimeUnit.MILLISECONDS.toHours(calculateTimeFromRegistryToLong(registry));
+        int minute =  (int) ((calculateTimeFromRegistryToLong(registry) / (1000*60)) % 60);
+
+        if(minute < 10)
+            return hour + ":" + "0" + minute + "h";
+
+        return hour + ":" + minute + "h";
+    }
+
+    public Date convertStringTimeToDateObject(String time) throws Exception{
+
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        Date date;
+        return date = format.parse(time);
     }
 }

@@ -49,6 +49,9 @@ public class ListViewAdapterMainActivity extends BaseAdapter {
         textView = view.findViewById(R.id.list_view_main_activity_day);
         textView.setText(DateUtil.getInstanceDateUtil().nameOfDay(registry.getDay()));
 
+        textView = view.findViewById(R.id.list_view_main_activity_time_worked);
+        textView.setText("Horas trabalhadas: " + DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registry));
+
 
 
 

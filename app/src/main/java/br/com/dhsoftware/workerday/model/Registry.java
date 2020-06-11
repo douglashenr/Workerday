@@ -1,8 +1,11 @@
 package br.com.dhsoftware.workerday.model;
 
+import android.database.DatabaseUtils;
+
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import br.com.dhsoftware.workerday.util.DateUtil;
@@ -113,5 +116,23 @@ public class Registry implements Serializable {
     @Override
     public String toString() {
         return "Registro: " + day.getTime();
+    }
+
+
+
+    public static ArrayList<Registry> testArrayList(User user){
+        ArrayList<Registry> registries;
+        registries = new ArrayList<Registry>();
+
+        registries.add(new Registry(user, DateUtil.getInstanceDateUtil().convertStringDataToCalendar("25/12/1998"), enumObservation.ATESTADO));
+        registries.add(new Registry(user, DateUtil.getInstanceDateUtil().convertStringDataToCalendar("19/02/2008"),
+                DateUtil.getInstanceDateUtil().convertStringDataAndTimeToCalendar("19/02/2008", "13:15"), enumObservation.NORMAL));
+
+        registries.get(1).setLeave(DateUtil.getInstanceDateUtil().convertStringDataAndTimeToCalendar("19/02/2008", "18:15"));
+
+        return registries;
+
+
+
     }
 }

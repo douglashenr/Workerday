@@ -8,7 +8,7 @@ public class User implements Serializable {
     private String email; // obrigatório
     private Double salary; //verificar uma classe para substituir Double
     private Double deduction; //verificar uma classe para substituir Double
-    private Double percentExtraSalary;
+    private int percentExtraSalary = 0;
     private ArrayList<Registry> registries;
 
     public User(String name, String email) {
@@ -18,5 +18,13 @@ public class User implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public int getPercentExtraSalary() {
+        return percentExtraSalary;
+    }
+
+    public void setPercentExtraSalary(int percentExtraSalary) {
+        this.percentExtraSalary = percentExtraSalary;
     }
 }

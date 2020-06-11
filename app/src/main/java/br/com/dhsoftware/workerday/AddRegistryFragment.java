@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,6 +23,7 @@ import android.widget.TimePicker;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.model.User;
@@ -38,14 +40,13 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         , Serializable {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private  View view;
-    EditText dateWorked, entranceTime, entranceLunchTime, leaveLunchTime, leaveTime, requiredTime, percentExtraWork;
-    EditText editTextSetDataOrTimeFromPicker;
-    RadioGroup buttonGroup;
-    RadioButton radioButtonAtestado, radioButtonDeclaration, radioButtonNothing;
-    ImageButton saveButton;
-    User user;
-    Registry registry;
+    private View view;
+    private EditText dateWorked, entranceTime, entranceLunchTime, leaveLunchTime, leaveTime, requiredTime, percentExtraWork;
+    private EditText editTextSetDataOrTimeFromPicker;
+    private RadioGroup buttonGroup;
+    private RadioButton radioButtonAtestado, radioButtonDeclaration, radioButtonNothing;
+    private User user;
+    private Registry registry;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -96,7 +97,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         return view;
     }
 
-    public void setView(){
+    private void setView(){
         dateWorked = view.findViewById(R.id.date_worked);
         dateWorked.setOnClickListener(this);
 
@@ -125,10 +126,15 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         radioButtonDeclaration = view.findViewById(R.id.button_time_declaration);
         radioButtonNothing = view.findViewById(R.id.button_nothing);
 
-        saveButton = view.findViewById(R.id.button_save_registry);
+        ImageButton saveButton = view.findViewById(R.id.button_save_registry);
         saveButton.setOnClickListener(this);
 
+        //completeAutomaticPercentField();
+    }
 
+    private void completeAutomaticPercentField() {
+        if(user.getPercentExtraSalary() != 0)
+            percentExtraWork.setText(String.valueOf(user.getPercentExtraSalary()));
     }
 
     @Override
@@ -139,7 +145,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        editTextSetDataOrTimeFromPicker.setText(hourOfDay + ":" + minute);
+        editTextSetDataOrTimeFromPicker.setText(String.format("%d:%d", hourOfDay, minute));
     }
 
 
@@ -208,12 +214,12 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         //calendar.setTime(date);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
 
 
-    public void enableEditText(boolean active){
+    private void enableEditText(boolean active){
         entranceTime.setEnabled(active);
         entranceLunchTime.setEnabled(active);
         leaveTime.setEnabled(active);
@@ -224,7 +230,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
 
 
 
-    public void validator(){
+    private void validator(){
         if(radioButtonAtestado.isChecked()){
             if(dateWorked.getText().toString().equals("")){
                 System.out.println("Não salvou porque DataWorked está vazio");
@@ -258,8 +264,8 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         System.out.println(registry);
     }
 
-    public void goToFragmentListViewMain(){
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+    private void goToFragmentListViewMain(){
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         fragmentManager.popBackStack();
     }
 
@@ -268,7 +274,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         return editTextSetDataOrTimeFromPicker;
     }
 
-    public void setEditTextSetDataOrTimeFromPicker(EditText editTextSetDataOrTimeFromPicker) {
+    private void setEditTextSetDataOrTimeFromPicker(EditText editTextSetDataOrTimeFromPicker) {
         this.editTextSetDataOrTimeFromPicker = editTextSetDataOrTimeFromPicker;
     }
 }

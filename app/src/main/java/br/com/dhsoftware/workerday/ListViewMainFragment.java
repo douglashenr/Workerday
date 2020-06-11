@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import br.com.dhsoftware.workerday.adapter.ListViewAdapterMainActivity;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.model.User;
+import br.com.dhsoftware.workerday.util.DateUtil;
 
 
 /**
@@ -83,7 +84,11 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
         setView();
 
         user = new User("Douglas", "douglas@hotmail.com");
-        registryArrayList = new ArrayList<>();
+        registryArrayList = Registry.testArrayList(user);
+        System.out.println(DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registryArrayList.get(1)) + " Teste Calculo");
+
+
+        setListViewAdapter();
 
         return view;
     }
@@ -132,7 +137,6 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
 
     public void setListViewAdapter(){
         ListViewAdapterMainActivity adapter = new ListViewAdapterMainActivity(registryArrayList, getActivity());
-
         listView.setAdapter(adapter);
     }
 
