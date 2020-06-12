@@ -94,11 +94,16 @@ public class DateUtil {
         if(registry.getObservation() == enumObservation.ATESTADO)
             return -2;
 
-        if(registry.getLeave() == null )
+        if(registry.getLeave() == null && registry.getEntrance() ==  null)
             return -1;
 
         try {
             long time = convertStringTimeToDateObject(convertCalendarToStringTime(registry.getLeave())).getTime()- convertStringTimeToDateObject(convertCalendarToStringTime(registry.getEntrance())).getTime();
+            if(registry.getEntranceLunch() != null && registry.getLeave() != null)
+                time-= convertStringTimeToDateObject(convertCalendarToStringTime(registry.getLeaveLunch())).getTime()- convertStringTimeToDateObject(convertCalendarToStringTime(registry.getEntranceLunch())).getTime();
+
+            if(registry.getObservation() == enumObservation.DECLARACAO_DE_HORAS)
+                time+= convertStringTimeToDateObject(convertCalendarToStringTime(registry.getTimeDeclaration())).getTime();
 
             return time;
         } catch (Exception e) {
@@ -119,10 +124,11 @@ public class DateUtil {
         if(minute < 10)
             return hour + ":" + "0" + minute + "h";
 
+
         return hour + ":" + minute + "h";
     }
 
-    public Date convertStringTimeToDateObject(String time) throws Exception{
+    private Date convertStringTimeToDateObject(String time) throws Exception{
 
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         Date date;

@@ -44,9 +44,10 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     private EditText dateWorked, entranceTime, entranceLunchTime, leaveLunchTime, leaveTime, requiredTime, percentExtraWork;
     private EditText editTextSetDataOrTimeFromPicker;
     private RadioGroup buttonGroup;
-    private RadioButton radioButtonAtestado, radioButtonDeclaration, radioButtonNothing;
+    private RadioButton radioButtonAtestado, radioButtonDeclaration, radioButtonNothing, radioButtonAbsence;
     private User user;
     private Registry registry;
+    private enumObservation observation;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -91,7 +92,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_registry, container, false);
-
+        observation = enumObservation.NORMAL;
         setView();
 
         return view;
@@ -125,6 +126,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         radioButtonAtestado = view.findViewById(R.id.button_atestado);
         radioButtonDeclaration = view.findViewById(R.id.button_time_declaration);
         radioButtonNothing = view.findViewById(R.id.button_nothing);
+        radioButtonAbsence = view.findViewById(R.id.button_absence);
 
         ImageButton saveButton = view.findViewById(R.id.button_save_registry);
         saveButton.setOnClickListener(this);
@@ -152,18 +154,29 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonAtestado.getId())))
+        if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonAtestado.getId()))){
             enableEditText(false);
+            observation = enumObservation.ATESTADO;
+        }
         else
             enableEditText(true);
 
+        if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonDeclaration.getId()))){
+            observation = enumObservation.DECLARACAO_DE_HORAS;
+        }
+
+        if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonAbsence.getId()))){
+            observation = enumObservation.FALTA;
+        }
+
+        if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonNothing.getId()))){
+            observation = enumObservation.NORMAL;
+        }
 
 
 
-        System.out.println(group.getCheckedRadioButtonId() +"----"+ radioButtonAtestado.getId());
+
     }
-
-
 
 
     @Override
@@ -200,8 +213,6 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
                 validator();
                 break;
         }
-
-
     }
 
     private void timePickerDialog() {
@@ -231,36 +242,18 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
 
 
     private void validator(){
-        if(radioButtonAtestado.isChecked()){
             if(dateWorked.getText().toString().equals("")){
                 System.out.println("Não salvou porque DataWorked está vazio");
                 dateWorked.setTextColor(Color.RED);
-                entranceTime.setHintTextColor(Color.GRAY);
             }else {
                 System.out.println("Salvou com atestado");
                 createObjectRegistryAtestado();
                 goToFragmentListViewMain();
-
             }
-        }else{
-            if(dateWorked.getText().toString().equals("") && entranceTime.getText().toString().equals("")){
-                System.out.println("Não salvou porque DataWorked e entraceTime está vazio");
-                dateWorked.setHintTextColor(Color.RED);
-                entranceTime.setHintTextColor(Color.RED);
-            }else if(entranceTime.getText().toString().equals("")){
-                entranceTime.setHintTextColor(Color.RED);
-                System.out.println("Não salvou porque entraceTime está vazio");
-            }else if (dateWorked.getText().toString().equals("")){
-                dateWorked.setHintTextColor(Color.RED);
-                System.out.println("Não salvou porque DateWorked está vazio");
-            }else{
-                System.out.println("Salvou" + dateWorked.getText());
-            }
-        }
     }
 
     private void createObjectRegistryAtestado() {
-        registry = new Registry(user, DateUtil.getInstanceDateUtil().convertStringDataToCalendar(dateWorked.getText().toString()), enumObservation.ATESTADO);
+        registry = new Registry(user, DateUtil.getInstanceDateUtil().convertStringDataToCalendar(dateWorked.getText().toString()), observation);
         System.out.println(registry);
     }
 

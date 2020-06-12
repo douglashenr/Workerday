@@ -21,6 +21,7 @@ public class Registry implements Serializable {
     private Calendar requiredTimeToWork;
     private Double percent;
     private enumObservation observation;
+    private Calendar timeDeclaration;
 
 
     public Registry(User user, Calendar day, enumObservation observation) {
@@ -111,6 +112,13 @@ public class Registry implements Serializable {
     public void setObservation(enumObservation observation) {
         this.observation = observation;
     }
+
+
+    public Calendar getTimeDeclaration() {
+        return timeDeclaration;
+    }
+
+
 
     @NonNull
     @Override
