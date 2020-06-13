@@ -167,6 +167,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
 
         if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonAbsence.getId()))){
             observation = enumObservation.FALTA;
+            enableEditText(false);
         }
 
         if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonNothing.getId()))){
@@ -244,7 +245,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     private void validator(){
             if(dateWorked.getText().toString().equals("")){
                 System.out.println("Não salvou porque DataWorked está vazio");
-                dateWorked.setTextColor(Color.RED);
+                dateWorked.setHintTextColor(Color.RED);
             }else {
                 System.out.println("Salvou com atestado");
                 createObjectRegistryAtestado();

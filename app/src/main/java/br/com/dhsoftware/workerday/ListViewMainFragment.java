@@ -140,6 +140,4 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
         listView.setAdapter(adapter);
     }
 
-
-
 }

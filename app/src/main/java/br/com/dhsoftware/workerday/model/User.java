@@ -7,7 +7,7 @@ public class User implements Serializable {
     private String name; // obrigatório
     private String email; // obrigatório
     private Double salary; //verificar uma classe para substituir Double
-    private Double deduction; //verificar uma classe para substituir Double
+    private Double deduction = 0.0; //verificar uma classe para substituir Double
     private int percentExtraSalary = 0;
     private ArrayList<Registry> registries;
 
