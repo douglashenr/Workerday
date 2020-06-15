@@ -1,14 +1,12 @@
-package br.com.dhsoftware.workerday;
+package br.com.dhsoftware.workerday.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,19 +17,22 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
+import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.DateUtil;
+import br.com.dhsoftware.workerday.util.DialogUtil;
 import br.com.dhsoftware.workerday.util.enumObservation;
 
 
-/**
+/*
  * A simple {@link Fragment} subclass.
  * Use the {@link AddRegistryFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -52,15 +53,13 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private DialogUtil dialogUtil;
 
     public AddRegistryFragment() {
         // Required empty public constructor
     }
 
-    /**
+    /*
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
@@ -69,22 +68,18 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
      * @return A new instance of fragment AddRegistryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddRegistryFragment newInstance(String param1, String param2) {
+    /*public static AddRegistryFragment newInstance(String param1, String param2) {
         AddRegistryFragment fragment = new AddRegistryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -94,6 +89,9 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         view = inflater.inflate(R.layout.fragment_add_registry, container, false);
         observation = enumObservation.NORMAL;
         setView();
+
+        dialogUtil = new DialogUtil(getActivity());
+
 
         return view;
     }
@@ -141,13 +139,15 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth ) {
-        editTextSetDataOrTimeFromPicker.setText(dayOfMonth + "/" + month + "/" + year);
+        String date = dayOfMonth + "/" + month + "/" + year;
+        editTextSetDataOrTimeFromPicker.setText(date);
     }
 
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        editTextSetDataOrTimeFromPicker.setText(String.format("%d:%d", hourOfDay, minute));
+        String time = hourOfDay + ":" + minute;
+        editTextSetDataOrTimeFromPicker.setText(time);
     }
 
 
@@ -173,10 +173,6 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonNothing.getId()))){
             observation = enumObservation.NORMAL;
         }
-
-
-
-
     }
 
 
@@ -246,14 +242,16 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
             if(dateWorked.getText().toString().equals("")){
                 System.out.println("Não salvou porque DataWorked está vazio");
                 dateWorked.setHintTextColor(Color.RED);
+                dialogUtil.infoDialog("Complete o campo em vermelho para salvar!");
             }else {
-                System.out.println("Salvou com atestado");
-                createObjectRegistryAtestado();
+                System.out.println("Salvou!");
+                dialogUtil.showToast("Salvou!", Toast.LENGTH_SHORT);
+                createObjectRegistry();
                 goToFragmentListViewMain();
             }
     }
 
-    private void createObjectRegistryAtestado() {
+    private void createObjectRegistry() {
         registry = new Registry(user, DateUtil.getInstanceDateUtil().convertStringDataToCalendar(dateWorked.getText().toString()), observation);
         System.out.println(registry);
     }

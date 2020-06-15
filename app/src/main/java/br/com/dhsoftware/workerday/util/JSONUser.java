@@ -35,7 +35,7 @@ public class JSONUser {
     }
 
 
-    private String read(Context context) {
+    public String read(Context context) {
         try {
             FileInputStream fis = context.openFileInput(USERPATH);
             InputStreamReader isr = new InputStreamReader(fis);
@@ -53,11 +53,11 @@ public class JSONUser {
         }
     }
 
-    private boolean create(Context context,  String jsonString){
+    public boolean create(Context context){
         try {
             FileOutputStream fos = context.openFileOutput(USERPATH,Context.MODE_PRIVATE);
-            if (jsonString != null) {
-                fos.write(jsonString.getBytes());
+            if (jsonObject.toString() != null) {
+                fos.write(jsonObject.toString().getBytes());
             }
             fos.close();
             return true;

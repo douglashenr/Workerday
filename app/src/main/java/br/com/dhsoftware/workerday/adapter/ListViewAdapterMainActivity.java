@@ -58,9 +58,6 @@ public class ListViewAdapterMainActivity extends BaseAdapter {
         textView = view.findViewById(R.id.list_view_main_activity_day_value);
 
 
-
-
-
         return view;
     }
 }
