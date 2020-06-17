@@ -4,11 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.AlertDialog;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
 
 import java.io.Serializable;
 
@@ -19,16 +16,17 @@ import br.com.dhsoftware.workerday.util.JSONUser;
 public class MainActivity extends AppCompatActivity implements Serializable {
 
     SharedPreferences prefs = null;
+    ListViewMainFragment listViewMainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListViewMainFragment listViewMainFragment = new ListViewMainFragment();
+        listViewMainFragment = new ListViewMainFragment();
 
 
-        createFragment(listViewMainFragment);
+
 
         prefs = getSharedPreferences("br.com.dhsoftware.workerday", MODE_PRIVATE);
     }
@@ -45,25 +43,30 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     protected void onStart() {
         super.onStart();
 
-        final JSONUser jsonUser = new JSONUser();
-        if(!jsonUser.isFilePresent(this)){
-            jsonUser.createJSONUser();
-            jsonUser.create(this);
+        JSONUser jsonUser = new JSONUser(this);
+        if(!jsonUser.isFilePresent()){
+            jsonUser.create();
         }
+
+        DialogUtil dialog = new DialogUtil(this);
+        dialog.welcomeDialog();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        DialogUtil dialog = new DialogUtil(this);
-        dialog.welcomeDialog();
+
 
         if (prefs.getBoolean("firstrun", true)) {
             // Do first run stuff here then set 'firstrun' as false
             // using the following line to edit/commit prefs
 
-
             prefs.edit().putBoolean("firstrun", false).apply();
         }
+
+        createFragment(listViewMainFragment);
     }
+
+
 }

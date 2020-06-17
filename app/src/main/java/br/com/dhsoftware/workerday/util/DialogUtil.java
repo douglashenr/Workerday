@@ -11,14 +11,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import br.com.dhsoftware.workerday.R;
+import br.com.dhsoftware.workerday.fragments.AlertDialogCustom;
+import br.com.dhsoftware.workerday.util.textWatcher.MoneyTextWatcher;
 
-public class DialogUtil implements View.OnClickListener {
+public class DialogUtil{
 
     private Context context;
     private AlertDialog dialog;
 
     public DialogUtil(Context context) {
         this.context = context;
+
     }
 
     public void infoDialog(String text){
@@ -34,32 +37,13 @@ public class DialogUtil implements View.OnClickListener {
 
 
     public void welcomeDialog(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        View view = inflater.inflate(R.layout.fragment_welcome, null, false);
-
-        EditText editText = view.findViewById(R.id.salary_welcome);
-        TextView textView = view.findViewById(R.id.fragment_welcome_textview_save);
-        textView.setOnClickListener(this);
-
-        //editText.addTextChangedListener(new PercentEditTextWatcher(editText));
-
-        alertDialogBuilder.setView(view);
-
-        dialog = alertDialogBuilder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
+        AlertDialogCustom dialogCustom = new AlertDialogCustom(context);
+        dialogCustom.showDialogCustomWelcome();
     }
 
     public void showToast(String text, int duration){
         Toast.makeText(context, text, duration).show();
     }
 
-    @Override
-    public void onClick(View v) {
-        if(R.id.fragment_welcome_textview_save == v.getId()){
-            showToast("Informações iniciais adicionadas!", Toast.LENGTH_LONG);
-            dialog.cancel();
-        }
-    }
+
 }

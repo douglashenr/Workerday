@@ -30,6 +30,7 @@ import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.DateUtil;
 import br.com.dhsoftware.workerday.util.DialogUtil;
 import br.com.dhsoftware.workerday.util.enumObservation;
+import br.com.dhsoftware.workerday.util.textWatcher.MoneyTextWatcher;
 
 
 /*
@@ -49,9 +50,6 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     private User user;
     private Registry registry;
     private enumObservation observation;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private DialogUtil dialogUtil;
 
@@ -91,6 +89,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         setView();
 
         dialogUtil = new DialogUtil(getActivity());
+
 
 
         return view;
