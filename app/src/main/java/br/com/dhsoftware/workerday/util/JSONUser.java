@@ -19,10 +19,12 @@ public class JSONUser {
     private String USERPATH = "user.json";
     private JSONObject jsonObjectEmpty, jsonUser;
     private Context context;
+    private SalaryUtil salaryUtil;
 
     public JSONUser(Context context) {
         this.context = context;
         jsonObjectEmpty = new JSONObject();
+        salaryUtil = new SalaryUtil();
         createObjectJSONUserEmpty();
         if(isFilePresent())
             System.out.println("JSON quando iniciado construtor: " + getObjectJSONUserFromStorage().toString());
@@ -33,8 +35,10 @@ public class JSONUser {
             jsonObjectEmpty.put("name", "");
             jsonObjectEmpty.put("e-mail", "");
             jsonObjectEmpty.put("salary", "");
-            jsonObjectEmpty.put("deduction", "");
+            jsonObjectEmpty.put("deduction", "0.0");
             jsonObjectEmpty.put("percentExtraSalary", "");
+            jsonObjectEmpty.put("timeForWeek", "44");
+            jsonObjectEmpty.put("salaryPerHour", "");
 
         }catch (Exception e){
             e.getMessage();
@@ -103,10 +107,21 @@ public class JSONUser {
     public void setSalaryJSON(String salary){
         try {
             writeFileJson(getObjectJSONUserFromStorage().put("salary", salary));
+
+            setSalaryPerHour();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         System.out.println("Adicionado salario em JSON: " + read());
+    }
+
+    private void setSalaryPerHour() throws JSONException {
+        //String salaryPerHour receive a String calculated from salaryUtil.calculateSalaryPerHour that return a double
+        String salaryPerHour = String.valueOf(salaryUtil.calculateSalaryPerHour(getObjectJSONUserFromStorage().getString("salary"),
+                Integer.parseInt(getObjectJSONUserFromStorage().getString("timeForWeek"))));
+
+        //After calculate salaryPerHour, set the string to valueName salaryPerHour
+        writeFileJson(getObjectJSONUserFromStorage().put("salaryPerHour", salaryPerHour));
     }
 
     public void setDeductionJSON(String deduction){

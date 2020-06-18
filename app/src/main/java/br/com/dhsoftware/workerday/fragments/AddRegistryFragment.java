@@ -88,6 +88,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         observation = enumObservation.NORMAL;
         setView();
 
+
         dialogUtil = new DialogUtil(getActivity());
 
 
@@ -251,7 +252,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     }
 
     private void createObjectRegistry() {
-        registry = new Registry(user, DateUtil.getInstanceDateUtil().convertStringDataToCalendar(dateWorked.getText().toString()), observation);
+        registry = new Registry(DateUtil.getInstanceDateUtil().convertStringDataToCalendar(dateWorked.getText().toString()), observation);
         System.out.println(registry);
     }
 

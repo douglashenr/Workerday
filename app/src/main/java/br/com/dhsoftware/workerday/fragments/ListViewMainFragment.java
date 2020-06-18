@@ -73,7 +73,7 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
         System.out.println("OnCreateView");
         setView();
 
-        user = new User("Douglas", "douglas@hotmail.com");
+        user = new User(getActivity());
         registryArrayList = Registry.testArrayList(user);
         System.out.println(DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registryArrayList.get(1)) + " Teste Calculo");
 
