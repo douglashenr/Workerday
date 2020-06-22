@@ -2,6 +2,7 @@ package br.com.dhsoftware.workerday.util;
 
 import android.content.Context;
 import android.util.JsonReader;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,8 +15,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class JSONUser {
+import static android.content.ContentValues.TAG;
 
+public class JSONUser {
     private String USERPATH = "user.json";
     private JSONObject jsonObjectEmpty, jsonUser;
     private Context context;
@@ -45,7 +47,6 @@ public class JSONUser {
         }
     }
 
-
     public String read() {
         try {
             FileInputStream fis = context.openFileInput(USERPATH);
@@ -65,8 +66,6 @@ public class JSONUser {
             return null;
         }
     }
-
-
 
     public boolean create(){
         try {
@@ -95,8 +94,6 @@ public class JSONUser {
 
         }
     }
-
-
 
     public boolean isFilePresent() {
         String path = context.getFilesDir().getAbsolutePath() + "/" + USERPATH;
@@ -133,6 +130,15 @@ public class JSONUser {
         System.out.println("Adicionado salario em JSON: " + read());
     }
 
+    public void setTimeForWeekJSON(String timeForWeek){
+        try {
+            writeFileJson(getObjectJSONUserFromStorage().put("timeForWeek", timeForWeek));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Adicionado salario em JSON: " + read());
+    }
+
     public void setPercentExtraSalaryJSON(String percentExtraSalary){
         try {
             writeFileJson(getObjectJSONUserFromStorage().put("percentExtraSalary", percentExtraSalary));
@@ -150,6 +156,35 @@ public class JSONUser {
         }
 
         return jsonUser;
+    }
+
+
+    private String getInfoFromJSON(String info){
+        getObjectJSONUserFromStorage();
+        try {
+            return jsonUser.getString(info);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d("USER", "Error to get salary from storage");
+            return "";
+        }
+    }
+
+
+    public String getSalary(){
+        return getInfoFromJSON("salary");
+    }
+
+    public String getDeduction(){
+        return getInfoFromJSON("deduction");
+    }
+
+    public String getPercentExtraSalary(){
+        return getInfoFromJSON("percentExtraSalary");
+    }
+
+    public String getTimeForWeek(){
+        return getInfoFromJSON("timeForWeek");
     }
 
 }

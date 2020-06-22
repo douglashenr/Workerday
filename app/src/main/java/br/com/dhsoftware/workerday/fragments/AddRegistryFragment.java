@@ -29,8 +29,8 @@ import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.DateUtil;
 import br.com.dhsoftware.workerday.util.DialogUtil;
+import br.com.dhsoftware.workerday.util.JSONUser;
 import br.com.dhsoftware.workerday.util.enumObservation;
-import br.com.dhsoftware.workerday.util.textWatcher.MoneyTextWatcher;
 
 
 /*
@@ -97,44 +97,45 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     }
 
     private void setView(){
-        dateWorked = view.findViewById(R.id.date_worked);
+        dateWorked = view.findViewById(R.id.editText_dateWorked_registry);
         dateWorked.setOnClickListener(this);
 
-        entranceTime = view.findViewById(R.id.entrance_time);
+        entranceTime = view.findViewById(R.id.editText_entranceTime_registry);
         entranceTime.setOnClickListener(this);
 
-        entranceLunchTime = view.findViewById(R.id.entrance_lunch_time);
+        entranceLunchTime = view.findViewById(R.id.editText_entranceLunchTime_registry);
         entranceLunchTime.setOnClickListener(this);
 
-        leaveLunchTime = view.findViewById(R.id.leave_lunch_time);
+        leaveLunchTime = view.findViewById(R.id.editText_leaveLunchTime_registry);
         leaveLunchTime.setOnClickListener(this);
 
-        leaveTime = view.findViewById(R.id.leave_time);
+        leaveTime = view.findViewById(R.id.editText_leaveTime_registry);
         leaveTime.setOnClickListener(this);
 
-        requiredTime = view.findViewById(R.id.required_time_to_work_time);
+        requiredTime = view.findViewById(R.id.editText_requiredTimeToWorkTime_registry);
         requiredTime.setOnClickListener(this);
 
-        percentExtraWork = view.findViewById(R.id.porcent_extra_work);
+        percentExtraWork = view.findViewById(R.id.editText_porcentExtraWork_registry);
         percentExtraWork.setOnClickListener(this);
 
-        buttonGroup = view.findViewById(R.id.button_group);
+        buttonGroup = view.findViewById(R.id.button_group_registry);
         buttonGroup.setOnCheckedChangeListener(this);
 
-        radioButtonAtestado = view.findViewById(R.id.button_atestado);
-        radioButtonDeclaration = view.findViewById(R.id.button_time_declaration);
-        radioButtonNothing = view.findViewById(R.id.button_nothing);
-        radioButtonAbsence = view.findViewById(R.id.button_absence);
+        radioButtonAtestado = view.findViewById(R.id.button_atestado_registry);
+        radioButtonDeclaration = view.findViewById(R.id.button_timeDeclaration_registry);
+        radioButtonNothing = view.findViewById(R.id.button_nothing_registry);
+        radioButtonAbsence = view.findViewById(R.id.button_absence_registry);
 
         ImageButton saveButton = view.findViewById(R.id.button_save_registry);
         saveButton.setOnClickListener(this);
 
-        //completeAutomaticPercentField();
+        completeAutomaticPercentExtraSalaryAndRequiredTimeField();
     }
 
-    private void completeAutomaticPercentField() {
-        if(user.getPercentExtraSalary() != 0)
-            percentExtraWork.setText(String.valueOf(user.getPercentExtraSalary()));
+    private void completeAutomaticPercentExtraSalaryAndRequiredTimeField() {
+        JSONUser jsonUser = new JSONUser(getActivity());
+        if(!jsonUser.getPercentExtraSalary().equals(""))
+            percentExtraWork.setText(jsonUser.getPercentExtraSalary());
     }
 
     @Override
@@ -180,29 +181,29 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     public void onClick(View v) {
 
         switch (v.getId()){
-            case R.id.date_worked:
+            case R.id.editText_dateWorked_registry:
                 setEditTextSetDataOrTimeFromPicker(dateWorked);
                 datePickerDialog();
                 break;
 
-            case R.id.entrance_time:
+            case R.id.editText_entranceTime_registry:
                 setEditTextSetDataOrTimeFromPicker(entranceTime);
                 timePickerDialog();
                 break;
 
-            case R.id.entrance_lunch_time:
+            case R.id.editText_entranceLunchTime_registry:
                 setEditTextSetDataOrTimeFromPicker(entranceLunchTime);
                 timePickerDialog();
                 break;
-            case R.id.leave_lunch_time:
+            case R.id.editText_leaveLunchTime_registry:
                 setEditTextSetDataOrTimeFromPicker(leaveLunchTime);
                 timePickerDialog();
                 break;
-            case R.id.leave_time:
+            case R.id.editText_leaveTime_registry:
                 setEditTextSetDataOrTimeFromPicker(leaveTime);
                 timePickerDialog();
                 break;
-            case R.id.required_time_to_work_time:
+            case R.id.editText_requiredTimeToWorkTime_registry:
                 timePickerDialog();
                 setEditTextSetDataOrTimeFromPicker(requiredTime);
                 break;
@@ -269,4 +270,6 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     private void setEditTextSetDataOrTimeFromPicker(EditText editTextSetDataOrTimeFromPicker) {
         this.editTextSetDataOrTimeFromPicker = editTextSetDataOrTimeFromPicker;
     }
+
+
 }

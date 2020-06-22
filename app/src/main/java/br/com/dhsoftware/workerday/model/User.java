@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import br.com.dhsoftware.workerday.util.JSONUser;
 
 public class User implements Serializable {
-    private String name; // obrigatório
-    private String email; // obrigatório
+    private String name;
+    private String email;
     private Double salary; //verificar uma classe para substituir Double
     private Double deduction = 0.0; //verificar uma classe para substituir Double
     private int percentExtraSalary = 0;

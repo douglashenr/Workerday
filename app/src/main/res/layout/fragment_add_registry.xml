@@ -40,7 +40,7 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/date_worked"
+                    android:id="@+id/editText_dateWorked_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -48,7 +48,7 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/entrance_time"
+                    android:id="@+id/editText_entranceTime_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -56,7 +56,7 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/entrance_lunch_time"
+                    android:id="@+id/editText_entranceLunchTime_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -64,7 +64,7 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/leave_lunch_time"
+                    android:id="@+id/editText_leaveLunchTime_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -72,7 +72,7 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/leave_time"
+                    android:id="@+id/editText_leaveTime_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -80,7 +80,7 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/required_time_to_work_time"
+                    android:id="@+id/editText_requiredTimeToWorkTime_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -88,7 +88,7 @@
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/porcent_extra_work"
+                    android:id="@+id/editText_porcentExtraWork_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Porcentagem hora extra do dia"
@@ -112,14 +112,14 @@
                         android:text="Observação:" />
 
                     <RadioGroup
-                        android:id="@+id/button_group"
+                        android:id="@+id/button_group_registry"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
                         android:orientation="vertical">
 
                         <RadioButton
-                            android:id="@+id/button_nothing"
+                            android:id="@+id/button_nothing_registry"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
@@ -127,21 +127,21 @@
                             android:textSize="15sp" />
 
                         <RadioButton
-                            android:id="@+id/button_atestado"
+                            android:id="@+id/button_atestado_registry"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Atestado"
                             android:textSize="15sp" />
 
                         <RadioButton
-                            android:id="@+id/button_time_declaration"
+                            android:id="@+id/button_timeDeclaration_registry"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Declaração de Horas"
                             android:textSize="15sp" />
 
                         <RadioButton
-                            android:id="@+id/button_absence"
+                            android:id="@+id/button_absence_registry"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Falta"

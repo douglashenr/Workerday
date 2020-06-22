@@ -108,7 +108,7 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
     private void goToFragmentAddRegistry(){
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout_main, new AddRegistryFragment());
+        fragmentTransaction.replace(R.id.frameLayout_fragment_mainActivity, new AddRegistryFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
