@@ -129,7 +129,6 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         ImageButton saveButton = view.findViewById(R.id.button_save_registry);
         saveButton.setOnClickListener(this);
 
-        completeAutomaticPercentExtraSalaryAndRequiredTimeField();
     }
 
     private void completeAutomaticPercentExtraSalaryAndRequiredTimeField() {
@@ -176,6 +175,11 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        completeAutomaticPercentExtraSalaryAndRequiredTimeField();
+    }
 
     @Override
     public void onClick(View v) {
@@ -270,6 +274,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     private void setEditTextSetDataOrTimeFromPicker(EditText editTextSetDataOrTimeFromPicker) {
         this.editTextSetDataOrTimeFromPicker = editTextSetDataOrTimeFromPicker;
     }
+
 
 
 }

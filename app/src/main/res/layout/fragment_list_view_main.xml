@@ -18,7 +18,7 @@
         android:layout_height="56dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/shape"
-        android:src="@mipmap/done"
+        android:src="@drawable/ic_add_black_24dp"
         android:elevation="6dp"
         android:stateListAnimator="@null"
         android:textColor="#ffffff"

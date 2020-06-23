@@ -12,18 +12,28 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.io.Serializable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.Serializable;
+import java.util.Objects;
+
+import br.com.dhsoftware.workerday.fragments.InformationFragment;
 import br.com.dhsoftware.workerday.fragments.ListViewMainFragment;
 import br.com.dhsoftware.workerday.fragments.UserSettingsFragment;
 import br.com.dhsoftware.workerday.util.DialogUtil;
 import br.com.dhsoftware.workerday.util.JSONUser;
 
-public class MainActivity extends AppCompatActivity implements Serializable {
+public class MainActivity extends AppCompatActivity implements Serializable, BottomNavigationView.OnNavigationItemSelectedListener {
 
+    String FRAGMENT_TAG_LISTVIEWMAIN = "LISTVIEWFRAGMENT";
+    String FRAGMENT_TAG_USERSETTINGS = "USERSETTINGS";
+    String FRAGMENT_TAG_INFORMATION = "INFORMATION";
     private SharedPreferences prefs = null;
     private ListViewMainFragment listViewMainFragment;
     private UserSettingsFragment userSettingsFragment;
+    private InformationFragment informationFragment;
+    private BottomNavigationView bottomNavigationView;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +42,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         listViewMainFragment = new ListViewMainFragment();
         userSettingsFragment = new UserSettingsFragment();
+        informationFragment = new InformationFragment();
+
+        bottomNavigationView = findViewById(R.id.bottomNavigation_navigation_mainActivity);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.frameLayout_fragment_mainActivity, listViewMainFragment, FRAGMENT_TAG_LISTVIEWMAIN);
+        fragmentTransaction.commit();
 
 
 
@@ -39,15 +58,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         prefs = getSharedPreferences("br.com.dhsoftware.workerday", MODE_PRIVATE);
     }
 
-    private void createFragmentListViewRegistry(int containerView, Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
+    private void createFragmentListViewRegistry(int containerView, Fragment fragment, String tag) {
+        fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(containerView, fragment);
+        fragmentTransaction.replace(containerView, fragment, tag);
         if(fragment == listViewMainFragment){
 
         }
         else
-            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
     }
 
@@ -77,7 +96,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             prefs.edit().putBoolean("firstrun", false).apply();
         }
 
-        createFragmentListViewRegistry(R.id.frameLayout_fragment_mainActivity, listViewMainFragment);
+        //setFragmentListViewMain();
+    }
+
+    private void setFragmentListViewMain() {
+        createFragmentListViewRegistry(R.id.frameLayout_fragment_mainActivity, listViewMainFragment, FRAGMENT_TAG_LISTVIEWMAIN);
     }
 
     @Override
@@ -91,9 +114,55 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.item_Settings_menuUserSettings:
-                createFragmentListViewRegistry(R.id.frameLayout_fragment_mainActivity, userSettingsFragment);
+                setFragmentUserSettings();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void setFragmentUserSettings() {
+        createFragmentListViewRegistry(R.id.frameLayout_fragment_mainActivity, userSettingsFragment, FRAGMENT_TAG_USERSETTINGS);
+    }
+
+    private boolean verifyCurrentlyFragment(String tag){
+        Fragment currentlyFragment = fragmentManager.findFragmentByTag(tag);
+        if (currentlyFragment != null && currentlyFragment.isVisible()) {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    private void setFragmentInformation(){
+        createFragmentListViewRegistry(R.id.frameLayout_fragment_mainActivity, informationFragment, FRAGMENT_TAG_INFORMATION);
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.page_1:
+                if(!verifyCurrentlyFragment(FRAGMENT_TAG_LISTVIEWMAIN)) {
+                    System.out.println("Está na FragmentListViewMain");
+                    setFragmentListViewMain();
+
+                }
+                return true;
+            case R.id.page_2:
+                if(!verifyCurrentlyFragment(FRAGMENT_TAG_INFORMATION))
+                    setFragmentInformation();
+                return true;
+        }
+        return false;
+    }
+
+    private void goToFragmentListViewMain(){
+        FragmentManager fragmentManager = Objects.requireNonNull(this).getSupportFragmentManager();
+        fragmentManager.popBackStack();
+    }
+
+
+
+
 }

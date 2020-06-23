@@ -10,15 +10,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingBottom="5dp">
 
 
     <TextView
         android:id="@+id/list_view_main_activity_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
-        android:autoSizeTextType="uniform"
         android:gravity="center_horizontal"
         android:text="Data: 25/12/1998"
         android:layout_marginVertical="20dp"

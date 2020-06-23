@@ -26,9 +26,14 @@ import br.com.dhsoftware.workerday.util.DateUtil;
  * Use the {@link ListViewMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListViewMainFragment extends Fragment implements View.OnClickListener {
+public class ListViewMainFragment extends Fragment implements View.OnClickListener, FragmentManager.OnBackStackChangedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    String FRAGMENT_TAG_LISTVIEWMAIN = "LISTVIEWFRAGMENT";
+    String FRAGMENT_TAG_USERSETTINGS = "USERSETTINGS";
+    String FRAGMENT_TAG_INFORMATION = "INFORMATION";
+    String FRAGMENT_TAG_REGISTRY = "REGISTRY";
+
 
     private View view;
     private ImageButton buttonAddRegistry;
@@ -75,6 +80,7 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
 
         user = new User(getActivity());
         registryArrayList = Registry.testArrayList(user);
+        System.out.println("Retorno data: " + DateUtil.getInstanceDateUtil().calculateTotalTimeFromArrayRegistryToString(registryArrayList));
         System.out.println(DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registryArrayList.get(1)) + " Teste Calculo");
 
 
@@ -109,9 +115,11 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout_fragment_mainActivity, new AddRegistryFragment());
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack(FRAGMENT_TAG_REGISTRY);
         fragmentTransaction.commit();
     }
+    
+
 
 
     public void updateArrayListRegistry(){
@@ -133,4 +141,9 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
         listView.setAdapter(adapter);
     }
 
+
+    @Override
+    public void onBackStackChanged() {
+
+    }
 }

@@ -24,8 +24,8 @@
         card_view:cardCornerRadius="8dp"
         card_view:cardElevation="5dp"
 
-        card_view:cardBackgroundColor="@color/colorPrimary"
-        android:background="@color/colorPrimary">
+        card_view:cardBackgroundColor="@color/colorSecondaryLight"
+        android:background="@color/colorSecondaryLight">
 
     <LinearLayout
     android:layout_width="match_parent"
@@ -33,6 +33,7 @@
         android:orientation="vertical">
 
     <TextView
+        android:textColor="@color/colorSecondaryText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="BEM-VINDO AO WORKERDAY!"
@@ -43,7 +44,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorDivider"
+            android:background="@color/colorSecondaryText"
             android:layout_marginHorizontal="10dp"/>
 
         <LinearLayout
@@ -52,6 +53,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:textColor="@color/colorSecondaryText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome_text"
@@ -61,6 +63,8 @@
                 android:layout_marginTop="5dp"/>
 
             <EditText
+                android:textColor="@color/colorSecondaryText"
+                android:textColorLink="@color/colorSecondaryText"
                 android:id="@+id/salary_welcome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,6 +95,7 @@
                 android:gravity="right">
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/fragment_welcome_textview_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

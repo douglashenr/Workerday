@@ -3,6 +3,7 @@ package br.com.dhsoftware.workerday.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -105,6 +106,8 @@ public class DateUtil {
             if(registry.getObservation() == enumObservation.DECLARACAO_DE_HORAS)
                 time+= convertStringTimeToDateObject(convertCalendarToStringTime(registry.getTimeDeclaration())).getTime();
 
+
+
             return time;
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,6 +128,24 @@ public class DateUtil {
             return hour + ":" + "0" + minute + "h";
 
 
+        return hour + ":" + minute + "h";
+    }
+
+    public String calculateTotalTimeFromArrayRegistryToString(ArrayList<Registry> registries){
+        int hour = 0, minute = 0;
+        for(int count = 0; count < registries.size(); count++) {
+            if (calculateTimeFromRegistryToLong(registries.get(count)) == -1 || calculateTimeFromRegistryToLong(registries.get(count)) == -2){
+
+            }else{
+                hour+= (int) TimeUnit.MILLISECONDS.toHours(calculateTimeFromRegistryToLong(registries.get(count)));
+                minute+=  (int) ((calculateTimeFromRegistryToLong(registries.get(count)) / (1000*60)) % 60);
+
+                if(minute >= 60){
+                    hour+= 1;
+                    minute = minute % 60;
+                }
+            }
+        }
         return hour + ":" + minute + "h";
     }
 
