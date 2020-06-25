@@ -28,8 +28,11 @@ public class JSONUser {
         jsonObjectEmpty = new JSONObject();
         salaryUtil = new SalaryUtil();
         createObjectJSONUserEmpty();
-        if(isFilePresent())
+        if(isFilePresent()) {
             System.out.println("JSON quando iniciado construtor: " + getObjectJSONUserFromStorage().toString());
+        }else{
+            create();
+        }
     }
 
     private void createObjectJSONUserEmpty(){

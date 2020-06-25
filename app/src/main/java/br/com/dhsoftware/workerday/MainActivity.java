@@ -74,10 +74,8 @@ public class MainActivity extends AppCompatActivity implements Serializable, Bot
     protected void onStart() {
         super.onStart();
 
-        JSONUser jsonUser = new JSONUser(this);
-        if(!jsonUser.isFilePresent()){
-            jsonUser.create();
-        }
+
+
 
         DialogUtil dialog = new DialogUtil(this);
         dialog.welcomeDialog();
@@ -162,7 +160,12 @@ public class MainActivity extends AppCompatActivity implements Serializable, Bot
         fragmentManager.popBackStack();
     }
 
-
-
-
+    @Override
+    public void onBackPressed() {
+        if(!verifyCurrentlyFragment(FRAGMENT_TAG_LISTVIEWMAIN)){
+            goToFragmentListViewMain();
+        }else{
+            finishAffinity();
+        }
+    }
 }

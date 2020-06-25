@@ -132,7 +132,5 @@ public class Registry implements Serializable {
 
         return registries;
 
-
-
     }
 }

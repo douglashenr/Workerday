@@ -22,4 +22,23 @@ public class SalaryUtil {
         return money.doubleComDoisDecimais(moneyPerHour);
     }
 
+    public void calculateINSS(String value){
+        try {
+            double salary = money.dinheiroParaDouble(value, Locale.FRANCE).doubleValue();
+            if(salary <= 1045){
+
+            }else if(salary > 1045 && salary <= 2080.60){
+
+            }else if(salary > 2080.60 && salary <= 3134.40){
+
+            }else if(salary > 3134.40 && salary <=6101.06){
+
+            }else{
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
