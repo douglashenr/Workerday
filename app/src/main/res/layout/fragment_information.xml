@@ -32,18 +32,28 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textView_grossSalary_information"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Salario bruto: R$ 2.000,00"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/textView_deduction_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Deduções: R$ 2.000,00"
                     android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
+                    android:id="@+id/textView_inss_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="INSS: R$ 2.000,00"
                     android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
+                    android:id="@+id/textView_irrf_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="IRRF: R$ 2,000.00"
@@ -58,6 +68,7 @@
                     android:background="@color/colorPrimaryDark" />
 
                 <TextView
+                    android:id="@+id/textView_fgts_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="FGTS: R$ 2.000,00"
@@ -65,6 +76,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/textView_netSalary_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"

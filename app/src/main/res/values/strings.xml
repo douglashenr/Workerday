@@ -5,7 +5,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome_text">Para uma melhor experiencia, adicione as seguintes informações:</string>
-    <string name="salario">Salario:</string>
+    <string name="salary">Salario:</string>
     <string name="deduction">Deduções:</string>
     <string name="percent_extra_salary_default">porcentagem hora extra padrão:</string>
     <string name="time_for_week">Carga horaria semanal:</string>
@@ -15,4 +15,6 @@
     <string name="example_percent_extra_salary">ex: 70%</string>
     <string name="example_deduction">ex: 1.200,00</string>
     <string name="example_salary">ex: 10.000,00</string>
+    <string name="example_date_listview">Data: 25/12/1998</string>
+    <string name="welcome">BEM-VINDO AO WORKERDAY!</string>
 </resources>

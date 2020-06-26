@@ -124,6 +124,10 @@ public class JSONUser {
         writeFileJson(getObjectJSONUserFromStorage().put("salaryPerHour", salaryPerHour));
     }
 
+    public String getSalaryPerHour(){
+        return getInfoFromJSON("salaryPerHour");
+    }
+
     public void setDeductionJSON(String deduction){
         try {
             writeFileJson(getObjectJSONUserFromStorage().put("deduction", deduction));

@@ -46,7 +46,7 @@ public class DateUtil {
         }
 
 
-        System.out.println(calendar.getTime());
+        //System.out.println(calendar.getTime());
 
         return calendar;
     }
@@ -86,7 +86,7 @@ public class DateUtil {
         }
 
 
-        System.out.println("ConvertStringDataToCalendar: " + calendar.getTime());
+        //System.out.println("ConvertStringDataToCalendar: " + calendar.getTime());
 
         return calendar;
     }

@@ -250,7 +250,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
                 dialogUtil.infoDialog("Complete o campo em vermelho para salvar!");
             }else {
                 System.out.println("Salvou!");
-                dialogUtil.showToast("Salvou!", Toast.LENGTH_SHORT);
+                dialogUtil.showToast("Ponto salvo!", Toast.LENGTH_SHORT);
                 createObjectRegistry();
                 goToFragmentListViewMain();
             }

@@ -164,7 +164,7 @@
             android:layout_height="56dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/shape"
-            android:src="@mipmap/save"
+            android:src="@drawable/ic_save_black_24dp"
             android:elevation="6dp"
             android:stateListAnimator="@null"
             android:textColor="#ffffff"

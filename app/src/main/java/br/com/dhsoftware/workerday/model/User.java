@@ -2,22 +2,21 @@ package br.com.dhsoftware.workerday.model;
 
 import android.content.Context;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import br.com.dhsoftware.workerday.util.JSONUser;
+import br.com.dhsoftware.workerday.util.Money;
 
 public class User implements Serializable {
     private String name;
     private String email;
-    private Double salary; //verificar uma classe para substituir Double
-    private Double deduction = 0.0; //verificar uma classe para substituir Double
+    private double salary; //verificar uma classe para substituir Double
+    private double deduction = 0.0; //verificar uma classe para substituir Double
     private int percentExtraSalary = 0;
     private int timeForWeek;
-    private Double salaryPerHour;
+    private double salaryPerHour;
     private ArrayList<Registry> registries;
     private Context context;
 
@@ -29,19 +28,17 @@ public class User implements Serializable {
     }
 
     private void setUserFromJSON(){
+        Money money = new Money();
         JSONUser userJSON = new JSONUser(context);
-        JSONObject jsonObject = null;
         try {
-            jsonObject = new JSONObject(userJSON.read());
-            setDeduction(jsonObject.getDouble("deduction"));
-            setSalary(jsonObject.getDouble("salary"));
-            setTimeForWeek(jsonObject.getInt("timeForWeek"));
-            setSalaryPerHour(jsonObject.getDouble("salaryPerHour"));
-            setPercentExtraSalary(jsonObject.getInt("percentExtraSalary"));
-        } catch (JSONException e) {
+            setDeduction(money.dinheiroParaDouble(userJSON.getDeduction(), Locale.FRANCE).doubleValue());
+            setSalary(money.dinheiroParaDouble(userJSON.getSalary(), Locale.FRANCE).doubleValue());
+            setTimeForWeek(Integer.parseInt(userJSON.getTimeForWeek()));
+            setSalaryPerHour(money.doubleComDoisDecimais(Double.valueOf(userJSON.getSalaryPerHour())));
+            setPercentExtraSalary(Integer.parseInt(userJSON.getPercentExtraSalary()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public String getName() {
@@ -52,7 +49,7 @@ public class User implements Serializable {
         return percentExtraSalary;
     }
 
-    public void setPercentExtraSalary(int percentExtraSalary) {
+    private void setPercentExtraSalary(int percentExtraSalary) {
         this.percentExtraSalary = percentExtraSalary;
     }
 
@@ -68,11 +65,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Double getSalary() {
+    public double getSalary() {
         return salary;
     }
 
-    public void setSalary(Double salary) {
+    private void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -80,7 +77,7 @@ public class User implements Serializable {
         return deduction;
     }
 
-    public void setDeduction(Double deduction) {
+    private void setDeduction(Double deduction) {
         this.deduction = deduction;
     }
 
@@ -88,7 +85,7 @@ public class User implements Serializable {
         return timeForWeek;
     }
 
-    public void setTimeForWeek(int timeForWeek) {
+    private void setTimeForWeek(int timeForWeek) {
         this.timeForWeek = timeForWeek;
     }
 
@@ -96,7 +93,7 @@ public class User implements Serializable {
         return salaryPerHour;
     }
 
-    public void setSalaryPerHour(Double salaryPerHour) {
+    private void setSalaryPerHour(Double salaryPerHour) {
         this.salaryPerHour = salaryPerHour;
     }
 

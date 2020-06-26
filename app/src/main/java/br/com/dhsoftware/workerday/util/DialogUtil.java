@@ -3,16 +3,9 @@ package br.com.dhsoftware.workerday.util;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.ColorDrawable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.fragments.AlertDialogCustom;
-import br.com.dhsoftware.workerday.util.textWatcher.MoneyTextWatcher;
 
 public class DialogUtil{
 
@@ -21,7 +14,6 @@ public class DialogUtil{
 
     public DialogUtil(Context context) {
         this.context = context;
-
     }
 
     public void infoDialog(String text){

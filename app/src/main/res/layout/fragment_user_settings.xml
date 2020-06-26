@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:textSize="10sp"
-            android:text="@string/salario"
+            android:text="@string/salary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
             tools:ignore="SmallSp" />
@@ -122,7 +122,7 @@
             android:layout_height="56dp"
             android:layout_alignParentEnd="true"
             android:background="@drawable/shape"
-            android:src="@mipmap/save"
+            android:src="@drawable/ic_save_black_24dp"
             android:elevation="6dp"
             android:stateListAnimator="@null"
             android:textColor="#ffffff"

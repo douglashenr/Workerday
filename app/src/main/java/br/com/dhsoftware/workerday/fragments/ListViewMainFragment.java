@@ -26,7 +26,7 @@ import br.com.dhsoftware.workerday.util.DateUtil;
  * Use the {@link ListViewMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListViewMainFragment extends Fragment implements View.OnClickListener, FragmentManager.OnBackStackChangedListener {
+public class ListViewMainFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     String FRAGMENT_TAG_LISTVIEWMAIN = "LISTVIEWFRAGMENT";
@@ -118,9 +118,6 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
         fragmentTransaction.addToBackStack(FRAGMENT_TAG_REGISTRY);
         fragmentTransaction.commit();
     }
-    
-
-
 
     public void updateArrayListRegistry(){
 
@@ -141,9 +138,4 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
         listView.setAdapter(adapter);
     }
 
-
-    @Override
-    public void onBackStackChanged() {
-
-    }
 }

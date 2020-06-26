@@ -18,30 +18,7 @@ public class Money {
 
 
     public double doubleComDoisDecimais(Double numero){
-        System.out.println("NumeroRecebido: " + numero);
-        /*numero+= 0.0000000002;
-        DecimalFormat formato = new DecimalFormat();
-
-        if(numero < 10){
-            formato = new DecimalFormat("#,##");
-        }
-
-        if(numero >=10.0 && numero <100.0){
-            formato = new DecimalFormat("##,##");
-        }
-        if(numero >= 100 && numero < 1000) {
-            formato = new DecimalFormat("###,##");
-            System.out.println("Passou no formado correto!");
-        }
-        if(numero >= 1000)
-            formato = new DecimalFormat("###,##");
-
-
-
-        return Double.valueOf(formato.format(numero));*/
-
-        //return Math.floor(numero * 100) / 100;
-        return truncateDecimal(numero, 2).doubleValue();
+       return truncateDecimal(numero, 2).doubleValue();
     }
 
     private BigDecimal truncateDecimal(double x,int numberofDecimals)

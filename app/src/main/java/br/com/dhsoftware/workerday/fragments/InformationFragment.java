@@ -7,56 +7,35 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.text.ParseException;
+import java.util.Locale;
 
 import br.com.dhsoftware.workerday.R;
+import br.com.dhsoftware.workerday.model.User;
+import br.com.dhsoftware.workerday.util.JSONUser;
+import br.com.dhsoftware.workerday.util.Money;
+import br.com.dhsoftware.workerday.util.SalaryUtil;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link InformationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class InformationFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private View view;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private TextView textViewNetSalary, textViewGrossSalary, textViewINSS, textViewIRRF, textViewDeduction, textViewFGTS;
+    private SalaryUtil salaryUtil;
+    private JSONUser jsonUser;
+    private User user;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public InformationFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment InformationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static InformationFragment newInstance(String param1, String param2) {
-        InformationFragment fragment = new InformationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -64,6 +43,33 @@ public class InformationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_information, container, false);
+
+
+        jsonUser = new JSONUser(getActivity());
+        setView();
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        user = new User(getActivity());
+        salaryUtil = new SalaryUtil(user);
+        textViewINSS.setText("INSS: R$ " + salaryUtil.calculateINSS());
+        textViewIRRF.setText("IRRF: R$ " + salaryUtil.calculateIRRF());
+        textViewNetSalary.setText("Salario liquido: R$ " + salaryUtil.calculateNetSalary());
+        textViewDeduction.setText("Deduções: R$ " + jsonUser.getDeduction());
+        textViewFGTS.setText("FGTS: R$ " + salaryUtil.calculateIRRF());
+        textViewGrossSalary.setText("Base calculo: R$ " + user.getSalary());
+    }
+
+    private void setView() {
+        textViewNetSalary = view.findViewById(R.id.textView_netSalary_information);
+        textViewINSS = view.findViewById(R.id.textView_inss_information);
+        textViewIRRF = view.findViewById(R.id.textView_irrf_information);
+        textViewDeduction = view.findViewById(R.id.textView_deduction_information);
+        textViewFGTS = view.findViewById(R.id.textView_fgts_information);
+        textViewGrossSalary = view.findViewById(R.id.textView_grossSalary_information);
     }
 }
