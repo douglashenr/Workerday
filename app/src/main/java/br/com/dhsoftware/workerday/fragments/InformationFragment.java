@@ -60,7 +60,7 @@ public class InformationFragment extends Fragment {
         textViewIRRF.setText("IRRF: R$ " + salaryUtil.calculateIRRF());
         textViewNetSalary.setText("Salario liquido: R$ " + salaryUtil.calculateNetSalary());
         textViewDeduction.setText("Deduções: R$ " + jsonUser.getDeduction());
-        textViewFGTS.setText("FGTS: R$ " + salaryUtil.calculateIRRF());
+        textViewFGTS.setText("FGTS: R$ " + salaryUtil.calculateFGTS());
         textViewGrossSalary.setText("Base calculo: R$ " + user.getSalary());
     }
 

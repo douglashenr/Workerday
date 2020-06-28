@@ -1,6 +1,6 @@
 package br.com.dhsoftware.workerday.model;
 
-import android.database.DatabaseUtils;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 
@@ -8,20 +8,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.util.DateUtil;
 import br.com.dhsoftware.workerday.util.enumObservation;
 
 public class Registry implements Serializable {
-    private Calendar day;
-    private Calendar entrance;
-    private Calendar entranceLunch;
-    private Calendar leaveLunch;
-    private Calendar leave;
-    private Calendar requiredTimeToWork;
+    private Calendar day = null;
+    private Calendar entrance = null;
+    private Calendar entranceLunch = null;
+    private Calendar leaveLunch = null;
+    private Calendar leave = null;
+    private Calendar requiredTimeToWork = null;
     private int percent;
     private enumObservation observation;
     private Calendar timeDeclaration;
-
+    private Long id;
 
     public Registry(Calendar day, enumObservation observation) {
 
@@ -36,6 +37,8 @@ public class Registry implements Serializable {
         this.observation = observation;
     }
 
+    public Registry() {
+    }
 
     public String getDayString() {
         return DateUtil.getInstanceDateUtil().convertCalendarToStringDate(day);
@@ -110,6 +113,23 @@ public class Registry implements Serializable {
     public void setObservation(enumObservation observation) {
         this.observation = observation;
     }
+
+
+    public void setObservation(String observation){
+        if(observation.equals(enumObservation.ATESTADO.toString())) {
+            this.observation = enumObservation.ATESTADO;
+        }
+        if(observation.equals(enumObservation.DECLARACAO_DE_HORAS.toString())){
+            this.observation = enumObservation.DECLARACAO_DE_HORAS;
+        }
+        if(observation.equals(enumObservation.NORMAL.toString())){
+            this.observation = enumObservation.NORMAL;
+        }
+        if(observation.equals(enumObservation.ABSENCE.toString())){
+            this.observation = enumObservation.ABSENCE;
+        }
+    }
+
     public Calendar getTimeDeclaration() {
         return timeDeclaration;
     }
@@ -117,6 +137,13 @@ public class Registry implements Serializable {
         this.timeDeclaration = timeDeclaration;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @NonNull
     @Override
@@ -126,17 +153,23 @@ public class Registry implements Serializable {
 
 
 
-    public static ArrayList<Registry> testArrayList(User user){
+
+    public static ArrayList<Registry> testArrayList(Context context){
+
+        Dao dao = new Dao(context);
+        return dao.getRegistryFromDao();
+
+        /*
         ArrayList<Registry> registries;
         registries = new ArrayList<Registry>();
 
-        registries.add(new Registry(DateUtil.getInstanceDateUtil().convertStringDataToCalendar("25/12/1998"), enumObservation.ATESTADO));
-        registries.add(new Registry(DateUtil.getInstanceDateUtil().convertStringDataToCalendar("19/02/2008"),
+        registries.add(new Registry(DateUtil.getInstanceDateUtil().convertStringDateToCalendar("25/12/1998"), enumObservation.ATESTADO));
+        registries.add(new Registry(DateUtil.getInstanceDateUtil().convertStringDateToCalendar("19/02/2008"),
                 DateUtil.getInstanceDateUtil().convertStringDataAndTimeToCalendar("19/02/2008", "13:15"), enumObservation.NORMAL));
 
         registries.get(1).setLeave(DateUtil.getInstanceDateUtil().convertStringDataAndTimeToCalendar("19/02/2008", "18:15"));
 
-        return registries;
+        return registries;*/
 
     }
 }

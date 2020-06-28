@@ -79,9 +79,9 @@ public class ListViewMainFragment extends Fragment implements View.OnClickListen
         setView();
 
         user = new User(getActivity());
-        registryArrayList = Registry.testArrayList(user);
+        registryArrayList = Registry.testArrayList(getActivity());
         System.out.println("Retorno data: " + DateUtil.getInstanceDateUtil().calculateTotalTimeFromArrayRegistryToString(registryArrayList));
-        System.out.println(DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registryArrayList.get(1)) + " Teste Calculo");
+        //System.out.println(DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registryArrayList.get(1)) + " Teste Calculo");
 
 
         setListViewAdapter();

@@ -14,16 +14,12 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import br.com.dhsoftware.workerday.fragments.InformationFragment;
 import br.com.dhsoftware.workerday.fragments.ListViewMainFragment;
 import br.com.dhsoftware.workerday.fragments.UserSettingsFragment;
 import br.com.dhsoftware.workerday.util.DialogUtil;
-import br.com.dhsoftware.workerday.util.JSONUser;
 
-public class MainActivity extends AppCompatActivity implements Serializable, BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     String FRAGMENT_TAG_LISTVIEWMAIN = "LISTVIEWFRAGMENT";
     String FRAGMENT_TAG_USERSETTINGS = "USERSETTINGS";
@@ -33,7 +29,8 @@ public class MainActivity extends AppCompatActivity implements Serializable, Bot
     private UserSettingsFragment userSettingsFragment;
     private InformationFragment informationFragment;
     private BottomNavigationView bottomNavigationView;
-    FragmentManager fragmentManager;
+    private FragmentController fragmentController;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements Serializable, Bot
         listViewMainFragment = new ListViewMainFragment();
         userSettingsFragment = new UserSettingsFragment();
         informationFragment = new InformationFragment();
+        fragmentController = new FragmentController(getSupportFragmentManager());
 
-        bottomNavigationView = findViewById(R.id.bottomNavigation_navigation_mainActivity);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        setView();
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -56,6 +53,11 @@ public class MainActivity extends AppCompatActivity implements Serializable, Bot
 
 
         prefs = getSharedPreferences("br.com.dhsoftware.workerday", MODE_PRIVATE);
+    }
+
+    private void setView() {
+        bottomNavigationView = findViewById(R.id.bottomNavigation_navigation_mainActivity);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
     private void createFragmentListViewRegistry(int containerView, Fragment fragment, String tag) {
@@ -155,15 +157,11 @@ public class MainActivity extends AppCompatActivity implements Serializable, Bot
         return false;
     }
 
-    private void goToFragmentListViewMain(){
-        FragmentManager fragmentManager = Objects.requireNonNull(this).getSupportFragmentManager();
-        fragmentManager.popBackStack();
-    }
 
     @Override
     public void onBackPressed() {
         if(!verifyCurrentlyFragment(FRAGMENT_TAG_LISTVIEWMAIN)){
-            goToFragmentListViewMain();
+            fragmentController.goBackFragment();
         }else{
             finishAffinity();
         }

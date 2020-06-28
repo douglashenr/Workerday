@@ -12,6 +12,7 @@ import java.util.List;
 import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.util.DateUtil;
+import br.com.dhsoftware.workerday.util.enumObservation;
 
 public class ListViewAdapterMainActivity extends BaseAdapter {
 
@@ -50,7 +51,9 @@ public class ListViewAdapterMainActivity extends BaseAdapter {
         textView.setText(DateUtil.getInstanceDateUtil().nameOfDay(registry.getDay()));
 
         textView = view.findViewById(R.id.list_view_main_activity_time_worked);
+        System.out.println("ENUM DO PROJETO: " + registry.getObservation());
         textView.setText("Horas trabalhadas: " + DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registry));
+
 
         textView = view.findViewById(R.id.list_view_main_activity_time_extra_worked);
 

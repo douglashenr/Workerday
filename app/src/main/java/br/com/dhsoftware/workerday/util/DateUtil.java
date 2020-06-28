@@ -23,19 +23,25 @@ public class DateUtil {
     }
 
     public String convertCalendarToStringDate(Calendar calendar){
+        if(calendar ==  null)
+            return null;
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         String date = s.format(calendar.getTime());
         return date;
     }
 
     public String convertCalendarToStringTime(Calendar calendar){
+        if(calendar ==  null)
+            return null;
         SimpleDateFormat s = new SimpleDateFormat("HH:mm");
         String date = s.format(calendar.getTime());
         return date;
     }
 
     public Calendar convertStringDataAndTimeToCalendar(String date, String time){
-        DateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        if(date ==  null || date.equals(""))
+            return null;
+        DateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
 
         try {
@@ -74,7 +80,9 @@ public class DateUtil {
         return "Sábado";
     }
 
-    public Calendar convertStringDataToCalendar(String date){
+    public Calendar convertStringDateToCalendar(String date){
+        if(date ==  null || date.equals(""))
+            return null;
         DateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
 
@@ -91,7 +99,30 @@ public class DateUtil {
         return calendar;
     }
 
+    public Calendar convertStringTimeToCalendar(String time){
+        if(time ==  null || time.equals(""))
+            return null;
+        DateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+
+        try {
+            Date dateFormat = simpleDateFormat.parse(time);
+            calendar.setTime(dateFormat);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        //System.out.println("ConvertStringDataToCalendar: " + calendar.getTime());
+
+        return calendar;
+    }
+
+
     public long calculateTimeFromRegistryToLong(Registry registry){
+        if(registry.getObservation() == enumObservation.ABSENCE)
+            return -3;
+
         if(registry.getObservation() == enumObservation.ATESTADO)
             return -2;
 
@@ -121,6 +152,9 @@ public class DateUtil {
 
         if(calculateTimeFromRegistryToLong(registry) == -2)
             return "00:00h (ATESTADO)";
+
+        if(calculateTimeFromRegistryToLong(registry) == -3)
+            return "00:00h (FALTA)";
         int hour = (int) TimeUnit.MILLISECONDS.toHours(calculateTimeFromRegistryToLong(registry));
         int minute =  (int) ((calculateTimeFromRegistryToLong(registry) / (1000*60)) % 60);
 

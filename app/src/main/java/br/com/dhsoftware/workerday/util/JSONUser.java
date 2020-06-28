@@ -63,9 +63,7 @@ public class JSONUser {
 
             System.out.println("Lido pelo método read: " + sb.toString());
             return sb.toString();
-        } catch (FileNotFoundException fileNotFound) {
-            return null;
-        } catch (IOException ioException) {
+        }  catch (IOException ioException) {
             return null;
         }
     }
@@ -78,9 +76,7 @@ public class JSONUser {
             }
             fos.close();
             return true;
-        } catch (FileNotFoundException fileNotFound) {
-            return false;
-        } catch (IOException ioException) {
+        }  catch (IOException ioException) {
             return false;
         }
     }
@@ -92,8 +88,7 @@ public class JSONUser {
             fos.write(object.toString().getBytes());
 
             fos.close();
-        } catch (FileNotFoundException fileNotFound) {
-        } catch (IOException ioException) {
+        }  catch (IOException ioException) {
 
         }
     }
@@ -107,7 +102,6 @@ public class JSONUser {
     public void setSalaryJSON(String salary){
         try {
             writeFileJson(getObjectJSONUserFromStorage().put("salary", salary));
-
             setSalaryPerHour();
         } catch (JSONException e) {
             e.printStackTrace();

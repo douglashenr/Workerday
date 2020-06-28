@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import br.com.dhsoftware.workerday.R;
+import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.DateUtil;
@@ -166,7 +167,7 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
         }
 
         if(String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonAbsence.getId()))){
-            observation = enumObservation.FALTA;
+            observation = enumObservation.ABSENCE;
             enableEditText(false);
         }
 
@@ -257,7 +258,39 @@ public class AddRegistryFragment extends Fragment implements  DatePickerDialog.O
     }
 
     private void createObjectRegistry() {
-        registry = new Registry(DateUtil.getInstanceDateUtil().convertStringDataToCalendar(dateWorked.getText().toString()), observation);
+        registry = new Registry();
+        DateUtil dateUtil = new DateUtil();
+        if(radioButtonAtestado.isChecked() || radioButtonAbsence.isChecked()){
+            if(radioButtonAbsence.isChecked())
+                registry.setObservation(enumObservation.ABSENCE);
+
+            if(radioButtonAtestado.isChecked())
+                registry.setObservation(enumObservation.ATESTADO);
+
+        }
+
+
+        if(radioButtonDeclaration.isChecked()) {
+            registry.setObservation(enumObservation.DECLARACAO_DE_HORAS);
+            //registry.setTimeDeclaration(dateUtil.convertStringTimeToCalendar(leaveTime.getText().toString()));
+        }
+
+        if(radioButtonNothing.isChecked())
+            registry.setObservation(enumObservation.NORMAL);
+
+        registry.setDay(dateUtil.convertStringDateToCalendar(dateWorked.getText().toString()));
+        registry.setEntrance(dateUtil.convertStringTimeToCalendar(entranceTime.getText().toString()));
+        registry.setEntranceLunch(dateUtil.convertStringTimeToCalendar(entranceLunchTime.getText().toString()));
+        registry.setLeaveLunch(dateUtil.convertStringTimeToCalendar(leaveLunchTime.getText().toString()));
+        registry.setLeave(dateUtil.convertStringTimeToCalendar(leaveTime.getText().toString()));
+        registry.setPercent(Integer.parseInt(percentExtraWork.getText().toString()));
+        registry.setRequiredTimeToWork(dateUtil.convertStringTimeToCalendar(requiredTime.getText().toString()));
+
+
+
+        Dao dao = new Dao(getActivity());
+        dao.insertRegistryToDao(registry);
+
         System.out.println(registry);
     }
 

@@ -4,5 +4,5 @@ public enum enumObservation{
     ATESTADO,
     DECLARACAO_DE_HORAS,
     NORMAL,
-    FALTA
+    ABSENCE
 }
