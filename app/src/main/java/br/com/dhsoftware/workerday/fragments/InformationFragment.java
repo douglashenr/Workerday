@@ -24,9 +24,7 @@ public class InformationFragment extends Fragment {
 
     private View view;
     private TextView textViewNetSalary, textViewGrossSalary, textViewINSS, textViewIRRF, textViewDeduction, textViewFGTS;
-    private SalaryUtil salaryUtil;
     private JSONUser jsonUser;
-    private User user;
 
 
     public InformationFragment() {
@@ -54,8 +52,8 @@ public class InformationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        user = new User(getActivity());
-        salaryUtil = new SalaryUtil(user);
+        User user = new User(getActivity());
+        SalaryUtil salaryUtil = new SalaryUtil(user);
         textViewINSS.setText("INSS: R$ " + salaryUtil.calculateINSS());
         textViewIRRF.setText("IRRF: R$ " + salaryUtil.calculateIRRF());
         textViewNetSalary.setText("Salario liquido: R$ " + salaryUtil.calculateNetSalary());

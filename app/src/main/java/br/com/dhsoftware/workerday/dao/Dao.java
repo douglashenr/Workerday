@@ -36,7 +36,6 @@ public class Dao extends SQLiteOpenHelper {
     }
 
 
-
     public void insertRegistryToDao(Registry registry) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -61,7 +60,6 @@ public class Dao extends SQLiteOpenHelper {
     }
 
 
-
     public ArrayList<Registry> getRegistryFromDao() {
         String sql = "SELECT * FROM Registry;";
         SQLiteDatabase db = getReadableDatabase();
@@ -70,8 +68,8 @@ public class Dao extends SQLiteOpenHelper {
         DateUtil dateUtil = new DateUtil();
 
         ArrayList<Registry> listRegistry = new ArrayList<Registry>();
-        while (c.moveToNext()){
-            Registry registry= new Registry();
+        while (c.moveToNext()) {
+            Registry registry = new Registry();
             registry.setId(c.getLong(c.getColumnIndex("id_registry")));
             registry.setDay(dateUtil.convertStringDateToCalendar(c.getString(c.getColumnIndex("dayWorked"))));
             registry.setEntrance(dateUtil.convertStringTimeToCalendar(c.getString(c.getColumnIndex("entrance"))));
@@ -98,6 +96,6 @@ public class Dao extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         String[] params = {String.valueOf(registry.getId())};
-        db.delete("Registry", "id = ?", params);
+        db.delete("Registry", "id_registry = ?", params);
     }
 }

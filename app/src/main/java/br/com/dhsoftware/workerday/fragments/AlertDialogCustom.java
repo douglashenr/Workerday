@@ -23,9 +23,9 @@ public class AlertDialogCustom implements View.OnClickListener {
         this.context = context;
     }
 
-    public void showDialogCustomWelcome(){
+    public void showDialogCustomWelcome() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.fragment_welcome, null, false);
 
         setLayoutView(view);
@@ -55,7 +55,7 @@ public class AlertDialogCustom implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(R.id.fragment_welcome_textview_save == v.getId()){
+        if (R.id.fragment_welcome_textview_save == v.getId()) {
             DialogUtil dialogUtil = new DialogUtil(context);
             saveDataToJson();
             dialogUtil.showToast("Informações iniciais adicionadas!", Toast.LENGTH_LONG);
@@ -63,18 +63,18 @@ public class AlertDialogCustom implements View.OnClickListener {
         }
     }
 
-    private void saveDataToJson(){
+    private void saveDataToJson() {
         JSONUser jsonUser = new JSONUser(context);
 
-        if(!salary.getText().toString().equals("")){
+        if (!salary.getText().toString().equals("")) {
             jsonUser.setSalaryJSON(salary.getText().toString());
         }
 
-        if(!deduction.getText().toString().equals("")){
+        if (!deduction.getText().toString().equals("")) {
             jsonUser.setDeductionJSON(deduction.getText().toString());
         }
 
-        if(!percentExtraSalary.getText().toString().equals("")){
+        if (!percentExtraSalary.getText().toString().equals("")) {
             jsonUser.setPercentExtraSalaryJSON(percentExtraSalary.getText().toString());
         }
     }

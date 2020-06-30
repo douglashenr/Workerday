@@ -3,18 +3,16 @@ package br.com.dhsoftware.workerday.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.util.Objects;
 
+import br.com.dhsoftware.workerday.FragmentController;
 import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.util.DialogUtil;
 import br.com.dhsoftware.workerday.util.JSONUser;
@@ -27,6 +25,7 @@ public class UserSettingsFragment extends Fragment implements View.OnClickListen
     private ImageButton imageButtonSaveUser;
     private JSONUser jsonUser;
     private DialogUtil dialogUtil;
+    private FragmentController fragmentController;
 
     public UserSettingsFragment() {
         // Required empty public constructor
@@ -44,6 +43,7 @@ public class UserSettingsFragment extends Fragment implements View.OnClickListen
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_settings, container, false);
         setView();
+        fragmentController = new FragmentController(getFragmentManager());
         dialogUtil = new DialogUtil(getActivity());
         return view;
     }
@@ -57,7 +57,7 @@ public class UserSettingsFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void setEditTextFromJSONUser(){
+    private void setEditTextFromJSONUser() {
         editTextSalary.setText(jsonUser.getSalary());
         editTextDeduction.setText(jsonUser.getDeduction());
         editTextPercentExtraSalary.setText(jsonUser.getPercentExtraSalary());
@@ -65,7 +65,7 @@ public class UserSettingsFragment extends Fragment implements View.OnClickListen
         imageButtonSaveUser.setOnClickListener(this);
     }
 
-    private void setView(){
+    private void setView() {
         editTextSalary = view.findViewById(R.id.editText_salary_userSettings);
         editTextSalary.addTextChangedListener(new MoneyTextWatcher(editTextSalary));
         editTextDeduction = view.findViewById(R.id.editText_deduction_userSettings);
@@ -75,19 +75,15 @@ public class UserSettingsFragment extends Fragment implements View.OnClickListen
         imageButtonSaveUser = view.findViewById(R.id.button_save_userSettings);
     }
 
-    private void goToFragmentListViewMain(){
-        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        fragmentManager.popBackStack();
-    }
 
     @Override
     public void onClick(View v) {
         saveUserInJSONUser();
         dialogUtil.showToast("Configurações salvas!", Toast.LENGTH_LONG);
-        goToFragmentListViewMain();
+        fragmentController.goBackFragment();
     }
 
-    private void saveUserInJSONUser(){
+    private void saveUserInJSONUser() {
         jsonUser.setSalaryJSON(editTextSalary.getText().toString());
         jsonUser.setPercentExtraSalaryJSON(editTextPercentExtraSalary.getText().toString());
         jsonUser.setDeductionJSON(editTextDeduction.getText().toString());

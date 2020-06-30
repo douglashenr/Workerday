@@ -4,12 +4,18 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.dhsoftware.workerday.R;
+import br.com.dhsoftware.workerday.dao.Dao;
+import br.com.dhsoftware.workerday.fragments.ListViewMainFragment;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.util.DateUtil;
 import br.com.dhsoftware.workerday.util.enumObservation;
@@ -18,10 +24,12 @@ public class ListViewAdapterMainActivity extends BaseAdapter {
 
     private List<Registry> registryArrayList;
     private final Activity activity;
+    private ListViewMainFragment listViewMainFragment;
 
-    public ListViewAdapterMainActivity(List<Registry> registryArrayList, Activity activity) {
+    public ListViewAdapterMainActivity(List<Registry> registryArrayList, Activity activity, ListViewMainFragment listViewMainFragment) {
         this.registryArrayList = registryArrayList;
         this.activity = activity;
+        this.listViewMainFragment = listViewMainFragment;
     }
 
     @Override
@@ -36,11 +44,11 @@ public class ListViewAdapterMainActivity extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return registryArrayList.get(position).getId();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = activity.getLayoutInflater().inflate(R.layout.main_activity_list_view_adapter, parent, false);
         Registry registry = registryArrayList.get(position);
 
@@ -56,6 +64,19 @@ public class ListViewAdapterMainActivity extends BaseAdapter {
 
 
         textView = view.findViewById(R.id.list_view_main_activity_time_extra_worked);
+        textView.setText("Hora extra realizada: " + DateUtil.getInstanceDateUtil().calculateExtraTimeFromRegistryToString(registry));
+
+        ImageView imageView = view.findViewById(R.id.imageView_remove_listView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dao dao = new Dao(activity.getApplicationContext());
+                dao.deleteRegistryFromDao((Registry) getItem(position));
+                dao.close();
+                listViewMainFragment.updateListView();
+
+            }
+        });
 
 
         textView = view.findViewById(R.id.list_view_main_activity_day_value);
@@ -63,4 +84,6 @@ public class ListViewAdapterMainActivity extends BaseAdapter {
 
         return view;
     }
+
+
 }

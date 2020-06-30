@@ -1,7 +1,7 @@
 package br.com.dhsoftware.workerday.util;
 
 import android.content.Context;
-import android.util.JsonReader;
+
 import android.util.Log;
 
 import org.json.JSONException;
@@ -10,12 +10,10 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static android.content.ContentValues.TAG;
 
 public class JSONUser {
     private String USERPATH = "user.json";
@@ -28,14 +26,14 @@ public class JSONUser {
         jsonObjectEmpty = new JSONObject();
         salaryUtil = new SalaryUtil();
         createObjectJSONUserEmpty();
-        if(isFilePresent()) {
+        if (isFilePresent()) {
             System.out.println("JSON quando iniciado construtor: " + getObjectJSONUserFromStorage().toString());
-        }else{
+        } else {
             create();
         }
     }
 
-    private void createObjectJSONUserEmpty(){
+    private void createObjectJSONUserEmpty() {
         try {
             jsonObjectEmpty.put("name", "");
             jsonObjectEmpty.put("e-mail", "");
@@ -45,7 +43,7 @@ public class JSONUser {
             jsonObjectEmpty.put("timeForWeek", "44");
             jsonObjectEmpty.put("salaryPerHour", "");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
         }
     }
@@ -63,33 +61,33 @@ public class JSONUser {
 
             System.out.println("Lido pelo método read: " + sb.toString());
             return sb.toString();
-        }  catch (IOException ioException) {
+        } catch (IOException ioException) {
             return null;
         }
     }
 
-    public boolean create(){
+    public boolean create() {
         try {
-            FileOutputStream fos = context.openFileOutput(USERPATH,Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(USERPATH, Context.MODE_PRIVATE);
             if (jsonObjectEmpty.toString() != null) {
                 fos.write(jsonObjectEmpty.toString().getBytes());
             }
             fos.close();
             return true;
-        }  catch (IOException ioException) {
+        } catch (IOException ioException) {
             return false;
         }
     }
 
-    private void writeFileJson(JSONObject object){
+    private void writeFileJson(JSONObject object) {
         try {
-            FileOutputStream fos = context.openFileOutput(USERPATH,Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(USERPATH, Context.MODE_PRIVATE);
 
             fos.write(object.toString().getBytes());
 
             fos.close();
-        }  catch (IOException ioException) {
-
+        } catch (IOException ioException) {
+            ioException.getMessage();
         }
     }
 
@@ -99,7 +97,7 @@ public class JSONUser {
         return file.exists();
     }
 
-    public void setSalaryJSON(String salary){
+    public void setSalaryJSON(String salary) {
         try {
             writeFileJson(getObjectJSONUserFromStorage().put("salary", salary));
             setSalaryPerHour();
@@ -118,11 +116,11 @@ public class JSONUser {
         writeFileJson(getObjectJSONUserFromStorage().put("salaryPerHour", salaryPerHour));
     }
 
-    public String getSalaryPerHour(){
+    public String getSalaryPerHour() {
         return getInfoFromJSON("salaryPerHour");
     }
 
-    public void setDeductionJSON(String deduction){
+    public void setDeductionJSON(String deduction) {
         try {
             writeFileJson(getObjectJSONUserFromStorage().put("deduction", deduction));
         } catch (JSONException e) {
@@ -131,7 +129,7 @@ public class JSONUser {
         System.out.println("Adicionado salario em JSON: " + read());
     }
 
-    public void setTimeForWeekJSON(String timeForWeek){
+    public void setTimeForWeekJSON(String timeForWeek) {
         try {
             writeFileJson(getObjectJSONUserFromStorage().put("timeForWeek", timeForWeek));
         } catch (JSONException e) {
@@ -140,7 +138,7 @@ public class JSONUser {
         System.out.println("Adicionado salario em JSON: " + read());
     }
 
-    public void setPercentExtraSalaryJSON(String percentExtraSalary){
+    public void setPercentExtraSalaryJSON(String percentExtraSalary) {
         try {
             writeFileJson(getObjectJSONUserFromStorage().put("percentExtraSalary", percentExtraSalary));
         } catch (JSONException e) {
@@ -149,7 +147,7 @@ public class JSONUser {
         System.out.println("Adicionado salario em JSON: " + read());
     }
 
-    public JSONObject getObjectJSONUserFromStorage(){
+    public JSONObject getObjectJSONUserFromStorage() {
         try {
             jsonUser = new JSONObject(read());
         } catch (JSONException e) {
@@ -160,7 +158,7 @@ public class JSONUser {
     }
 
 
-    private String getInfoFromJSON(String info){
+    private String getInfoFromJSON(String info) {
         getObjectJSONUserFromStorage();
         try {
             return jsonUser.getString(info);
@@ -172,19 +170,19 @@ public class JSONUser {
     }
 
 
-    public String getSalary(){
+    public String getSalary() {
         return getInfoFromJSON("salary");
     }
 
-    public String getDeduction(){
+    public String getDeduction() {
         return getInfoFromJSON("deduction");
     }
 
-    public String getPercentExtraSalary(){
+    public String getPercentExtraSalary() {
         return getInfoFromJSON("percentExtraSalary");
     }
 
-    public String getTimeForWeek(){
+    public String getTimeForWeek() {
         return getInfoFromJSON("timeForWeek");
     }
 

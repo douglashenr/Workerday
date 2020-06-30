@@ -24,18 +24,6 @@ public class Registry implements Serializable {
     private Calendar timeDeclaration;
     private Long id;
 
-    public Registry(Calendar day, enumObservation observation) {
-
-        this.day = day;
-        this.observation = observation;
-    }
-
-    public Registry(Calendar day, Calendar entrance, enumObservation observation){
-
-        this.day = day;
-        this.entrance = entrance;
-        this.observation = observation;
-    }
 
     public Registry() {
     }
@@ -43,89 +31,111 @@ public class Registry implements Serializable {
     public String getDayString() {
         return DateUtil.getInstanceDateUtil().convertCalendarToStringDate(day);
     }
+
     public String getEntranceString() {
         return DateUtil.getInstanceDateUtil().convertCalendarToStringTime(getEntrance());
     }
+
     public String getEntranceLunchString() {
         return DateUtil.getInstanceDateUtil().convertCalendarToStringTime(getEntranceLunch());
     }
+
     public String getLeaveLunchString() {
         return DateUtil.getInstanceDateUtil().convertCalendarToStringTime(getLeaveLunch());
     }
+
     public String getLeaveString() {
         return DateUtil.getInstanceDateUtil().convertCalendarToStringTime(getLeave());
     }
+
     public String getRequiredTimeToWorkString() {
         return DateUtil.getInstanceDateUtil().convertCalendarToStringTime(getRequiredTimeToWork());
     }
+
     public String getTimeDeclarationString() {
         return DateUtil.getInstanceDateUtil().convertCalendarToStringTime(getTimeDeclaration());
     }
-    public String getObservationString(){
+
+    public String getObservationString() {
         return getObservation().toString();
     }
 
     public Calendar getDay() {
         return day;
     }
+
     public void setDay(Calendar day) {
         this.day = day;
     }
+
     public Calendar getEntrance() {
         return entrance;
     }
+
     public void setEntrance(Calendar entrance) {
         this.entrance = entrance;
     }
+
     public Calendar getEntranceLunch() {
         return entranceLunch;
     }
+
     public void setEntranceLunch(Calendar entranceLunch) {
         this.entranceLunch = entranceLunch;
     }
+
     public Calendar getLeaveLunch() {
         return leaveLunch;
     }
+
     public void setLeaveLunch(Calendar leaveLunch) {
         this.leaveLunch = leaveLunch;
     }
+
     public Calendar getLeave() {
         return leave;
     }
+
     public void setLeave(Calendar leave) {
         this.leave = leave;
     }
+
     public Calendar getRequiredTimeToWork() {
         return requiredTimeToWork;
     }
+
     public void setRequiredTimeToWork(Calendar requiredTimeToWork) {
         this.requiredTimeToWork = requiredTimeToWork;
     }
+
     public int getPercent() {
         return percent;
     }
+
     public void setPercent(int percent) {
         this.percent = percent;
     }
+
     public enumObservation getObservation() {
         return observation;
     }
+
     public void setObservation(enumObservation observation) {
         this.observation = observation;
     }
 
 
-    public void setObservation(String observation){
-        if(observation.equals(enumObservation.ATESTADO.toString())) {
+    public void setObservation(String observation) {
+        if (observation.equals(enumObservation.ATESTADO.toString())) {
             this.observation = enumObservation.ATESTADO;
         }
-        if(observation.equals(enumObservation.DECLARACAO_DE_HORAS.toString())){
+        if (observation.equals(enumObservation.DECLARACAO_DE_HORAS.toString())) {
             this.observation = enumObservation.DECLARACAO_DE_HORAS;
         }
-        if(observation.equals(enumObservation.NORMAL.toString())){
+        if (observation.equals(enumObservation.NORMAL.toString())) {
             this.observation = enumObservation.NORMAL;
         }
-        if(observation.equals(enumObservation.ABSENCE.toString())){
+        if (observation.equals(enumObservation.ABSENCE.toString())) {
             this.observation = enumObservation.ABSENCE;
         }
     }
@@ -133,6 +143,7 @@ public class Registry implements Serializable {
     public Calendar getTimeDeclaration() {
         return timeDeclaration;
     }
+
     public void setTimeDeclaration(Calendar timeDeclaration) {
         this.timeDeclaration = timeDeclaration;
     }
@@ -152,9 +163,7 @@ public class Registry implements Serializable {
     }
 
 
-
-
-    public static ArrayList<Registry> testArrayList(Context context){
+    public static ArrayList<Registry> testArrayList(Context context) {
 
         Dao dao = new Dao(context);
         return dao.getRegistryFromDao();

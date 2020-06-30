@@ -27,7 +27,7 @@ public class User implements Serializable {
 
     }
 
-    private void setUserFromJSON(){
+    private void setUserFromJSON() {
         Money money = new Money();
         JSONUser userJSON = new JSONUser(context);
         try {
@@ -41,29 +41,11 @@ public class User implements Serializable {
         }
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getPercentExtraSalary() {
-        return percentExtraSalary;
-    }
 
     private void setPercentExtraSalary(int percentExtraSalary) {
         this.percentExtraSalary = percentExtraSalary;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public double getSalary() {
         return salary;

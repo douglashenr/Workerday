@@ -18,7 +18,7 @@ public class FragmentController extends FragmentActivity {
         this.fragmentManager = fragmentManager;
     }
 
-    public void goBackFragment(){
+    public void goBackFragment() {
         fragmentManager.popBackStack();
     }
 }

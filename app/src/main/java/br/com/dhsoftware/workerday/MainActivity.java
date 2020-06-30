@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         fragmentTransaction.add(R.id.frameLayout_fragment_mainActivity, listViewMainFragment, FRAGMENT_TAG_LISTVIEWMAIN);
         fragmentTransaction.commit();
 
-
-
-
         prefs = getSharedPreferences("br.com.dhsoftware.workerday", MODE_PRIVATE);
     }
 
@@ -64,10 +61,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(containerView, fragment, tag);
-        if(fragment == listViewMainFragment){
+        if (fragment == listViewMainFragment) {
 
-        }
-        else
+        } else
             fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
     }
@@ -75,9 +71,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onStart() {
         super.onStart();
-
-
-
 
         DialogUtil dialog = new DialogUtil(this);
         dialog.welcomeDialog();
@@ -112,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.item_Settings_menuUserSettings:
                 setFragmentUserSettings();
                 return true;
@@ -124,33 +117,33 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         createFragmentListViewRegistry(R.id.frameLayout_fragment_mainActivity, userSettingsFragment, FRAGMENT_TAG_USERSETTINGS);
     }
 
-    private boolean verifyCurrentlyFragment(String tag){
+    private boolean verifyCurrentlyFragment(String tag) {
         Fragment currentlyFragment = fragmentManager.findFragmentByTag(tag);
         if (currentlyFragment != null && currentlyFragment.isVisible()) {
             return true;
-        }else{
+        } else {
             return false;
         }
 
     }
 
-    private void setFragmentInformation(){
+    private void setFragmentInformation() {
         createFragmentListViewRegistry(R.id.frameLayout_fragment_mainActivity, informationFragment, FRAGMENT_TAG_INFORMATION);
     }
 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.page_1:
-                if(!verifyCurrentlyFragment(FRAGMENT_TAG_LISTVIEWMAIN)) {
+                if (!verifyCurrentlyFragment(FRAGMENT_TAG_LISTVIEWMAIN)) {
                     System.out.println("Está na FragmentListViewMain");
                     setFragmentListViewMain();
 
                 }
                 return true;
             case R.id.page_2:
-                if(!verifyCurrentlyFragment(FRAGMENT_TAG_INFORMATION))
+                if (!verifyCurrentlyFragment(FRAGMENT_TAG_INFORMATION))
                     setFragmentInformation();
                 return true;
         }
@@ -160,9 +153,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public void onBackPressed() {
-        if(!verifyCurrentlyFragment(FRAGMENT_TAG_LISTVIEWMAIN)){
+        if (!verifyCurrentlyFragment(FRAGMENT_TAG_LISTVIEWMAIN)) {
             fragmentController.goBackFragment();
-        }else{
+        } else {
             finishAffinity();
         }
     }
