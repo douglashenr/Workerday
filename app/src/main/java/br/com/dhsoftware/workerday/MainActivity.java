@@ -61,10 +61,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(containerView, fragment, tag);
-        if (fragment == listViewMainFragment) {
-
-        } else
+        if (fragment != listViewMainFragment)
             fragmentTransaction.addToBackStack(tag);
+
         fragmentTransaction.commit();
     }
 
@@ -72,8 +71,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onStart() {
         super.onStart();
 
-        DialogUtil dialog = new DialogUtil(this);
-        dialog.welcomeDialog();
+
 
     }
 
@@ -85,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if (prefs.getBoolean("firstrun", true)) {
             // Do first run stuff here then set 'firstrun' as false
             // using the following line to edit/commit prefs
+
+            DialogUtil dialog = new DialogUtil(this);
+            dialog.welcomeDialog();
 
             prefs.edit().putBoolean("firstrun", false).apply();
         }
@@ -105,10 +106,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_Settings_menuUserSettings:
-                setFragmentUserSettings();
-                return true;
+        if (item.getItemId() == R.id.item_Settings_menuUserSettings) {
+            setFragmentUserSettings();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

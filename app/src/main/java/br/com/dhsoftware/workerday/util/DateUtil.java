@@ -131,7 +131,7 @@ public class DateUtil {
         try {
 
             long time = convertStringTimeToDateObject(convertCalendarToStringTime(registry.getLeave())).getTime() - convertStringTimeToDateObject(convertCalendarToStringTime(registry.getEntrance())).getTime();
-            if (registry.getEntranceLunch() != null && registry.getLeave() != null)
+            if (registry.getEntranceLunch() != null && registry.getLeaveLunch() != null)
                 time -= convertStringTimeToDateObject(convertCalendarToStringTime(registry.getLeaveLunch())).getTime() - convertStringTimeToDateObject(convertCalendarToStringTime(registry.getEntranceLunch())).getTime();
 
             if (registry.getObservation() == enumObservation.DECLARACAO_DE_HORAS)
@@ -173,14 +173,24 @@ public class DateUtil {
     }
 
     private String getTimeLongToStringFormat(long time) {
+        String symbol = "";
         int hour = (int) TimeUnit.MILLISECONDS.toHours(time);
         int minute = (int) ((time / (1000 * 60)) % 60);
+
+        if(minute < 0){
+            minute = Math.abs(minute);
+            symbol = "-";
+        }
+        if(hour <0){
+            hour = Math.abs(hour);
+            symbol = "-";
+        }
 
         if (minute < 10)
             return hour + ":" + "0" + minute + "h";
 
 
-        return hour + ":" + minute + "h";
+        return symbol + hour + ":" + minute + "h";
     }
 
     public String calculateTimeFromRegistryToString(Registry registry) {

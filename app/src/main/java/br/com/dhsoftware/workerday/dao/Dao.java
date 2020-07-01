@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.util.DateUtil;
@@ -67,7 +66,7 @@ public class Dao extends SQLiteOpenHelper {
 
         DateUtil dateUtil = new DateUtil();
 
-        ArrayList<Registry> listRegistry = new ArrayList<Registry>();
+        ArrayList<Registry> listRegistry = new ArrayList<>();
         while (c.moveToNext()) {
             Registry registry = new Registry();
             registry.setId(c.getLong(c.getColumnIndex("id_registry")));
@@ -100,7 +99,7 @@ public class Dao extends SQLiteOpenHelper {
     }
 
     public boolean isDateSet(String date){
-        ArrayList<String> stringArrayList = new ArrayList<>();
+        ArrayList<String> stringArrayList;
         stringArrayList = getArrayStringDateFromDao();
 
         for(int i = 0; i < stringArrayList.size(); i++){
@@ -118,9 +117,9 @@ public class Dao extends SQLiteOpenHelper {
 
 
 
-        ArrayList<String> listString = new ArrayList<String>();
+        ArrayList<String> listString = new ArrayList<>();
         while (c.moveToNext()) {
-            String string = "";
+            String string;
             string = c.getString(c.getColumnIndex("dayWorked"));
 
 
@@ -130,5 +129,16 @@ public class Dao extends SQLiteOpenHelper {
         c.close();
         return listString;
     }
+
+
+
+    public void saveModificationRegistry(Registry registry) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues datas = getDataFromRegistry(registry);
+
+        String[] params = {registry.getId().toString()};
+        db.update("Registry", datas,"id_registry = ?", params);
+    }
+
 
 }

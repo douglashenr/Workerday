@@ -9,19 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.util.Locale;
-
 import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.JSONUser;
-import br.com.dhsoftware.workerday.util.Money;
 import br.com.dhsoftware.workerday.util.SalaryUtil;
 
 public class InformationFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
     private View view;
     private TextView textViewNetSalary, textViewGrossSalary, textViewINSS, textViewIRRF, textViewDeduction, textViewFGTS;
     private JSONUser jsonUser;

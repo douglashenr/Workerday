@@ -10,8 +10,6 @@ import br.com.dhsoftware.workerday.util.JSONUser;
 import br.com.dhsoftware.workerday.util.Money;
 
 public class User implements Serializable {
-    private String name;
-    private String email;
     private double salary; //verificar uma classe para substituir Double
     private double deduction = 0.0; //verificar uma classe para substituir Double
     private int percentExtraSalary = 0;
