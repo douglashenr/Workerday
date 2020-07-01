@@ -98,4 +98,37 @@ public class Dao extends SQLiteOpenHelper {
         String[] params = {String.valueOf(registry.getId())};
         db.delete("Registry", "id_registry = ?", params);
     }
+
+    public boolean isDateSet(String date){
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        stringArrayList = getArrayStringDateFromDao();
+
+        for(int i = 0; i < stringArrayList.size(); i++){
+            if(stringArrayList.get(i).equals(date)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ArrayList<String> getArrayStringDateFromDao(){
+        String sql = "SELECT dayWorked FROM Registry;";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery(sql, null);
+
+
+
+        ArrayList<String> listString = new ArrayList<String>();
+        while (c.moveToNext()) {
+            String string = "";
+            string = c.getString(c.getColumnIndex("dayWorked"));
+
+
+            listString.add(string);
+        }
+
+        c.close();
+        return listString;
+    }
+
 }

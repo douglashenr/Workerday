@@ -15,12 +15,13 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingVertical="15dp"
             android:text="@string/cadastrar_ponto"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:paddingVertical="15dp"
-            android:textSize="20sp"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:id="@+id/scrollView2"
@@ -34,10 +35,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="2dp"
+                    android:layout_height="0dp"
+                    android:background="?android:attr/listDivider"
+                    android:backgroundTint="@color/colorPrimaryDark"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/editText_entranceLunchTime_registry"
+                    app:layout_constraintEnd_toStartOf="@+id/textView9"
+                    app:layout_constraintStart_toEndOf="@+id/textView8"
+                    app:layout_constraintTop_toTopOf="@+id/editText_entranceTime_registry" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dia:"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/editText_dateWorked_registry"
@@ -45,39 +66,102 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:hint="Dia de trabalho ''17/07/2008'' *"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Horario entrada:"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_dateWorked_registry" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Horario saida:"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView10" />
 
                 <EditText
                     android:id="@+id/editText_entranceTime_registry"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:autoSizeTextType="none"
                     android:focusable="false"
-                    android:hint="Horario de entrada ''10:00'' "
-                    android:textSize="15sp" />
+                    android:hint="Horario de entrada "
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toStartOf="@+id/divider2"
+                    app:layout_constraintStart_toStartOf="@+id/textView10"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inicio almoço:"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@+id/editText_entranceTime_registry"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_entranceTime_registry" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fim almoço:"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView8" />
 
                 <EditText
                     android:id="@+id/editText_entranceLunchTime_registry"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:hint="Horario de almoço"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toStartOf="@+id/divider2"
+                    app:layout_constraintStart_toStartOf="@+id/textView8"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
                 <EditText
                     android:id="@+id/editText_leaveLunchTime_registry"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:focusable="false"
+                    android:gravity="right"
                     android:hint="Volta do almoço"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="@+id/textView9"
+                    app:layout_constraintStart_toEndOf="@+id/divider2"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
                 <EditText
                     android:id="@+id/editText_leaveTime_registry"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:focusable="false"
+                    android:gravity="right"
                     android:hint="Horario de saida"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/divider2"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Carga horaria necessaria:"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@+id/editText_entranceLunchTime_registry"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_entranceLunchTime_registry" />
 
                 <EditText
                     android:id="@+id/editText_requiredTimeToWorkTime_registry"
@@ -85,7 +169,19 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:hint="Carga horaria necessaria"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView12"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Porcentagem"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_requiredTimeToWorkTime_registry" />
 
                 <EditText
                     android:id="@+id/editText_porcentExtraWork_registry"
@@ -94,7 +190,9 @@
                     android:hint="Porcentagem hora extra do dia"
                     android:inputType="number"
                     android:textSize="15sp"
-                    android:windowSoftInputMode="stateHidden" />
+                    android:windowSoftInputMode="stateHidden"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -103,7 +201,10 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:focusedByDefault="false"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/editText_porcentExtraWork_registry"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_porcentExtraWork_registry">
 
                     <TextView
                         android:layout_width="0dp"
@@ -153,8 +254,19 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:layout_editor_absoluteX="20dp">
 
-            </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
 
@@ -163,13 +275,13 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_alignParentRight="true"
+            android:layout_margin="25dp"
             android:background="@drawable/shape"
-            android:src="@drawable/ic_save_black_24dp"
             android:elevation="6dp"
+            android:src="@drawable/ic_save_black_24dp"
             android:stateListAnimator="@null"
             android:textColor="#ffffff"
             android:textSize="40sp"
-            android:layout_margin="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

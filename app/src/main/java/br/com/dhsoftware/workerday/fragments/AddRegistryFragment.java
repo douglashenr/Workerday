@@ -98,7 +98,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         editTextRequiredTime.setText(registryBundle.getRequiredTimeToWorkString());
         editTextPercentExtraWork.setText(String.valueOf(registryBundle.getPercent()));
 
-        System.out.println("getObservation: " + registryBundle.getObservationString());
+        //System.out.println("getObservation: " + registryBundle.getObservationString());
 
         if (registryBundle.getObservationString().equals(enumObservation.NORMAL.toString())) {
             radioButtonNothing.setChecked(true);
@@ -161,11 +161,23 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         //arrumar bug que ao selecionar o mes, retorna sempre o valor do mes com -1 do que deveria
         month++;
         String monthCustom = String.valueOf(month);
+        String day = String.valueOf(dayOfMonth);
         if (month < 10) {
             monthCustom = "0" + monthCustom;
         }
-        String date = dayOfMonth + "/" + monthCustom + "/" + year;
-        editTextSetDataOrTimeFromPicker.setText(date);
+        if (dayOfMonth < 10)
+            day = "0" + day;
+        String date = day + "/" + monthCustom + "/" + year;
+
+        Dao dao = new Dao(getActivity());
+
+        if (dao.isDateSet(date)) {
+            dialogUtil.infoDialog("Data já cadastrada");
+        } else {
+            editTextSetDataOrTimeFromPicker.setText(date);
+        }
+
+
     }
 
 
@@ -188,7 +200,133 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
 
         String time = hour + ":" + minutes;
-        editTextSetDataOrTimeFromPicker.setText(time);
+
+        editTextSetDataOrTimeFromPicker.setText(validatorEditTextTime(time));
+    }
+
+    private String checkEntranceEditText(String time) {
+        Calendar calendarEntrance = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(time);
+            if(!editTextLeaveTime.getText().toString().equals("")){
+                Calendar calendarLeave = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveTime.getText().toString());
+                if(calendarLeave.getTime().getTime() < calendarEntrance.getTime().getTime()){
+                    return "Horario de entrada não pode ser menor que o de saida";
+                }
+            }
+        if (!editTextEntranceLunchTime.getText().toString().equals("")) {
+            Calendar calendarEntranceLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceLunchTime.getText().toString());
+            if (calendarEntranceLunch.getTime().getTime() < calendarEntrance.getTime().getTime()) {
+                return "Horario de entrada não pode ser menor que o de entrada para almoço";
+            }
+        } else if (!editTextLeaveLunchTime.getText().toString().equals("")) {
+            Calendar calendarLeaveLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveLunchTime.getText().toString());
+            if (calendarLeaveLunch.getTime().getTime() < calendarEntrance.getTime().getTime()) {
+                return "Horario de entrada não pode ser menor que o de entrada para almoço";
+            }
+        }
+
+        return "";
+
+    }
+
+    private String checkLeaveEditText(String time) {
+        Calendar calendarLeave = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(time);
+            if(!editTextEntranceTime.getText().toString().equals("")){
+                Calendar calendarEntrance= DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceTime.getText().toString());
+                if(calendarLeave.getTime().getTime() < calendarEntrance.getTime().getTime()){
+                    return "Horario de entrada não pode ser menor que o de saida";
+                }
+            }
+        if (!editTextEntranceLunchTime.getText().toString().equals("")) {
+            Calendar calendarEntranceLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceLunchTime.getText().toString());
+            if (calendarEntranceLunch.getTime().getTime() > calendarLeave.getTime().getTime()) {
+                return "Horario de entrada não pode ser menor que o de entrada para almoço";
+            }
+        } if (!editTextLeaveLunchTime.getText().toString().equals("")) {
+            Calendar calendarLeaveLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveLunchTime.getText().toString());
+            if (calendarLeaveLunch.getTime().getTime() > calendarLeave.getTime().getTime()) {
+                return "Horario de entrada não pode ser menor que o de entrada para almoço";
+            }
+        }
+
+        return "";
+    }
+
+    private String checkEntranceLunchEditText(String time){
+        Calendar calendarEntranceLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(time);
+            if(!editTextLeaveTime.getText().toString().equals("")){
+                Calendar calendarLeave = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveTime.getText().toString());
+                if(calendarLeave.getTime().getTime() < calendarEntranceLunch.getTime().getTime()){
+                    return "Horario de almoço não pode ser maior que o de saida";
+                }
+            }
+        if (!editTextEntranceTime.getText().toString().equals("")) {
+            Calendar calendarEntrance = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceTime.getText().toString());
+            if (calendarEntranceLunch.getTime().getTime() < calendarEntrance.getTime().getTime()) {
+                return "Horario de entrada do almoço não pode ser menor que o de entrada";
+            }
+        }  if (!editTextLeaveLunchTime.getText().toString().equals("")) {
+            Calendar calendarLeaveLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveLunchTime.getText().toString());
+            if (calendarLeaveLunch.getTime().getTime() < calendarEntranceLunch.getTime().getTime()) {
+                return "Horario de entrada do almoço não pode ser maior do que entrada para almoço";
+            }
+        }
+
+        return "";
+    }
+
+    private String checkLeaveLunchEditText(String time){
+        Calendar calendarLeaveLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(time);
+        if(!editTextLeaveTime.getText().toString().equals("")){
+            Calendar calendarLeave = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveTime.getText().toString());
+            if(calendarLeave.getTime().getTime() < calendarLeaveLunch.getTime().getTime()){
+                return "Horario de almoço não pode ser maior que o de saida";
+            }
+        }
+        if (!editTextEntranceTime.getText().toString().equals("")) {
+            Calendar calendarEntrance = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceTime.getText().toString());
+            if (calendarLeaveLunch.getTime().getTime() < calendarEntrance.getTime().getTime()) {
+                return "Horario de entrada do almoço não pode ser menor que o de entrada";
+            }
+        }  if (!editTextEntranceLunchTime.getText().toString().equals("")) {
+            Calendar calendarEntranceLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceLunchTime.getText().toString());
+            if (calendarLeaveLunch.getTime().getTime() < calendarEntranceLunch.getTime().getTime()) {
+                return "Horario de entrada do almoço não pode ser maior do que entrada para almoço";
+            }
+        }
+
+        return "";
+    }
+
+    private String validatorEditTextTime(String time){
+        if(editTextEntranceTime == editTextSetDataOrTimeFromPicker){
+            if(!checkEntranceEditText(time).equals("")){
+                dialogUtil.infoDialog(checkEntranceEditText(time));
+                return "";
+            }else{
+                return time;
+            }
+        } else if (editTextEntranceLunchTime == editTextSetDataOrTimeFromPicker){
+            if(!checkEntranceLunchEditText(time).equals("")){
+                dialogUtil.infoDialog(checkEntranceLunchEditText(time));
+                return "";
+            }else{
+                return time;
+            }
+        } else if (editTextLeaveLunchTime == editTextSetDataOrTimeFromPicker){
+            if(!checkLeaveLunchEditText(time).equals("")){
+                dialogUtil.infoDialog(checkLeaveLunchEditText(time));
+                return "";
+            }else{
+                return time;
+            }
+        } else{
+            if(!checkLeaveEditText(time).equals("")){
+                dialogUtil.infoDialog(checkLeaveEditText(time));
+                return "";
+            }else{
+                return time;
+            }
+        }
     }
 
 

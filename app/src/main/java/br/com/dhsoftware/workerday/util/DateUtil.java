@@ -129,6 +129,7 @@ public class DateUtil {
             return -1;
 
         try {
+
             long time = convertStringTimeToDateObject(convertCalendarToStringTime(registry.getLeave())).getTime() - convertStringTimeToDateObject(convertCalendarToStringTime(registry.getEntrance())).getTime();
             if (registry.getEntranceLunch() != null && registry.getLeave() != null)
                 time -= convertStringTimeToDateObject(convertCalendarToStringTime(registry.getLeaveLunch())).getTime() - convertStringTimeToDateObject(convertCalendarToStringTime(registry.getEntranceLunch())).getTime();
