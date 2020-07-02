@@ -12,6 +12,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import br.com.dhsoftware.workerday.fragments.InformationFragment;
@@ -37,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        AdView adView;
+
         listViewMainFragment = new ListViewMainFragment();
         userSettingsFragment = new UserSettingsFragment();
         informationFragment = new InformationFragment();
@@ -50,6 +57,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         fragmentTransaction.commit();
 
         prefs = getSharedPreferences("br.com.dhsoftware.workerday", MODE_PRIVATE);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        adView = findViewById(R.id.adView3);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     private void setView() {
@@ -70,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onStart() {
         super.onStart();
-
 
 
     }
@@ -119,12 +134,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private boolean verifyCurrentlyFragment(String tag) {
         Fragment currentlyFragment = fragmentManager.findFragmentByTag(tag);
-        if (currentlyFragment != null && currentlyFragment.isVisible()) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return currentlyFragment != null && currentlyFragment.isVisible();
     }
 
     private void setFragmentInformation() {
@@ -137,9 +147,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (menuItem.getItemId()) {
             case R.id.page_1:
                 if (!verifyCurrentlyFragment(FRAGMENT_TAG_LISTVIEWMAIN)) {
-                    System.out.println("Está na FragmentListViewMain");
                     setFragmentListViewMain();
-
                 }
                 return true;
             case R.id.page_2:

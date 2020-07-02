@@ -1,5 +1,6 @@
 package br.com.dhsoftware.workerday.util;
 
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,13 +8,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
 import java.util.concurrent.TimeUnit;
 
 import br.com.dhsoftware.workerday.model.Registry;
 
 public class DateUtil {
 
+    private Locale locale;
+
     private static DateUtil dateUtil;
+    private SimpleDateFormat formatTime, formatDate;
+
+    public DateUtil() {
+        formatTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        formatDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        locale = Locale.getDefault();
+    }
 
     public static DateUtil getInstanceDateUtil() {
         if (dateUtil == null)
@@ -25,24 +36,22 @@ public class DateUtil {
     public String convertCalendarToStringDate(Calendar calendar) {
         if (calendar == null)
             return null;
-        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
-        String date = s.format(calendar.getTime());
-        return date;
+
+        return formatDate.format(calendar.getTime());
     }
 
     public String convertCalendarToStringTime(Calendar calendar) {
         if (calendar == null)
             return null;
-        SimpleDateFormat s = new SimpleDateFormat("HH:mm");
-        String date = s.format(calendar.getTime());
-        return date;
+
+        return formatTime.format(calendar.getTime());
     }
 
     public Calendar convertStringDataAndTimeToCalendar(String date, String time) {
         if (date == null || date.equals(""))
             return null;
-        DateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        DateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance(locale);
 
         try {
             Date dateFormat = simpleDateFormat.parse(date + " " + time);
@@ -82,11 +91,11 @@ public class DateUtil {
     public Calendar convertStringDateToCalendar(String date) {
         if (date == null || date.equals(""))
             return null;
-        DateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+
+        Calendar calendar = Calendar.getInstance(locale);
 
         try {
-            Date dateFormat = simpleDateFormat.parse(date);
+            Date dateFormat = formatDate.parse(date);
             calendar.setTime(dateFormat);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -101,11 +110,10 @@ public class DateUtil {
     public Calendar convertStringTimeToCalendar(String time) {
         if (time == null || time.equals(""))
             return null;
-        DateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        Calendar calendar = Calendar.getInstance(locale);
 
         try {
-            Date dateFormat = simpleDateFormat.parse(time);
+            Date dateFormat = formatTime.parse(time);
             calendar.setTime(dateFormat);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -118,7 +126,7 @@ public class DateUtil {
     }
 
 
-    public long calculateTimeFromRegistryToLong(Registry registry) {
+    private long calculateTimeFromRegistryToLong(Registry registry) {
         if (registry.getObservation() == enumObservation.ABSENCE)
             return -3;
 
@@ -145,20 +153,24 @@ public class DateUtil {
         }
     }
 
-    public long calculateExtraTimeFromRegistryToLong(Registry registry) {
+    private long calculateExtraTimeFromRegistryToLong(Registry registry) {
+
         long totalTime = calculateTimeFromRegistryToLong(registry);
-        System.out.println(registry);
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTimeInMillis(convertStringTimeToCalendar(calculateTimeFromRegistryToString(registry)).getTime().getTime());
         if (totalTime < 0)
             return totalTime;
 
         try {
-            totalTime = totalTime - convertStringTimeToDateObject(convertCalendarToStringTime(registry.getRequiredTimeToWork())).getTime();
+            totalTime = calendar.getTime().getTime() - convertStringTimeToDateObject(convertCalendarToStringTime(registry.getRequiredTimeToWork())).getTime();
+
+            return totalTime;
         } catch (Exception e) {
             e.printStackTrace();
             return -4;
         }
 
-        return totalTime;
+
     }
 
     public String calculateExtraTimeFromRegistryToString(Registry registry) {
@@ -169,6 +181,7 @@ public class DateUtil {
 
         System.out.println("RET" + calculateExtraTimeFromRegistryToLong(registry));
 
+
         return getTimeLongToStringFormat(calculateExtraTimeFromRegistryToLong(registry));
     }
 
@@ -177,18 +190,24 @@ public class DateUtil {
         int hour = (int) TimeUnit.MILLISECONDS.toHours(time);
         int minute = (int) ((time / (1000 * 60)) % 60);
 
-        if(minute < 0){
+        if (minute < 0) {
             minute = Math.abs(minute);
             symbol = "-";
         }
-        if(hour <0){
+        if (hour < 0) {
             hour = Math.abs(hour);
             symbol = "-";
         }
 
-        if (minute < 10)
-            return hour + ":" + "0" + minute + "h";
+        if (minute < 10 && hour < 10)
+            return symbol + "0" + hour + ":" + "0" + minute + "h";
 
+        if (minute < 10) {
+            return symbol + hour + ":" + "0" + minute + "h";
+        }
+        if (hour < 10) {
+            return symbol + "0" + hour + ":" + minute + "h";
+        }
 
         return symbol + hour + ":" + minute + "h";
     }
@@ -229,9 +248,7 @@ public class DateUtil {
 
     private Date convertStringTimeToDateObject(String time) throws Exception {
 
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-        Date date;
-        return date = format.parse(time);
+        return formatTime.parse(time);
     }
 
 }
