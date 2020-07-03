@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import br.com.dhsoftware.workerday.model.Registry;
@@ -153,6 +154,27 @@ public class DateUtil {
         }
     }
 
+    public int getHourInt(String time){
+        TimeZone timeZone = TimeZone.getDefault();
+
+        try {
+            System.out.println("ERRO GetHour: " + (int) TimeUnit.MILLISECONDS.toHours(timeZone.getOffset(convertStringTimeToCalendar(time).getTime().getTime())));
+            return (int) TimeUnit.MILLISECONDS.toHours(convertStringTimeToDateObject(time).getTime()) + (int) TimeUnit.MILLISECONDS.toHours(timeZone.getOffset(convertStringTimeToCalendar(time).getTime().getTime()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getMinuteInt (String time){
+        try {
+            return (int) ((convertStringTimeToDateObject(time).getTime() / (1000 * 60)) % 60);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     private long calculateExtraTimeFromRegistryToLong(Registry registry) {
 
         long totalTime = calculateTimeFromRegistryToLong(registry);
@@ -246,7 +268,7 @@ public class DateUtil {
         return hour + ":" + minute + "h";
     }
 
-    private Date convertStringTimeToDateObject(String time) throws Exception {
+    public Date convertStringTimeToDateObject(String time) throws Exception {
 
         return formatTime.parse(time);
     }

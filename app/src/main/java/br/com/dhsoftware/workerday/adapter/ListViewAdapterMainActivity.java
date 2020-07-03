@@ -18,6 +18,8 @@ import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.fragments.ListViewMainFragment;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.util.DateUtil;
+import br.com.dhsoftware.workerday.util.Money;
+import br.com.dhsoftware.workerday.util.SalaryUtil;
 import br.com.dhsoftware.workerday.util.enumObservation;
 
 public class ListViewAdapterMainActivity extends BaseAdapter {
@@ -60,11 +62,21 @@ public class ListViewAdapterMainActivity extends BaseAdapter {
 
         textView = view.findViewById(R.id.list_view_main_activity_time_worked);
         System.out.println("ENUM DO PROJETO: " + registry.getObservation());
-        textView.setText("Horas trabalhadas: " + DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registry));
+        String timeWorked = DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registry);
+        textView.setText("Horas trabalhadas: " + timeWorked);
 
+        String extraTime = DateUtil.getInstanceDateUtil().calculateExtraTimeFromRegistryToString(registry);
 
+        System.out.println(extraTime);
         textView = view.findViewById(R.id.list_view_main_activity_time_extra_worked);
-        textView.setText("Hora extra realizada: " + DateUtil.getInstanceDateUtil().calculateExtraTimeFromRegistryToString(registry));
+        textView.setText("Hora extra realizada: " + extraTime);
+
+        SalaryUtil salaryUtil = new SalaryUtil();
+        extraTime = extraTime.substring(0, extraTime.length() - 1);
+
+        Money money = new Money();
+        textView = view.findViewById(R.id.list_view_main_activity_day_value);
+        textView.setText("Valor do dia: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateSalaryPerDay(registry, activity.getApplicationContext(), extraTime))));
 
         ImageView imageView = view.findViewById(R.id.imageView_remove_listView);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +91,7 @@ public class ListViewAdapterMainActivity extends BaseAdapter {
         });
 
 
-        textView = view.findViewById(R.id.list_view_main_activity_day_value);
+
 
 
         return view;

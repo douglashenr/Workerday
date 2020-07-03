@@ -1,8 +1,12 @@
 package br.com.dhsoftware.workerday.util;
 
+import android.content.Context;
+
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.TimeZone;
 
+import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.model.User;
 
 public class SalaryUtil {
@@ -70,5 +74,43 @@ public class SalaryUtil {
     public double calculateFGTS() {
         return money.doubleComDoisDecimais(user.getSalary() * 0.08);
     }
+
+    public double calculateSalaryPerDay(Registry registry, Context context, String extraTime){
+        User user = new User(context);
+        if(registry.getRequiredTimeToWorkString() == null || registry.getRequiredTimeToWorkString().equals(""))
+            return 0.00;
+
+
+
+        double salaryDay = user.getSalaryPerHour() * DateUtil.getInstanceDateUtil().getHourInt(registry.getRequiredTimeToWorkString());
+        salaryDay += (user.getSalaryPerHour() / 60) * DateUtil.getInstanceDateUtil().getMinuteInt(registry.getRequiredTimeToWorkString());
+        System.out.println("retorno SalarioDay Minuto" + salaryDay);
+        if(extraTime.equals("00:00"))
+            return salaryDay;
+
+        double extraSalaryDouble;
+
+        System.out.println("retorno SalarioDay" + salaryDay);
+
+        if(extraTime.charAt(0) == '-'){
+            extraTime = extraTime.substring(1);
+            extraSalaryDouble = user.getSalaryPerHour() * DateUtil.getInstanceDateUtil().getHourInt(extraTime);
+            extraSalaryDouble += (user.getSalaryPerHour() / 60) * DateUtil.getInstanceDateUtil().getMinuteInt(extraTime);
+            return money.doubleComDoisDecimais(salaryDay - extraSalaryDouble);
+        }else{
+            extraSalaryDouble = (user.getSalaryPerHour() * ((registry.getPercent() / 100f) + 1.0)) * DateUtil.getInstanceDateUtil().getHourInt(extraTime);
+            System.out.println("ExtraSalary 1" + extraSalaryDouble);
+            extraSalaryDouble += ((user.getSalaryPerHour() * ((registry.getPercent() / 100f) + 1)) /60) * DateUtil.getInstanceDateUtil().getMinuteInt(extraTime);
+            System.out.println("ExtraSalary 1" + extraSalaryDouble);
+            return money.doubleComDoisDecimais(salaryDay + extraSalaryDouble);
+        }
+    }
+
+    /*
+    * Pego o salario do dia
+    * Vejo se tem um sinal negativo na frente da hora extra
+    * se tiver eu desconto o salario
+    * se não, eu adiciono mais uma hora com a hora extra
+    * */
 
 }

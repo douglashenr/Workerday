@@ -27,7 +27,7 @@ public class JSONUser {
         salaryUtil = new SalaryUtil();
         createObjectJSONUserEmpty();
         if (isFilePresent()) {
-            System.out.println("JSON quando iniciado construtor: " + getObjectJSONUserFromStorage().toString());
+            //System.out.println("JSON quando iniciado construtor: " + getObjectJSONUserFromStorage().toString());
         } else {
             create();
         }
@@ -59,7 +59,7 @@ public class JSONUser {
                 sb.append(line);
             }
 
-            System.out.println("Lido pelo método read: " + sb.toString());
+            //System.out.println("Lido pelo método read: " + sb.toString());
             return sb.toString();
         } catch (IOException ioException) {
             return null;
@@ -104,7 +104,7 @@ public class JSONUser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Adicionado salario em JSON: " + read());
+        //System.out.println("Adicionado salario em JSON: " + read());
     }
 
     private void setSalaryPerHour() throws JSONException {
@@ -126,7 +126,7 @@ public class JSONUser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Adicionado salario em JSON: " + read());
+        //System.out.println("Adicionado salario em JSON: " + read());
     }
 
     public void setTimeForWeekJSON(String timeForWeek) {
@@ -135,7 +135,7 @@ public class JSONUser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Adicionado salario em JSON: " + read());
+        //System.out.println("Adicionado salario em JSON: " + read());
     }
 
     public void setPercentExtraSalaryJSON(String percentExtraSalary) {
@@ -144,7 +144,7 @@ public class JSONUser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Adicionado salario em JSON: " + read());
+        //System.out.println("Adicionado salario em JSON: " + read());
     }
 
     public JSONObject getObjectJSONUserFromStorage() {

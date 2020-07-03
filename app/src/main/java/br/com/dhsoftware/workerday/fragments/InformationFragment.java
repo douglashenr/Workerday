@@ -12,6 +12,7 @@ import android.widget.TextView;
 import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.JSONUser;
+import br.com.dhsoftware.workerday.util.Money;
 import br.com.dhsoftware.workerday.util.SalaryUtil;
 
 public class InformationFragment extends Fragment {
@@ -47,12 +48,14 @@ public class InformationFragment extends Fragment {
         super.onResume();
         User user = new User(getActivity());
         SalaryUtil salaryUtil = new SalaryUtil(user);
-        textViewINSS.setText("INSS: R$ " + salaryUtil.calculateINSS());
-        textViewIRRF.setText("IRRF: R$ " + salaryUtil.calculateIRRF());
-        textViewNetSalary.setText("Salario liquido: R$ " + salaryUtil.calculateNetSalary());
+        Money money = new Money();
+
+        textViewINSS.setText("INSS: R$ " +  money.doubleToStringMoney(String.valueOf(salaryUtil.calculateINSS())));
+        textViewIRRF.setText("IRRF: R$ " +  money.doubleToStringMoney(String.valueOf(salaryUtil.calculateIRRF())));
+        textViewNetSalary.setText("Salario liquido: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateNetSalary())));
         textViewDeduction.setText("Deduções: R$ " + jsonUser.getDeduction());
-        textViewFGTS.setText("FGTS: R$ " + salaryUtil.calculateFGTS());
-        textViewGrossSalary.setText("Base calculo: R$ " + user.getSalary());
+        textViewFGTS.setText("FGTS: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateFGTS())));
+        textViewGrossSalary.setText("Base calculo: R$ " + money.doubleToStringMoney(String.valueOf(user.getSalary())));
     }
 
     private void setView() {
