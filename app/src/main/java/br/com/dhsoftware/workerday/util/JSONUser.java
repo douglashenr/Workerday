@@ -35,8 +35,8 @@ public class JSONUser {
 
     private void createObjectJSONUserEmpty() {
         try {
-            jsonObjectEmpty.put("name", "");
-            jsonObjectEmpty.put("e-mail", "");
+            //jsonObjectEmpty.put("name", "");
+            //jsonObjectEmpty.put("e-mail", "");
             jsonObjectEmpty.put("salary", "");
             jsonObjectEmpty.put("deduction", "0.0");
             jsonObjectEmpty.put("percentExtraSalary", "");
