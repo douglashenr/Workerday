@@ -1,24 +1,43 @@
 package br.com.dhsoftware.workerday.fragments;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.Constants;
+import com.google.android.material.tabs.TabLayout;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.channels.FileChannel;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
@@ -33,7 +52,6 @@ import br.com.dhsoftware.workerday.util.JSONUser;
 import br.com.dhsoftware.workerday.util.enumObservation;
 
 
-
 public class AddRegistryFragment extends Fragment implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener, RadioGroup.OnCheckedChangeListener
         , Serializable {
     private View view;
@@ -44,8 +62,14 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     private enumObservation observation;
     private Registry registryBundle;
     private FragmentController fragmentController;
+    private CardView cardViewEntrance, cardViewLeave, cardViewEntranceLunch, cardViewLeaveLunch;
+    private ImageView imageViewEntrance;
+    File file;
+    File photoFile;
 
     private DialogUtil dialogUtil;
+
+    String imagePathEntrance;
 
     public AddRegistryFragment() {
         // Required empty public constructor
@@ -55,6 +79,12 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*try {
+            FileOutputStream fos = getContext().openFileOutput(imagePathEntrance, Context.MODE_PRIVATE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }*/
     }
 
     @Override
@@ -140,8 +170,21 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         radioButtonNothing = view.findViewById(R.id.button_nothing_registry);
         radioButtonAbsence = view.findViewById(R.id.button_absence_registry);
 
+
+        cardViewEntrance = view.findViewById(R.id.cardView_entrance_AddRegistry);
+        cardViewEntrance.setOnClickListener(this);
+
+        cardViewEntranceLunch = view.findViewById(R.id.cardView_entranceLunch_AddRegistry);
+
+        cardViewLeave = view.findViewById(R.id.cardView_leave_AddRegistry);
+
+        cardViewLeaveLunch = view.findViewById(R.id.cardView_leaveLunch_AddRegistry);
+
+        imageViewEntrance = view.findViewById(R.id.imageView_entrance_addRegistry);
+
         ImageButton saveButton = view.findViewById(R.id.button_save_registry);
         saveButton.setOnClickListener(this);
+
 
     }
 
@@ -391,6 +434,80 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
             case R.id.button_save_registry:
                 validator();
                 break;
+            case R.id.cardView_entrance_AddRegistry:
+                imagePathEntrance = getContext().getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
+                photoFile = new File(imagePathEntrance);
+
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryIntent.setType("image/*");
+
+                Intent chooser = Intent.createChooser(galleryIntent, "Selecione a imagem");
+
+
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile)); //add file ure (photo is saved here)
+                Intent[] extraIntents = {cameraIntent};
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+                /*Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                imagePathEntrance = getContext().getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
+                File arquivoFoto = new File(imagePathEntrance);
+                intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));*/
+
+
+                startActivityForResult(chooser, 1);
+
+
+                break;
+        }
+    }
+
+    private void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!sourceFile.exists()) {
+            return;
+        }
+
+        FileChannel source = null;
+        FileChannel destination = null;
+        source = new FileInputStream(sourceFile).getChannel();
+        destination = new FileOutputStream(destFile).getChannel();
+        if (destination != null && source != null) {
+            destination.transferFrom(source, 0, source.size());
+        }
+        if (source != null) {
+            source.close();
+        }
+        if (destination != null) {
+            destination.close();
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                dialogUtil.showToast("Imagem recebida", Toast.LENGTH_LONG);
+
+                // Bundle extras = data.getExtras();
+                // Bitmap imageBitmap = (Bitmap) extras.get("data");
+                //imageViewEntrance.setImageBitmap(imageBitmap);
+                Bitmap bitmap;
+                try {
+                    bitmap = BitmapFactory.decodeFile(imagePathEntrance);
+                }catch (Exception e){
+                    bitmap = BitmapFactory.decodeFile(data.getData().getPath());
+                }
+                Bitmap bitmapReduzido = null;
+                bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 1920, 1080, true);
+                imageViewEntrance.setImageBitmap(bitmapReduzido);
+                imageViewEntrance.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageViewEntrance.setTag(imagePathEntrance);
+
+            }
         }
     }
 
