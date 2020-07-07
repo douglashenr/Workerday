@@ -1,9 +1,11 @@
 package br.com.dhsoftware.workerday.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +13,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -67,6 +72,8 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     private File photoFile;
     private Dao dao;
     private ImageUtil imageUtil;
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private boolean isTherePermission = false;
 
     private DialogUtil dialogUtil;
 
@@ -140,7 +147,6 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         } catch (Exception e) {
             e.getMessage();
         }
-
 
 
         if (registryBundle != null) {
@@ -490,27 +496,55 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         }
     }
 
-    public String getNewPath(){
+    public void isTherePermission() {
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                requestPermission();
+            } else {
+                requestPermission();
+            }
+        } else {
+            isTherePermission = true;
+            startIntent();
+        }
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+    }
+
+
+    private String getNewPath() {
         return getContext().getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpeg";
     }
 
     private void startIntent() {
-        photoFile = new File(imagePathActually);
+        if (isTherePermission) {
+            photoFile = new File(imagePathActually);
 
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        galleryIntent.setType("image/*");
-        galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-
-
-        Intent chooser = Intent.createChooser(galleryIntent, "Selecione a imagem");
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            galleryIntent.setType("image/*");
+            galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
 
 
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));//add file ure (photo is saved here)
-        Intent[] extraIntents = {cameraIntent};
-        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+            Intent chooser = Intent.createChooser(galleryIntent, "Selecione a imagem");
 
-        startActivityForResult(chooser, 1);
+
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));//add file ure (photo is saved here)
+            Intent[] extraIntents = {cameraIntent};
+            chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+            startActivityForResult(chooser, 1);
+        } else {
+            isTherePermission();
+        }
     }
 
     private void copyFile(File sourceFile, File destFile) throws IOException {
@@ -682,6 +716,26 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
     private void setEditTextSetDataOrTimeFromPicker(EditText editTextSetDataOrTimeFromPicker) {
         this.editTextSetDataOrTimeFromPicker = editTextSetDataOrTimeFromPicker;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                isTherePermission = true;
+                startIntent();
+                // permission was granted, yay! Do the
+                // contacts-related task you need to do.
+
+            } else {
+                isTherePermission = false;
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+        }
     }
 
     @Override
