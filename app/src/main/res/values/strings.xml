@@ -51,4 +51,7 @@
     <string name="entrance">Entrada</string>
     <string name="save_registry">Salvar ponto</string>
     <string name="leave_image">Saida</string>
+    <string name="time">horas</string>
+    <string name="error_validator">Complete o campo em vermelho para salvar!</string>
+    <string name="registry_save">Ponto salvo!</string>
 </resources>

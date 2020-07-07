@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,14 +33,10 @@ import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.common.util.DataUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.channels.FileChannel;
 import java.util.Calendar;
@@ -60,7 +57,8 @@ import br.com.dhsoftware.workerday.util.enumObservation;
 public class AddRegistryFragment extends Fragment implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener, RadioGroup.OnCheckedChangeListener
         , Serializable {
     private View view;
-    private EditText editTextDateWorked, editTextEntranceTime, editTextEntranceLunchTime, editTextLeaveLunchTime, editTextLeaveTime, editTextRequiredTime, editTextPercentExtraWork;
+    private EditText editTextDateWorked, editTextEntranceTime, editTextEntranceLunchTime, editTextLeaveLunchTime,
+            editTextLeaveTime, editTextRequiredTime, editTextPercentExtraWork, editTextTimeDeclaration;
     private EditText editTextSetDataOrTimeFromPicker;
     private RadioGroup buttonGroup;
     private RadioButton radioButtonAtestado, radioButtonDeclaration, radioButtonNothing, radioButtonAbsence;
@@ -124,6 +122,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         }
         if (registryBundle.getObservationString().equals(enumObservation.DECLARACAO_DE_HORAS.toString())) {
             radioButtonDeclaration.setChecked(true);
+            editTextTimeDeclaration.setText(registryBundle.getTimeDeclarationString());
         }
         if (registryBundle.getObservationString().equals(enumObservation.ABSENCE.toString())) {
             radioButtonAbsence.setChecked(true);
@@ -207,6 +206,9 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         imageViewEntranceLunch = view.findViewById(R.id.imageView_entranceLunch_addRegistry);
 
         imageViewLeaveLunch = view.findViewById(R.id.imageView_leaveLunch_addRegistry);
+
+        editTextTimeDeclaration = view.findViewById(R.id.editText_declaration_addRegistry);
+        editTextTimeDeclaration.setOnClickListener(this);
 
         ImageButton saveButton = view.findViewById(R.id.button_save_registry);
         saveButton.setOnClickListener(this);
@@ -418,21 +420,38 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         if (String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonAtestado.getId()))) {
             enableEditText(false);
             observation = enumObservation.ATESTADO;
+            editTextTimeDeclaration.setVisibility(View.INVISIBLE);
+            editTextRequiredTime.setText("");
+            setEditTextEmpty();
         } else
             enableEditText(true);
 
         if (String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonDeclaration.getId()))) {
             observation = enumObservation.DECLARACAO_DE_HORAS;
+            editTextTimeDeclaration.setVisibility(View.VISIBLE);
         }
 
         if (String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonAbsence.getId()))) {
             observation = enumObservation.ABSENCE;
             enableEditText(false);
+            editTextTimeDeclaration.setVisibility(View.INVISIBLE);
+            setEditTextEmpty();
         }
 
         if (String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonNothing.getId()))) {
             observation = enumObservation.NORMAL;
+            editTextTimeDeclaration.setVisibility(View.INVISIBLE);
+
         }
+    }
+
+    private void setEditTextEmpty() {
+        editTextEntranceLunchTime.setText("");
+        editTextEntranceTime.setText("");
+        editTextLeaveLunchTime.setText("");
+        editTextLeaveTime.setText("");
+        editTextPercentExtraWork.setText("");
+        editTextTimeDeclaration.setText("");
     }
 
     @Override
@@ -444,6 +463,11 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.editText_declaration_addRegistry:
+                setEditTextSetDataOrTimeFromPicker(editTextTimeDeclaration);
+                timePickerDialog();
+                break;
+
             case R.id.editText_dateWorked_registry:
                 setEditTextSetDataOrTimeFromPicker(editTextDateWorked);
                 datePickerDialog();
@@ -647,10 +671,15 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
     private void validator() {
         if (editTextDateWorked.getText().toString().equals("")) {
+            if(radioButtonDeclaration.isChecked()){
+                if(editTextTimeDeclaration.getText().toString().equals("")){
+                    editTextTimeDeclaration.setHintTextColor(Color.RED);
+                }
+            }
             editTextDateWorked.setHintTextColor(Color.RED);
-            dialogUtil.infoDialog("Complete o campo em vermelho para salvar!");
+            dialogUtil.infoDialog(getString(R.string.error_validator));
         } else {
-            dialogUtil.showToast("Ponto salvo!", Toast.LENGTH_SHORT);
+            dialogUtil.showToast(getString(R.string.registry_save), Toast.LENGTH_SHORT);
             createObjectRegistry();
             fragmentController.goBackFragment();
         }
@@ -668,7 +697,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
         if (radioButtonDeclaration.isChecked()) {
             registry.setObservation(enumObservation.DECLARACAO_DE_HORAS);
-            //registry.setTimeDeclaration(dateUtil.convertStringTimeToCalendar(leaveTime.getText().toString()));
+            registry.setTimeDeclaration(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextTimeDeclaration.getText().toString()));
         }
 
         if (radioButtonNothing.isChecked())

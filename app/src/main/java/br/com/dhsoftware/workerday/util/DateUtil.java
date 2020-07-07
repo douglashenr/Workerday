@@ -137,6 +137,8 @@ public class DateUtil {
         if (registry.getLeave() == null || registry.getEntrance() == null)
             return -1;
 
+        TimeZone timeZone = TimeZone.getDefault();
+
         try {
 
             long time = convertStringTimeToDateObject(convertCalendarToStringTime(registry.getLeave())).getTime() - convertStringTimeToDateObject(convertCalendarToStringTime(registry.getEntrance())).getTime();
@@ -144,7 +146,7 @@ public class DateUtil {
                 time -= convertStringTimeToDateObject(convertCalendarToStringTime(registry.getLeaveLunch())).getTime() - convertStringTimeToDateObject(convertCalendarToStringTime(registry.getEntranceLunch())).getTime();
 
             if (registry.getObservation() == enumObservation.DECLARACAO_DE_HORAS)
-                time += convertStringTimeToDateObject(convertCalendarToStringTime(registry.getTimeDeclaration())).getTime();
+                time += convertStringTimeToDateObject(convertCalendarToStringTime(registry.getTimeDeclaration())).getTime() + timeZone.getOffset(registry.getTimeDeclaration().getTime().getTime());
 
 
             return time;
@@ -157,7 +159,6 @@ public class DateUtil {
     public int getHourInt(String time){
         TimeZone timeZone = TimeZone.getDefault();
         try {
-            System.out.println("ERRO GetHour: " + (int) TimeUnit.MILLISECONDS.toHours(timeZone.getOffset(convertStringTimeToCalendar(time).getTime().getTime())));
             return (int) TimeUnit.MILLISECONDS.toHours(convertStringTimeToDateObject(time).getTime()) + (int) TimeUnit.MILLISECONDS.toHours(timeZone.getOffset(convertStringTimeToCalendar(time).getTime().getTime()));
         } catch (Exception e) {
             e.printStackTrace();

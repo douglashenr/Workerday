@@ -67,12 +67,12 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:hint="@string/dayWorker"
+                    android:importantForAutofill="no"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView2"
-                    tools:ignore="TextFields"
-                    android:importantForAutofill="no" />
+                    tools:ignore="TextFields" />
 
                 <TextView
                     android:id="@+id/textView10"
@@ -100,12 +100,12 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:hint="@string/entrance_time"
+                    android:importantForAutofill="no"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toStartOf="@+id/divider2"
                     app:layout_constraintStart_toStartOf="@+id/textView10"
                     app:layout_constraintTop_toBottomOf="@+id/textView10"
-                    tools:ignore="TextFields"
-                    android:importantForAutofill="no" />
+                    tools:ignore="TextFields" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -133,12 +133,12 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:hint="@string/entrance_lunch"
+                    android:importantForAutofill="no"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toStartOf="@+id/divider2"
                     app:layout_constraintStart_toStartOf="@+id/textView8"
                     app:layout_constraintTop_toBottomOf="@+id/textView8"
-                    tools:ignore="TextFields"
-                    android:importantForAutofill="no" />
+                    tools:ignore="TextFields" />
 
                 <EditText
                     android:id="@+id/editText_leaveLunchTime_registry"
@@ -147,12 +147,12 @@
                     android:focusable="false"
                     android:gravity="end"
                     android:hint="@string/leave_lunch"
+                    android:importantForAutofill="no"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="@+id/textView9"
                     app:layout_constraintStart_toEndOf="@+id/divider2"
                     app:layout_constraintTop_toBottomOf="@+id/textView9"
-                    tools:ignore="TextFields"
-                    android:importantForAutofill="no" />
+                    tools:ignore="TextFields" />
 
                 <EditText
                     android:id="@+id/editText_leaveTime_registry"
@@ -161,12 +161,12 @@
                     android:focusable="false"
                     android:gravity="end"
                     android:hint="@string/leave"
+                    android:importantForAutofill="no"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/divider2"
                     app:layout_constraintTop_toBottomOf="@+id/textView11"
-                    tools:ignore="TextFields"
-                    android:importantForAutofill="no" />
+                    tools:ignore="TextFields" />
 
                 <TextView
                     android:id="@+id/textView12"
@@ -184,12 +184,12 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:hint="@string/required_time_to_work"
+                    android:importantForAutofill="no"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView12"
                     app:layout_constraintTop_toBottomOf="@+id/textView12"
-                    tools:ignore="TextFields"
-                    android:importantForAutofill="no" />
+                    tools:ignore="TextFields" />
 
                 <TextView
                     android:id="@+id/textView13"
@@ -206,12 +206,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/example_percent_extra_salary"
+                    android:importantForAutofill="no"
                     android:inputType="number"
                     android:textSize="15sp"
                     android:windowSoftInputMode="stateHidden"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView13"
-                    android:importantForAutofill="no" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
@@ -246,12 +246,14 @@
                             android:text="@string/nothing"
                             android:textSize="15sp" />
 
+
                         <RadioButton
                             android:id="@+id/button_atestado_registry"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/atestado"
                             android:textSize="15sp" />
+
 
                         <RadioButton
                             android:id="@+id/button_timeDeclaration_registry"
@@ -272,6 +274,22 @@
 
 
                 </LinearLayout>
+
+                <EditText
+                    android:visibility="invisible"
+                    android:id="@+id/editText_declaration_addRegistry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/time"
+                    android:textSize="15sp"
+                    android:focusable="false"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/editText_porcentExtraWork_registry"
+                    app:layout_constraintVertical_bias="0.65999997"
+                    tools:ignore="SmallSp" />
 
 
                 <TextView
@@ -425,6 +443,7 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="25dp"
             android:background="@drawable/shape"
+            android:contentDescription="@string/save_registry"
             android:elevation="6dp"
             android:src="@drawable/ic_save_black_24dp"
             android:stateListAnimator="@null"
@@ -435,8 +454,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            android:contentDescription="@string/save_registry" />
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
