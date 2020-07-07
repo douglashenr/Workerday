@@ -156,7 +156,6 @@ public class DateUtil {
 
     public int getHourInt(String time){
         TimeZone timeZone = TimeZone.getDefault();
-
         try {
             System.out.println("ERRO GetHour: " + (int) TimeUnit.MILLISECONDS.toHours(timeZone.getOffset(convertStringTimeToCalendar(time).getTime().getTime())));
             return (int) TimeUnit.MILLISECONDS.toHours(convertStringTimeToDateObject(time).getTime()) + (int) TimeUnit.MILLISECONDS.toHours(timeZone.getOffset(convertStringTimeToCalendar(time).getTime().getTime()));

@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.util.DateUtil;
@@ -23,9 +25,43 @@ public class Registry implements Serializable {
     private enumObservation observation;
     private Calendar timeDeclaration;
     private Long id;
+    private String imageEntrance, imageLeave, imageEntranceLunch, imageLeaveLunch;
 
 
     public Registry() {
+    }
+
+
+    public String getImageEntrance() {
+        return imageEntrance;
+    }
+
+    public void setImageEntrance(String imageEntrance) {
+        this.imageEntrance = imageEntrance;
+    }
+
+    public String getImageLeave() {
+        return imageLeave;
+    }
+
+    public void setImageLeave(String imageLeave) {
+        this.imageLeave = imageLeave;
+    }
+
+    public String getImageEntranceLunch() {
+        return imageEntranceLunch;
+    }
+
+    public void setImageEntranceLunch(String imageEntranceLunch) {
+        this.imageEntranceLunch = imageEntranceLunch;
+    }
+
+    public String getImageLeaveLunch() {
+        return imageLeaveLunch;
+    }
+
+    public void setImageLeaveLunch(String imageLeaveLunch) {
+        this.imageLeaveLunch = imageLeaveLunch;
     }
 
     public String getDayString() {
@@ -163,22 +199,19 @@ public class Registry implements Serializable {
     }
 
 
-    public static ArrayList<Registry> testArrayList(Context context) {
+    public static ArrayList<Registry> getRegistryArray(Context context) {
 
         Dao dao = new Dao(context);
-        return dao.getRegistryFromDao();
+        ArrayList<Registry> arrayList = dao.getRegistryFromDao();
+        dao.close();
+        Collections.sort(arrayList, new Comparator<Registry>() {
+            @Override
+            public int compare(Registry o1, Registry o2) {
+                return o1.getDay().compareTo(o2.getDay());
+            }
+        });
+        return arrayList;
 
-        /*
-        ArrayList<Registry> registries;
-        registries = new ArrayList<Registry>();
-
-        registries.add(new Registry(DateUtil.getInstanceDateUtil().convertStringDateToCalendar("25/12/1998"), enumObservation.ATESTADO));
-        registries.add(new Registry(DateUtil.getInstanceDateUtil().convertStringDateToCalendar("19/02/2008"),
-                DateUtil.getInstanceDateUtil().convertStringDataAndTimeToCalendar("19/02/2008", "13:15"), enumObservation.NORMAL));
-
-        registries.get(1).setLeave(DateUtil.getInstanceDateUtil().convertStringDataAndTimeToCalendar("19/02/2008", "18:15"));
-
-        return registries;*/
 
     }
 }

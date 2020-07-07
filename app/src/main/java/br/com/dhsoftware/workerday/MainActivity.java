@@ -16,17 +16,11 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import br.com.dhsoftware.workerday.fragments.InformationFragment;
-import br.com.dhsoftware.workerday.fragments.RecyclerViewMainFragment;
-import br.com.dhsoftware.workerday.fragments.UserSettingsFragment;
 import br.com.dhsoftware.workerday.util.DialogUtil;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private SharedPreferences prefs = null;
-    private RecyclerViewMainFragment recyclerViewMainFragment;
-    private UserSettingsFragment userSettingsFragment;
-    private InformationFragment informationFragment;
     private BottomNavigationView bottomNavigationView;
     private FragmentController fragmentController;
 
@@ -37,9 +31,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         AdView adView;
 
-        recyclerViewMainFragment = new RecyclerViewMainFragment();
-        userSettingsFragment = new UserSettingsFragment();
-        informationFragment = new InformationFragment();
         fragmentController = new FragmentController(getSupportFragmentManager());
 
         setView();

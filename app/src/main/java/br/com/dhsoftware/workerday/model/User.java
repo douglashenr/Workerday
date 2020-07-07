@@ -17,6 +17,14 @@ public class User implements Serializable {
     private double salaryPerHour;
     private ArrayList<Registry> registries;
     private Context context;
+    private JSONUser userJSON;
+
+
+    public JSONUser getUserJSON() {
+        return userJSON;
+    }
+
+
 
     public User(Context context) {
         this.context = context;
@@ -27,12 +35,12 @@ public class User implements Serializable {
 
     private void setUserFromJSON() {
         Money money = new Money();
-        JSONUser userJSON = new JSONUser(context);
+        userJSON = new JSONUser(context);
         try {
-            setDeduction(money.dinheiroParaDouble(userJSON.getDeduction(), Locale.FRANCE).doubleValue());
-            setSalary(money.dinheiroParaDouble(userJSON.getSalary(), Locale.FRANCE).doubleValue());
+            setDeduction(money.moneyToDouble(userJSON.getDeduction(), Locale.FRANCE).doubleValue());
+            setSalary(money.moneyToDouble(userJSON.getSalary(), Locale.FRANCE).doubleValue());
             setTimeForWeek(Integer.parseInt(userJSON.getTimeForWeek()));
-            setSalaryPerHour(money.doubleComDoisDecimais(Double.valueOf(userJSON.getSalaryPerHour())));
+            setSalaryPerHour(money.doubleWithTwiDecimal(Double.valueOf(userJSON.getSalaryPerHour())));
             setPercentExtraSalary(Integer.parseInt(userJSON.getPercentExtraSalary()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,6 +78,9 @@ public class User implements Serializable {
     }
 
     public Double getSalaryPerHour() {
+        if(salaryPerHour == 0.0){
+            return 0.0;
+        }
         return salaryPerHour;
     }
 

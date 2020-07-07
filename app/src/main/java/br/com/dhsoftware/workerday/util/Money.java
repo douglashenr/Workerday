@@ -8,7 +8,7 @@ import java.util.Locale;
 
 public class Money {
 
-    public BigDecimal dinheiroParaDouble(String amount, Locale locale) throws ParseException {
+    public BigDecimal moneyToDouble(String amount, Locale locale) throws ParseException {
         NumberFormat format = NumberFormat.getNumberInstance(locale);
         if (format instanceof DecimalFormat) {
             ((DecimalFormat) format).setParseBigDecimal(true);
@@ -36,15 +36,15 @@ public class Money {
     }
 
 
-    public double doubleComDoisDecimais(Double numero) {
-        return truncateDecimal(numero, 2).doubleValue();
+    public double doubleWithTwiDecimal(Double number) {
+        return truncateDecimal(number, 2).doubleValue();
     }
 
-    private BigDecimal truncateDecimal(double x, int numberofDecimals) {
+    private BigDecimal truncateDecimal(double x, int numberOfDecimals) {
         if (x > 0) {
-            return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_FLOOR);
+            return new BigDecimal(String.valueOf(x)).setScale(numberOfDecimals, BigDecimal.ROUND_FLOOR);
         } else {
-            return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals, BigDecimal.ROUND_CEILING);
+            return new BigDecimal(String.valueOf(x)).setScale(numberOfDecimals, BigDecimal.ROUND_CEILING);
         }
     }
 }

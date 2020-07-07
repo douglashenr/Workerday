@@ -25,11 +25,11 @@ public class JSONUser {
         this.context = context;
         jsonObjectEmpty = new JSONObject();
         salaryUtil = new SalaryUtil();
-        createObjectJSONUserEmpty();
-        if (isFilePresent()) {
-            //System.out.println("JSON quando iniciado construtor: " + getObjectJSONUserFromStorage().toString());
-        } else {
+
+        if (!isFilePresent()) {
+            createObjectJSONUserEmpty();
             create();
+            //System.out.println("JSON quando iniciado construtor: " + getObjectJSONUserFromStorage().toString());
         }
     }
 

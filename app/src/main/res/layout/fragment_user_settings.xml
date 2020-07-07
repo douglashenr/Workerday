@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:textSize="10sp"
-            android:text="@string/salary"
+            android:text="@string/salary_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
             tools:ignore="SmallSp" />
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:textSize="10sp"
-            android:text="@string/deduction"
+            android:text="@string/deduction_title"
             app:layout_constraintStart_toStartOf="@+id/editText_salary_userSettings"
             app:layout_constraintTop_toBottomOf="@+id/editText_salary_userSettings"
             tools:ignore="SmallSp" />
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:textSize="10sp"
-            android:text="@string/percent_extra_salary_default"
+            android:text="@string/percent_extra_salary_default_title"
             app:layout_constraintStart_toStartOf="@+id/editText_deduction_userSettings"
             app:layout_constraintTop_toBottomOf="@+id/editText_deduction_userSettings"
             tools:ignore="SmallSp" />
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:textSize="10sp"
-            android:text="@string/time_for_week"
+            android:text="@string/time_for_week_title"
             app:layout_constraintStart_toStartOf="@+id/editText_percentExtraSalary_userSettings"
             app:layout_constraintTop_toBottomOf="@+id/editText_percentExtraSalary_userSettings"
             tools:ignore="SmallSp" />

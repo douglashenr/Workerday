@@ -34,9 +34,9 @@ public class FragmentController extends FragmentActivity {
         fragmentManager.popBackStack();
     }
 
-    private void createFragment(int containerView, Fragment fragment, String tag) {
+    private void createFragment(Fragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(containerView, fragment, tag);
+        fragmentTransaction.replace(R.id.frameLayout_fragment_mainActivity, fragment, tag);
         if (fragment != new RecyclerViewMainFragment())
             fragmentTransaction.addToBackStack(tag);
 
@@ -45,22 +45,22 @@ public class FragmentController extends FragmentActivity {
 
 
     public void setFragmentListViewMain() {
-        createFragment(R.id.frameLayout_fragment_mainActivity, new RecyclerViewMainFragment(), FRAGMENT_TAG_LISTVIEWMAIN);
+        createFragment(new RecyclerViewMainFragment(), FRAGMENT_TAG_LISTVIEWMAIN);
     }
 
     public void setFragmentUserSettings() {
-        createFragment(R.id.frameLayout_fragment_mainActivity, new UserSettingsFragment(), FRAGMENT_TAG_USERSETTINGS);
+        createFragment(new UserSettingsFragment(), FRAGMENT_TAG_USERSETTINGS);
     }
 
     public void setFragmentAddRegistry(AddRegistryFragment addRegistryFragment){
         if(addRegistryFragment == null) {
-            createFragment(R.id.frameLayout_fragment_mainActivity, new AddRegistryFragment(), FRAGMENT_TAG_REGISTRY);
+            createFragment(new AddRegistryFragment(), FRAGMENT_TAG_REGISTRY);
         }else{
-            createFragment(R.id.frameLayout_fragment_mainActivity, addRegistryFragment, FRAGMENT_TAG_REGISTRY);
+            createFragment(addRegistryFragment, FRAGMENT_TAG_REGISTRY);
         }
     }
 
     public void setFragmentInformation() {
-        createFragment(R.id.frameLayout_fragment_mainActivity, new InformationFragment(), FRAGMENT_TAG_INFORMATION);
+        createFragment(new InformationFragment(), FRAGMENT_TAG_INFORMATION);
     }
 }

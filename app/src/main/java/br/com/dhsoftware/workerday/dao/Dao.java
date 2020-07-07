@@ -24,7 +24,8 @@ public class Dao extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE Registry (id_registry INTEGER PRIMARY KEY, dayWorked TEXT NOT NULL, entrance TEXT, " +
                 "leave TEXT," + " entranceLunch TEXT, leaveLunch TEXT, percent INTEGER, " +
-                "requiredTimeToWork TEXT, timeDeclaration TEXT, observation TEXT NOT NULL)";
+                "requiredTimeToWork TEXT, timeDeclaration TEXT, observation TEXT NOT NULL, imageEntrance TEXT," +
+                "imageLeave TEXT, imageEntranceLunch TEXT, imageLeaveLunch TEXT)";
 
         db.execSQL(sql);
     }
@@ -55,6 +56,10 @@ public class Dao extends SQLiteOpenHelper {
         datas.put("requiredTimeToWork", registry.getRequiredTimeToWorkString());
         datas.put("timeDeclaration", registry.getTimeDeclarationString());
         datas.put("observation", registry.getObservationString());
+        datas.put("imageEntrance", registry.getImageEntrance());
+        datas.put("imageLeave", registry.getImageLeave());
+        datas.put("imageEntranceLunch", registry.getImageEntranceLunch());
+        datas.put("imageLeaveLunch", registry.getImageLeaveLunch());
         return datas;
     }
 
@@ -79,6 +84,10 @@ public class Dao extends SQLiteOpenHelper {
             registry.setRequiredTimeToWork(dateUtil.convertStringTimeToCalendar(c.getString(c.getColumnIndex("requiredTimeToWork"))));
             registry.setTimeDeclaration(dateUtil.convertStringTimeToCalendar(c.getString(c.getColumnIndex("timeDeclaration"))));
             registry.setObservation(c.getString(c.getColumnIndex("observation")));
+            registry.setImageEntrance(c.getString(c.getColumnIndex("imageEntrance")));
+            registry.setImageLeave(c.getString(c.getColumnIndex("imageLeave")));
+            registry.setImageEntranceLunch(c.getString(c.getColumnIndex("imageEntranceLunch")));
+            registry.setImageLeaveLunch(c.getString(c.getColumnIndex("imageLeaveLunch")));
 
 
             listRegistry.add(registry);

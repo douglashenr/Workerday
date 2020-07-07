@@ -18,7 +18,6 @@ import br.com.dhsoftware.workerday.util.SalaryUtil;
 public class InformationFragment extends Fragment {
     private View view;
     private TextView textViewNetSalary, textViewGrossSalary, textViewINSS, textViewIRRF, textViewDeduction, textViewFGTS;
-    private JSONUser jsonUser;
 
 
     public InformationFragment() {
@@ -36,8 +35,6 @@ public class InformationFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_information, container, false);
 
-
-        jsonUser = new JSONUser(getActivity());
         setView();
 
         return view;
@@ -53,7 +50,7 @@ public class InformationFragment extends Fragment {
         textViewINSS.setText("INSS: R$ " +  money.doubleToStringMoney(String.valueOf(salaryUtil.calculateINSS())));
         textViewIRRF.setText("IRRF: R$ " +  money.doubleToStringMoney(String.valueOf(salaryUtil.calculateIRRF())));
         textViewNetSalary.setText("Salario liquido: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateNetSalary())));
-        textViewDeduction.setText("Deduções: R$ " + jsonUser.getDeduction());
+        textViewDeduction.setText("Deduções: R$ " + user.getUserJSON().getDeduction());
         textViewFGTS.setText("FGTS: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateFGTS())));
         textViewGrossSalary.setText("Base calculo: R$ " + money.doubleToStringMoney(String.valueOf(user.getSalary())));
     }

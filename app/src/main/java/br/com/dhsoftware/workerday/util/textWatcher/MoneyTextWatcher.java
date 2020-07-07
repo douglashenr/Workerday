@@ -78,11 +78,7 @@ public class MoneyTextWatcher implements TextWatcher {
         if (currencyValue == null || currencyValue.length() == 0) {
             result = false;
         } else {
-            if (!podeSerZero && currencyValue.equals("0,00")) {
-                result = false;
-            } else {
-                result = true;
-            }
+            result = podeSerZero || !currencyValue.equals("0,00");
         }
         return result;
     }

@@ -13,9 +13,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.dhsoftware.workerday.FragmentController;
-import br.com.dhsoftware.workerday.MainActivity;
 import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.fragments.AddRegistryFragment;
@@ -26,10 +26,10 @@ import br.com.dhsoftware.workerday.util.SalaryUtil;
 
 public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<RecyclerViewAdapterMainActivity.ViewHolder> {
 
-    ArrayList<Registry> registries;
-    Context context;
-    RecyclerView recyclerView;
-    FragmentManager fragmentManager;
+    private ArrayList<Registry> registries;
+    private Context context;
+    private RecyclerView recyclerView;
+    private FragmentManager fragmentManager;
 
     public RecyclerViewAdapterMainActivity(ArrayList<Registry> registries, Context context, RecyclerView recyclerView, FragmentManager fragmentManager) {
         this.registries = registries;
@@ -43,8 +43,7 @@ public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<Recycl
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_registry, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -73,21 +72,21 @@ public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<Recycl
         return registries.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView textViewDate, textViewDay, textViewTimeWorked, textViewExtraTime, textViewDayValue;
-        protected ImageView imageViewDelete;
+        TextView textViewDate, textViewDay, textViewTimeWorked, textViewExtraTime, textViewDayValue;
+        ImageView imageViewDelete;
 
 
-        public ViewHolder(@NonNull final View itemView) {
+        ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
-            textViewDate = (TextView) itemView.findViewById(R.id.list_view_main_activity_date);
-            textViewDay = (TextView) itemView.findViewById(R.id.list_view_main_activity_day);
-            textViewTimeWorked = (TextView) itemView.findViewById(R.id.list_view_main_activity_time_worked);
-            textViewExtraTime = (TextView) itemView.findViewById(R.id.list_view_main_activity_time_extra_worked);
-            textViewDayValue = (TextView) itemView.findViewById(R.id.list_view_main_activity_day_value);
-            imageViewDelete = (ImageView) itemView.findViewById(R.id.imageView_remove_listView);
+            textViewDate = itemView.findViewById(R.id.list_view_main_activity_date);
+            textViewDay = itemView.findViewById(R.id.list_view_main_activity_day);
+            textViewTimeWorked = itemView.findViewById(R.id.list_view_main_activity_time_worked);
+            textViewExtraTime = itemView.findViewById(R.id.list_view_main_activity_time_extra_worked);
+            textViewDayValue = itemView.findViewById(R.id.list_view_main_activity_day_value);
+            imageViewDelete = itemView.findViewById(R.id.imageView_remove_listView);
 
             imageViewDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

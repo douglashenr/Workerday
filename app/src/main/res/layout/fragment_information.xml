@@ -79,7 +79,7 @@
                     android:id="@+id/textView_netSalary_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:text="Salario liquido: R$ 2.000,00"
                     android:textColor="@color/colorSecondaryText" />
 
@@ -90,14 +90,15 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:text="*valor aproximado sem contar horas extras"
             android:textSize="10sp"
             android:layout_marginHorizontal="10dp"
             android:paddingVertical="5dp"
             app:layout_constraintEnd_toEndOf="@+id/cardView"
             app:layout_constraintStart_toStartOf="@+id/cardView"
-            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            tools:ignore="SmallSp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

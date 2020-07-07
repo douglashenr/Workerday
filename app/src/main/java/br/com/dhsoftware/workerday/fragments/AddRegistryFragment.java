@@ -3,8 +3,8 @@ package br.com.dhsoftware.workerday.fragments;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,7 +14,6 @@ import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,14 +27,14 @@ import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.common.internal.Constants;
-import com.google.android.material.tabs.TabLayout;
+import com.google.android.gms.common.util.DataUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.channels.FileChannel;
 import java.util.Calendar;
@@ -48,6 +47,7 @@ import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.util.DateUtil;
 import br.com.dhsoftware.workerday.util.DialogUtil;
+import br.com.dhsoftware.workerday.util.ImageUtil;
 import br.com.dhsoftware.workerday.util.JSONUser;
 import br.com.dhsoftware.workerday.util.enumObservation;
 
@@ -63,13 +63,14 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     private Registry registryBundle;
     private FragmentController fragmentController;
     private CardView cardViewEntrance, cardViewLeave, cardViewEntranceLunch, cardViewLeaveLunch;
-    private ImageView imageViewEntrance;
-    File file;
-    File photoFile;
+    private ImageView imageViewEntrance, imageViewLeave, imageViewEntranceLunch, imageViewLeaveLunch;
+    private File photoFile;
+    private Dao dao;
+    private ImageUtil imageUtil;
 
     private DialogUtil dialogUtil;
 
-    String imagePathEntrance;
+    private String imagePathActually, imagePathEntrance, imagePathLeave, imagePathEntranceLunch, imagePathLeaveLunch;
 
     public AddRegistryFragment() {
         // Required empty public constructor
@@ -79,37 +80,16 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*try {
-            FileOutputStream fos = getContext().openFileOutput(imagePathEntrance, Context.MODE_PRIVATE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_add_registry, container, false);
-        observation = enumObservation.NORMAL;
-        fragmentController = new FragmentController(getFragmentManager());
-        registryBundle = null;
-        Bundle bundle = null;
-        bundle = getArguments();
-        try {
-            registryBundle = (Registry) bundle.getSerializable("registry");
-            System.out.println("id pego" + registryBundle.getId());
-        } catch (Exception e) {
-            e.getMessage();
-        }
+
         setView();
-
-        if (registryBundle != null) {
-            setRegistryFromBundle();
-        }
-
-        dialogUtil = new DialogUtil(getActivity());
 
         return view;
     }
@@ -122,6 +102,10 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         editTextLeaveTime.setText(registryBundle.getLeaveString());
         editTextRequiredTime.setText(registryBundle.getRequiredTimeToWorkString());
         editTextPercentExtraWork.setText(String.valueOf(registryBundle.getPercent()));
+        imageUtil.putImageInImageView(imageViewEntrance, registryBundle.getImageEntrance());
+        imageUtil.putImageInImageView(imageViewLeave, registryBundle.getImageLeave());
+        imageUtil.putImageInImageView(imageViewEntranceLunch, registryBundle.getImageEntranceLunch());
+        imageUtil.putImageInImageView(imageViewLeaveLunch, registryBundle.getImageLeaveLunch());
 
         //System.out.println("getObservation: " + registryBundle.getObservationString());
 
@@ -137,6 +121,33 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         if (registryBundle.getObservationString().equals(enumObservation.ABSENCE.toString())) {
             radioButtonAbsence.setChecked(true);
         }
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        imageUtil = new ImageUtil(getContext());
+        dao = new Dao(getActivity());
+
+        observation = enumObservation.NORMAL;
+        fragmentController = new FragmentController(getFragmentManager());
+        registryBundle = null;
+        Bundle bundle = null;
+        bundle = getArguments();
+        try {
+            registryBundle = (Registry) bundle.getSerializable("registry");
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+
+
+        if (registryBundle != null) {
+            setRegistryFromBundle();
+        }
+
+        dialogUtil = new DialogUtil(getActivity());
 
     }
 
@@ -175,17 +186,26 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         cardViewEntrance.setOnClickListener(this);
 
         cardViewEntranceLunch = view.findViewById(R.id.cardView_entranceLunch_AddRegistry);
+        cardViewEntranceLunch.setOnClickListener(this);
 
         cardViewLeave = view.findViewById(R.id.cardView_leave_AddRegistry);
+        cardViewLeave.setOnClickListener(this);
 
         cardViewLeaveLunch = view.findViewById(R.id.cardView_leaveLunch_AddRegistry);
+        cardViewLeaveLunch.setOnClickListener(this);
 
         imageViewEntrance = view.findViewById(R.id.imageView_entrance_addRegistry);
+
+        imageViewLeave = view.findViewById(R.id.imageView_leave_addRegistry);
+
+        imageViewEntranceLunch = view.findViewById(R.id.imageView_entranceLunch_addRegistry);
+
+        imageViewLeaveLunch = view.findViewById(R.id.imageView_leaveLunch_addRegistry);
 
         ImageButton saveButton = view.findViewById(R.id.button_save_registry);
         saveButton.setOnClickListener(this);
 
-
+        completeAutomaticPercentExtraSalaryAndRequiredTimeField();
     }
 
     private void completeAutomaticPercentExtraSalaryAndRequiredTimeField() {
@@ -196,7 +216,10 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        //arrumar bug que ao selecionar o mes, retorna sempre o valor do mes com -1 do que deveria
+        /*month++ serve para arrumar o bug que retorna sempre o numero do mês anterior
+        Também verifico se o mês ou o dia é menor que 10 para adicionar um 0 na frente, pois é necessario para o
+        SimpleFormatData
+         */
         month++;
         String monthCustom = String.valueOf(month);
         String day = String.valueOf(dayOfMonth);
@@ -207,20 +230,31 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
             day = "0" + day;
         String date = day + "/" + monthCustom + "/" + year;
 
-        Dao dao = new Dao(getActivity());
 
-        if (dao.isDateSet(date)) {
-            dialogUtil.infoDialog("Data já cadastrada");
-        } else {
+        //Irá verificar se a Data já existe no banco de dados, se existir não irá adicionar
+        if (checkDateFromDao(date)) {
             editTextSetDataOrTimeFromPicker.setText(date);
         }
 
 
     }
 
+    private boolean checkDateFromDao(String date) {
+        if (dao.isDateSet(date)) {
+            dialogUtil.infoDialog("Data já cadastrada");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        /*
+        Verifica se  a hora e/ou minuto é menor que 10 para colocar o 0 da frente
+        Para ficar no formato do SimpleDataFormat
+         */
         String hour;
         String minutes;
 
@@ -398,7 +432,6 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     @Override
     public void onResume() {
         super.onResume();
-        completeAutomaticPercentExtraSalaryAndRequiredTimeField();
     }
 
     @Override
@@ -435,31 +468,49 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
                 validator();
                 break;
             case R.id.cardView_entrance_AddRegistry:
-                imagePathEntrance = getContext().getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
-                photoFile = new File(imagePathEntrance);
-
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                galleryIntent.setType("image/*");
-
-                Intent chooser = Intent.createChooser(galleryIntent, "Selecione a imagem");
-
-
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile)); //add file ure (photo is saved here)
-                Intent[] extraIntents = {cameraIntent};
-                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
-
-                /*Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                imagePathEntrance = getContext().getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
-                File arquivoFoto = new File(imagePathEntrance);
-                intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));*/
-
-
-                startActivityForResult(chooser, 1);
-
-
+                imagePathEntrance = getNewPath();
+                imagePathActually = imagePathEntrance;
+                startIntent();
+                break;
+            case R.id.cardView_leave_AddRegistry:
+                imagePathLeave = getNewPath();
+                imagePathActually = imagePathLeave;
+                startIntent();
+                break;
+            case R.id.cardView_leaveLunch_AddRegistry:
+                imagePathLeaveLunch = getNewPath();
+                imagePathActually = imagePathLeaveLunch;
+                startIntent();
+                break;
+            case R.id.cardView_entranceLunch_AddRegistry:
+                imagePathEntranceLunch = getNewPath();
+                imagePathActually = imagePathEntranceLunch;
+                startIntent();
                 break;
         }
+    }
+
+    public String getNewPath(){
+        return getContext().getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpeg";
+    }
+
+    private void startIntent() {
+        photoFile = new File(imagePathActually);
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galleryIntent.setType("image/*");
+        galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+
+
+        Intent chooser = Intent.createChooser(galleryIntent, "Selecione a imagem");
+
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));//add file ure (photo is saved here)
+        Intent[] extraIntents = {cameraIntent};
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+        startActivityForResult(chooser, 1);
     }
 
     private void copyFile(File sourceFile, File destFile) throws IOException {
@@ -492,24 +543,50 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
             if (resultCode == Activity.RESULT_OK) {
                 dialogUtil.showToast("Imagem recebida", Toast.LENGTH_LONG);
 
-                // Bundle extras = data.getExtras();
-                // Bitmap imageBitmap = (Bitmap) extras.get("data");
-                //imageViewEntrance.setImageBitmap(imageBitmap);
-                Bitmap bitmap;
-                try {
-                    bitmap = BitmapFactory.decodeFile(imagePathEntrance);
-                }catch (Exception e){
-                    bitmap = BitmapFactory.decodeFile(data.getData().getPath());
-                }
-                Bitmap bitmapReduzido = null;
-                bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 1920, 1080, true);
-                imageViewEntrance.setImageBitmap(bitmapReduzido);
-                imageViewEntrance.setScaleType(ImageView.ScaleType.FIT_XY);
-                imageViewEntrance.setTag(imagePathEntrance);
 
+                if (data == null) {
+                    imageUtil.compressImage(imagePathActually);
+                    imageUtil.putImageInImageView(checkImageViewSelected(), imagePathActually);
+                } else {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContext().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    File filePath = new File(picturePath);
+                    try {
+                        copyFile(filePath, photoFile);
+                    } catch (IOException io) {
+                        io.printStackTrace();
+                    }
+
+
+                    System.out.println("Retorno" + imagePathActually);
+
+
+                    imageUtil.compressImage(imagePathActually);
+                    imageUtil.putImageInImageView(checkImageViewSelected(), imagePathActually);
+                }
             }
         }
     }
+
+    private ImageView checkImageViewSelected() {
+        if (imagePathActually.equals(imagePathEntrance))
+            return imageViewEntrance;
+        if (imagePathLeave.equals(imagePathActually))
+            return imageViewLeave;
+        if (imagePathEntranceLunch.equals(imagePathActually))
+            return imageViewEntranceLunch;
+        if (imagePathLeaveLunch.equals(imagePathActually))
+            return imageViewLeaveLunch;
+
+        return null;
+    }
+
 
     private void timePickerDialog() {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -536,11 +613,9 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
     private void validator() {
         if (editTextDateWorked.getText().toString().equals("")) {
-            System.out.println("Não salvou porque DataWorked está vazio");
             editTextDateWorked.setHintTextColor(Color.RED);
             dialogUtil.infoDialog("Complete o campo em vermelho para salvar!");
         } else {
-            System.out.println("Salvou!");
             dialogUtil.showToast("Ponto salvo!", Toast.LENGTH_SHORT);
             createObjectRegistry();
             fragmentController.goBackFragment();
@@ -549,7 +624,6 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
     private void createObjectRegistry() {
         Registry registry = new Registry();
-        DateUtil dateUtil = new DateUtil();
 
         if (radioButtonAbsence.isChecked())
             registry.setObservation(enumObservation.ABSENCE);
@@ -566,30 +640,43 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         if (radioButtonNothing.isChecked())
             registry.setObservation(enumObservation.NORMAL);
 
-        registry.setDay(dateUtil.convertStringDateToCalendar(editTextDateWorked.getText().toString()));
-        registry.setEntrance(dateUtil.convertStringTimeToCalendar(editTextEntranceTime.getText().toString()));
-        registry.setEntranceLunch(dateUtil.convertStringTimeToCalendar(editTextEntranceLunchTime.getText().toString()));
-        registry.setLeaveLunch(dateUtil.convertStringTimeToCalendar(editTextLeaveLunchTime.getText().toString()));
-        registry.setLeave(dateUtil.convertStringTimeToCalendar(editTextLeaveTime.getText().toString()));
+
+        registry.setDay(DateUtil.getInstanceDateUtil().convertStringDateToCalendar(editTextDateWorked.getText().toString()));
+        registry.setEntrance(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceTime.getText().toString()));
+        registry.setEntranceLunch(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceLunchTime.getText().toString()));
+        registry.setLeaveLunch(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveLunchTime.getText().toString()));
+        registry.setLeave(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveTime.getText().toString()));
         if (!editTextPercentExtraWork.getText().toString().equals("") && !editTextPercentExtraWork.getText().toString().equals(null)) {
             registry.setPercent(Integer.parseInt(editTextPercentExtraWork.getText().toString()));
         } else {
             registry.setPercent(0);
         }
 
-        registry.setRequiredTimeToWork(dateUtil.convertStringTimeToCalendar(editTextRequiredTime.getText().toString()));
+        registry.setRequiredTimeToWork(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextRequiredTime.getText().toString()));
 
-        Dao dao = new Dao(getActivity());
+
+        if (imageViewEntrance.getTag() != null)
+            registry.setImageEntrance(imageViewEntrance.getTag().toString());
+        if (imageViewLeave.getTag() != null)
+            registry.setImageLeave(imageViewLeave.getTag().toString());
+        if (imageViewEntranceLunch.getTag() != null)
+            registry.setImageEntranceLunch(imageViewEntranceLunch.getTag().toString());
+        if (imageViewLeaveLunch.getTag() != null)
+            registry.setImageLeaveLunch(imageViewLeaveLunch.getTag().toString());
+
+        insertOrSetModifyInDao(registry);
+
+
+        System.out.println(registry);
+    }
+
+    private void insertOrSetModifyInDao(Registry registry) {
         if (registryBundle != null) {
             registry.setId(registryBundle.getId());
             dao.saveModificationRegistry(registry);
         } else {
             dao.insertRegistryToDao(registry);
         }
-        dao.close();
-
-
-        System.out.println(registry);
     }
 
 
@@ -597,5 +684,9 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         this.editTextSetDataOrTimeFromPicker = editTextSetDataOrTimeFromPicker;
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dao.close();
+    }
 }
