@@ -7,8 +7,6 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +17,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -249,7 +246,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
     private boolean checkDateFromDao(String date) {
         if (dao.isDateSet(date)) {
-            dialogUtil.infoDialog("Data já cadastrada");
+            dialogUtil.infoDialog(getString(R.string.date_already_registred));
             return false;
         } else {
             return true;
@@ -289,18 +286,18 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         if (!editTextLeaveTime.getText().toString().equals("")) {
             Calendar calendarLeave = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveTime.getText().toString());
             if (calendarLeave.getTime().getTime() < calendarEntrance.getTime().getTime()) {
-                return "Horario de entrada não pode ser menor que o de saida";
+                return getString(R.string.validator_entrance_leave);
             }
         }
         if (!editTextEntranceLunchTime.getText().toString().equals("")) {
             Calendar calendarEntranceLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceLunchTime.getText().toString());
             if (calendarEntranceLunch.getTime().getTime() < calendarEntrance.getTime().getTime()) {
-                return "Horario de entrada não pode ser menor que o de entrada para almoço";
+                return getString(R.string.validator_entrance_entranceLunch);
             }
         } else if (!editTextLeaveLunchTime.getText().toString().equals("")) {
             Calendar calendarLeaveLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveLunchTime.getText().toString());
             if (calendarLeaveLunch.getTime().getTime() < calendarEntrance.getTime().getTime()) {
-                return "Horario de entrada não pode ser menor que o de entrada para almoço";
+                return getString(R.string.validator_entrance_leaveLunch);
             }
         }
 
@@ -313,19 +310,19 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         if (!editTextEntranceTime.getText().toString().equals("")) {
             Calendar calendarEntrance = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceTime.getText().toString());
             if (calendarLeave.getTime().getTime() < calendarEntrance.getTime().getTime()) {
-                return "Horario de entrada não pode ser menor que o de saida";
+                return getString(R.string.validator_leave_entrance);
             }
         }
         if (!editTextEntranceLunchTime.getText().toString().equals("")) {
             Calendar calendarEntranceLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceLunchTime.getText().toString());
             if (calendarEntranceLunch.getTime().getTime() > calendarLeave.getTime().getTime()) {
-                return "Horario de entrada não pode ser menor que o de entrada para almoço";
+                return getString(R.string.validator_leave_entranceLunch);
             }
         }
         if (!editTextLeaveLunchTime.getText().toString().equals("")) {
             Calendar calendarLeaveLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveLunchTime.getText().toString());
             if (calendarLeaveLunch.getTime().getTime() > calendarLeave.getTime().getTime()) {
-                return "Horario de entrada não pode ser menor que o de entrada para almoço";
+                return getString(R.string.validator_leave_leaveLunch);
             }
         }
 
@@ -337,19 +334,19 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         if (!editTextLeaveTime.getText().toString().equals("")) {
             Calendar calendarLeave = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveTime.getText().toString());
             if (calendarLeave.getTime().getTime() < calendarEntranceLunch.getTime().getTime()) {
-                return "Horario de almoço não pode ser maior que o de saida";
+                return getString(R.string.validator_entranceLunch_leave);
             }
         }
         if (!editTextEntranceTime.getText().toString().equals("")) {
             Calendar calendarEntrance = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceTime.getText().toString());
             if (calendarEntranceLunch.getTime().getTime() < calendarEntrance.getTime().getTime()) {
-                return "Horario de entrada do almoço não pode ser menor que o de entrada";
+                return getString(R.string.validator_entranceLunch_entrance);
             }
         }
         if (!editTextLeaveLunchTime.getText().toString().equals("")) {
             Calendar calendarLeaveLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveLunchTime.getText().toString());
             if (calendarLeaveLunch.getTime().getTime() < calendarEntranceLunch.getTime().getTime()) {
-                return "Horario de entrada do almoço não pode ser maior do que entrada para almoço";
+                return getString(R.string.validator_entranceLunch_leaveLunch);
             }
         }
 
@@ -361,19 +358,19 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         if (!editTextLeaveTime.getText().toString().equals("")) {
             Calendar calendarLeave = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveTime.getText().toString());
             if (calendarLeave.getTime().getTime() < calendarLeaveLunch.getTime().getTime()) {
-                return "Horario de almoço não pode ser maior que o de saida";
+                return getString(R.string.validator_leaveLunch_leave);
             }
         }
         if (!editTextEntranceTime.getText().toString().equals("")) {
             Calendar calendarEntrance = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceTime.getText().toString());
             if (calendarLeaveLunch.getTime().getTime() < calendarEntrance.getTime().getTime()) {
-                return "Horario de entrada do almoço não pode ser menor que o de entrada";
+                return getString(R.string.validator_leaveLunch_entrance);
             }
         }
         if (!editTextEntranceLunchTime.getText().toString().equals("")) {
             Calendar calendarEntranceLunch = DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceLunchTime.getText().toString());
             if (calendarLeaveLunch.getTime().getTime() < calendarEntranceLunch.getTime().getTime()) {
-                return "Horario de entrada do almoço não pode ser maior do que entrada para almoço";
+                return getString(R.string.validator_leaveLunch_entranceLunch);
             }
         }
 
@@ -599,7 +596,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                dialogUtil.showToast("Imagem recebida", Toast.LENGTH_LONG);
+                dialogUtil.showToast(getString(R.string.image_received), Toast.LENGTH_LONG);
 
 
                 if (data == null) {

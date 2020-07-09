@@ -1,6 +1,8 @@
 package br.com.dhsoftware.workerday.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.fragments.AddRegistryFragment;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.util.DateUtil;
+import br.com.dhsoftware.workerday.util.DialogUtil;
 import br.com.dhsoftware.workerday.util.Money;
 import br.com.dhsoftware.workerday.util.SalaryUtil;
 
@@ -91,14 +94,28 @@ public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<Recycl
             imageViewDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = recyclerView.getChildAdapterPosition(itemView);
-                    Dao dao = new Dao(context);
-                    dao.deleteRegistryFromDao(registries.get(position));
-                    dao.close();
+                    final int position = recyclerView.getChildAdapterPosition(itemView);
 
+                    AlertDialog.Builder builderAlertDialog = new AlertDialog.Builder(context);
+                    builderAlertDialog.setMessage(R.string.warning_delete);
+                    builderAlertDialog.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Dao dao = new Dao(context);
+                            dao.deleteRegistryFromDao(registries.get(position));
+                            dao.close();
+                            registries.remove(position);
+                            notifyItemRemoved(position);
+                            dialog.cancel();
+                        }
+                    });
+                    builderAlertDialog.setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).show();
 
-                    registries.remove(position);
-                    notifyItemRemoved(position);
 
                     /*registries.remove(position);
                     recyclerView.removeViewAt(position);

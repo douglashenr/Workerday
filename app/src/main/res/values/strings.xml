@@ -1,14 +1,12 @@
 <resources>
     <string name="app_name">WorkerDay</string>
     <string name="cadastrar_ponto">CADASTRAR PONTO</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="welcome_text">Para uma melhor experiencia, adicione as seguintes informações:</string>
-    <string name="salary_title">Salario:</string>
+    <string name="welcome_text">Para uma melhor experiência, adicione as seguintes informações:</string>
+    <string name="salary_title">Salário:</string>
     <string name="deduction_title">Deduções:</string>
     <string name="percent_extra_salary_default_title">porcentagem hora extra padrão:</string>
-    <string name="time_for_week_title">Carga horaria semanal:</string>
+    <string name="time_for_week_title">Carga horária semanal:</string>
     <string name="settings_title">CONFIGURAÇÕES</string>
     <string name="save_applications_settings">salvar configurações da aplicação</string>
     <string name="example_time_for_week">ex: 44h</string>
@@ -19,10 +17,10 @@
     <string name="welcome">BEM-VINDO AO WORKERDAY!</string>
     <string name="day_title">Dia:</string>
     <string name="dayWorker">Dia de trabalho \'\'17/07/2008\'\' *</string>
-    <string name="entrance_time_title">Horario entrada:</string>
-    <string name="leave_time_tite">Horario saida:</string>
-    <string name="entrance_time">Horario de entrada</string>
-    <string name="autofill_entrance_day">Colocar horario de entrada do serviço</string>
+    <string name="entrance_time_title">Horário entrada:</string>
+    <string name="leave_time_tite">Horário saída:</string>
+    <string name="entrance_time">Horário de entrada</string>
+    <string name="autofill_entrance_day">Colocar horário de entrada do serviço</string>
     <string name="autofill_dataworked">Dia em que trabalhou</string>
     <string name="entrance_lunch_title">Inicio almoço:</string>
     <string name="leave_lunch_title">Fim almoço:</string>
@@ -30,11 +28,11 @@
     <string name="autofill_entrance_lunch">Coloque ida para almoço</string>
     <string name="leave_lunch">Volta do almoço</string>
     <string name="autofill_leave_lunch">coloque volta do almoço</string>
-    <string name="leave">Horario de saida</string>
-    <string name="autofill_leave">coloque o horario de saida do serviço</string>
-    <string name="required_time_to_work_title">Carga horaria necessaria:</string>
-    <string name="required_time_to_work">Carga horaria necessaria</string>
-    <string name="autofill_required_time_to_work">Coloque a carga horaria necessaria do dia</string>
+    <string name="leave">Horário de saída</string>
+    <string name="autofill_leave">coloque o horário de saida do serviço</string>
+    <string name="required_time_to_work_title">Carga horária necessária:</string>
+    <string name="required_time_to_work">Carga horária necessária</string>
+    <string name="autofill_required_time_to_work">Coloque a carga horária necessária do dia</string>
     <string name="percent_title">Porcentagem:</string>
     <string name="percent_extra_salary_title">Porcentagem hora extra do dia</string>
     <string name="autofill_percent_day">Coloque a porcentagem da hora extra do dia</string>
@@ -44,14 +42,29 @@
     <string name="declaration">Declaração de Horas</string>
     <string name="absence">Falta</string>
     <string name="registry_image_title">Imagem do ponto:</string>
-    <string name="content_description_add_image_entrance">Adicionar a imagem do ponto de entrada pela camera ou galeria</string>
-    <string name="content_description_add_image_leave">Adicionar a imagem do ponto de saida pela camera ou galeria</string>
-    <string name="content_description_add_image_entrance_lunch">Adicionar a imagem do ponto de entrada para almoço pela camera ou galeria</string>
-    <string name="content_description_add_image_leave_lunch">Adicionar a imagem do ponto de volta do almoço pela camera ou galeria</string>
+    <string name="content_description_add_image_entrance">Adicionar a imagem do ponto de entrada pela câmera ou galeria</string>
+    <string name="content_description_add_image_leave">Adicionar a imagem do ponto de saída pela câmera ou galeria</string>
+    <string name="content_description_add_image_entrance_lunch">Adicionar a imagem do ponto de entrada para almoço pela câmera ou galeria</string>
+    <string name="content_description_add_image_leave_lunch">Adicionar a imagem do ponto de volta do almoço pela câmera ou galeria</string>
     <string name="entrance">Entrada</string>
     <string name="save_registry">Salvar ponto</string>
-    <string name="leave_image">Saida</string>
+    <string name="leave_image">Saída</string>
     <string name="time">horas</string>
     <string name="error_validator">Complete o campo em vermelho para salvar!</string>
     <string name="registry_save">Ponto salvo!</string>
+    <string name="validator_leaveLunch_entranceLunch">Horário de entrada do almoço não pode ser maior do que saída para almoço</string>
+    <string name="validator_leaveLunch_entrance">Horário de entrada do almoço não pode ser menor que o de entrada</string>
+    <string name="validator_leaveLunch_leave">Horário de saída do almoço não pode ser maior que o de saída</string>
+    <string name="validator_entranceLunch_leaveLunch">Horário de entrada do almoço não pode ser maior do que saída para almoço</string>
+    <string name="validator_entranceLunch_entrance">Horário de entrada do almoço não pode ser menor que o de entrada</string>
+    <string name="validator_entranceLunch_leave">Horário de almoço não pode ser maior que o de saída</string>
+    <string name="validator_leave_leaveLunch">Horário de saída não pode ser menor que o de volta do almoço</string>
+    <string name="validator_leave_entranceLunch">Horário de saída não pode ser menor que o de entrada para almoço</string>
+    <string name="validator_leave_entrance">Horário de saída não pode ser menor que o de entrada</string>
+    <string name="validator_entrance_leave">Horário de entrada não pode ser maior que o de saída</string>
+    <string name="validator_entrance_entranceLunch">Horário de entrada não pode ser maior que o de entrada para almoço</string>
+    <string name="validator_entrance_leaveLunch">Horário de entrada não pode ser maior que o de saída para almoço</string>
+    <string name="date_already_registred">Data já cadastrada</string>
+    <string name="image_received">Imagem recebida!</string>
+    <string name="warning_delete">Tem certeza que deseja excluir essa ponto?</string>
 </resources>
