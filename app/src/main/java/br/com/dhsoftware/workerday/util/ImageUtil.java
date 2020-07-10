@@ -42,6 +42,8 @@ public class ImageUtil {
     int actualHeight = options.outHeight;
     int actualWidth = options.outWidth;
 
+    System.out.println(actualHeight + "+" + actualWidth);
+
 //      max Height and width values of the compressed image is taken as 816x612
 
     float maxHeight = 816.0f;
@@ -156,7 +158,7 @@ public class ImageUtil {
 
     }
 
-    private String getRealPathFromURI(String contentURI) {
+    public String getRealPathFromURI(String contentURI) {
         Uri contentUri = Uri.parse(contentURI);
         Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
         if (cursor == null) {

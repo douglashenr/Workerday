@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.dhsoftware.workerday.FragmentController;
 import br.com.dhsoftware.workerday.R;
@@ -23,7 +22,6 @@ import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.fragments.AddRegistryFragment;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.util.DateUtil;
-import br.com.dhsoftware.workerday.util.DialogUtil;
 import br.com.dhsoftware.workerday.util.Money;
 import br.com.dhsoftware.workerday.util.SalaryUtil;
 

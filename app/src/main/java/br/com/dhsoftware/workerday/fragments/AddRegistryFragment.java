@@ -104,11 +104,27 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         editTextLeaveTime.setText(registryBundle.getLeaveString());
         editTextRequiredTime.setText(registryBundle.getRequiredTimeToWorkString());
         editTextPercentExtraWork.setText(String.valueOf(registryBundle.getPercent()));
-        imageUtil.putImageInImageView(imageViewEntrance, registryBundle.getImageEntrance());
-        imageUtil.putImageInImageView(imageViewLeave, registryBundle.getImageLeave());
-        imageUtil.putImageInImageView(imageViewEntranceLunch, registryBundle.getImageEntranceLunch());
-        imageUtil.putImageInImageView(imageViewLeaveLunch, registryBundle.getImageLeaveLunch());
 
+        if (registryBundle.getImageEntrance() != null) {
+            if (!registryBundle.getImageEntrance().equals(""))
+                imageUtil.putImageInImageView(imageViewEntrance, registryBundle.getImageEntrance());
+        }
+
+
+        if (registryBundle.getImageEntrance() != null) {
+            if (!registryBundle.getImageEntrance().equals("") || registryBundle.getImageLeave() == null)
+                imageUtil.putImageInImageView(imageViewLeave, registryBundle.getImageLeave());
+        }
+
+        if (registryBundle.getImageEntrance() != null) {
+            if (!registryBundle.getImageEntrance().equals(""))
+                imageUtil.putImageInImageView(imageViewEntranceLunch, registryBundle.getImageEntranceLunch());
+        }
+
+        if (registryBundle.getImageLeaveLunch() != null) {
+            if (!registryBundle.getImageLeaveLunch().equals(""))
+                imageUtil.putImageInImageView(imageViewLeaveLunch, registryBundle.getImageLeaveLunch());
+        }
         //System.out.println("getObservation: " + registryBundle.getObservationString());
 
         if (registryBundle.getObservationString().equals(enumObservation.NORMAL.toString())) {
@@ -520,10 +536,12 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     public void isTherePermission() {
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Manifest.permission.READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 requestPermission();
             } else {
                 requestPermission();
@@ -536,7 +554,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
     }
 
@@ -549,8 +567,9 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         if (isTherePermission) {
             photoFile = new File(imagePathActually);
 
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            galleryIntent.setType("image/*");
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+            //galleryIntent.setType("image/*");
+            galleryIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
             galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
 
 
@@ -618,10 +637,6 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
                         io.printStackTrace();
                     }
 
-
-                    System.out.println("Retorno" + imagePathActually);
-
-
                     imageUtil.compressImage(imagePathActually);
                     imageUtil.putImageInImageView(checkImageViewSelected(), imagePathActually);
                 }
@@ -632,11 +647,11 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     private ImageView checkImageViewSelected() {
         if (imagePathActually.equals(imagePathEntrance))
             return imageViewEntrance;
-        if (imagePathLeave.equals(imagePathActually))
+        if (imagePathActually.equals(imagePathLeave))
             return imageViewLeave;
-        if (imagePathEntranceLunch.equals(imagePathActually))
+        if (imagePathActually.equals(imagePathEntranceLunch))
             return imageViewEntranceLunch;
-        if (imagePathLeaveLunch.equals(imagePathActually))
+        if (imagePathActually.equals(imagePathLeaveLunch))
             return imageViewLeaveLunch;
 
         return null;
@@ -668,8 +683,8 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
     private void validator() {
         if (editTextDateWorked.getText().toString().equals("")) {
-            if(radioButtonDeclaration.isChecked()){
-                if(editTextTimeDeclaration.getText().toString().equals("")){
+            if (radioButtonDeclaration.isChecked()) {
+                if (editTextTimeDeclaration.getText().toString().equals("")) {
                     editTextTimeDeclaration.setHintTextColor(Color.RED);
                 }
             }
@@ -706,7 +721,9 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         registry.setEntranceLunch(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextEntranceLunchTime.getText().toString()));
         registry.setLeaveLunch(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveLunchTime.getText().toString()));
         registry.setLeave(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveTime.getText().toString()));
-        if (!editTextPercentExtraWork.getText().toString().equals("") && !editTextPercentExtraWork.getText().toString().equals(null)) {
+        //if (!editTextPercentExtraWork.getText().toString().equals("") && !editTextPercentExtraWork.getText().toString().equals(null)) {
+
+        if (!editTextPercentExtraWork.getText().toString().equals("")) {
             registry.setPercent(Integer.parseInt(editTextPercentExtraWork.getText().toString()));
         } else {
             registry.setPercent(0);
