@@ -16,7 +16,7 @@
     <string name="example_date_listview">Data: 25/12/1998</string>
     <string name="welcome">BEM-VINDO AO WORKERDAY!</string>
     <string name="day_title">Dia:</string>
-    <string name="dayWorker">Dia de trabalho \'\'17/07/2008\'\' *</string>
+    <string name="dayWorker"> Dia de trabalho \'\'17/07/2008\'\' *</string>
     <string name="entrance_time_title">Horário entrada:</string>
     <string name="leave_time_tite">Horário saída:</string>
     <string name="entrance_time">Horário de entrada</string>
@@ -26,15 +26,15 @@
     <string name="leave_lunch_title">Fim almoço:</string>
     <string name="entrance_lunch">Ida ao almoço</string>
     <string name="autofill_entrance_lunch">Coloque ida para almoço</string>
-    <string name="leave_lunch">Volta do almoço</string>
+    <string name="leave_lunch">Volta do almoço </string>
     <string name="autofill_leave_lunch">coloque volta do almoço</string>
-    <string name="leave">Horário de saída</string>
+    <string name="leave">Horário de saída </string>
     <string name="autofill_leave">coloque o horário de saida do serviço</string>
     <string name="required_time_to_work_title">Carga horária necessária:</string>
     <string name="required_time_to_work">Carga horária necessária</string>
     <string name="autofill_required_time_to_work">Coloque a carga horária necessária do dia</string>
     <string name="percent_title">Porcentagem:</string>
-    <string name="percent_extra_salary_title">Porcentagem hora extra do dia</string>
+    <string name="percent_extra_salary_title">Porcentagem hora extra do dia:</string>
     <string name="autofill_percent_day">Coloque a porcentagem da hora extra do dia</string>
     <string name="observation_title">Observação:</string>
     <string name="nothing">Nenhuma</string>

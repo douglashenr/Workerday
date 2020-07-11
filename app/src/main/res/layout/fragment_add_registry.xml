@@ -52,6 +52,7 @@
                     app:layout_constraintTop_toTopOf="@+id/editText_entranceTime_registry" />
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,6 +63,7 @@
                     tools:ignore="SmallSp" />
 
                 <EditText
+                    android:drawableLeft="@drawable/ic_date_range_black_24dp"
                     android:id="@+id/editText_dateWorked_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,6 +77,7 @@
                     tools:ignore="TextFields" />
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -85,6 +88,7 @@
                     tools:ignore="SmallSp" />
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,6 +99,7 @@
                     tools:ignore="SmallSp" />
 
                 <EditText
+                    android:drawableRight="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_entranceTime_registry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -108,6 +113,7 @@
                     tools:ignore="TextFields" />
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -118,6 +124,7 @@
                     tools:ignore="SmallSp" />
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -128,6 +135,7 @@
                     tools:ignore="SmallSp" />
 
                 <EditText
+                    android:drawableRight="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_entranceLunchTime_registry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -141,6 +149,7 @@
                     tools:ignore="TextFields" />
 
                 <EditText
+                    android:drawableRight="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_leaveLunchTime_registry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -155,6 +164,7 @@
                     tools:ignore="TextFields" />
 
                 <EditText
+                    android:drawableRight="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_leaveTime_registry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -169,6 +179,7 @@
                     tools:ignore="TextFields" />
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -179,6 +190,7 @@
                     tools:ignore="SmallSp" />
 
                 <EditText
+                    android:drawableRight="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_requiredTimeToWorkTime_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -192,6 +204,7 @@
                     tools:ignore="TextFields" />
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -226,6 +239,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/editText_porcentExtraWork_registry">
 
                     <TextView
+                        android:textColor="@color/colorSecondaryText"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"
@@ -293,6 +307,7 @@
 
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/textView_imageRegistry_addRegistry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
