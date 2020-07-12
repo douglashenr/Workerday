@@ -63,7 +63,7 @@
                     tools:ignore="SmallSp" />
 
                 <EditText
-                    android:drawableLeft="@drawable/ic_date_range_black_24dp"
+                    android:drawableStart="@drawable/ic_date_range_black_24dp"
                     android:id="@+id/editText_dateWorked_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -99,11 +99,13 @@
                     tools:ignore="SmallSp" />
 
                 <EditText
-                    android:drawableRight="@drawable/ic_clear_black_24dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_entranceTime_registry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:hint="@string/entrance_time"
                     android:importantForAutofill="no"
                     android:textSize="15sp"
@@ -135,11 +137,13 @@
                     tools:ignore="SmallSp" />
 
                 <EditText
-                    android:drawableRight="@drawable/ic_clear_black_24dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_entranceLunchTime_registry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:hint="@string/entrance_lunch"
                     android:importantForAutofill="no"
                     android:textSize="15sp"
@@ -149,11 +153,13 @@
                     tools:ignore="TextFields" />
 
                 <EditText
-                    android:drawableRight="@drawable/ic_clear_black_24dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_leaveLunchTime_registry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:gravity="end"
                     android:hint="@string/leave_lunch"
                     android:importantForAutofill="no"
@@ -164,11 +170,13 @@
                     tools:ignore="TextFields" />
 
                 <EditText
-                    android:drawableRight="@drawable/ic_clear_black_24dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_leaveTime_registry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:gravity="end"
                     android:hint="@string/leave"
                     android:importantForAutofill="no"
@@ -190,11 +198,13 @@
                     tools:ignore="SmallSp" />
 
                 <EditText
-                    android:drawableRight="@drawable/ic_clear_black_24dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/ic_clear_black_24dp"
                     android:id="@+id/editText_requiredTimeToWorkTime_registry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:hint="@string/required_time_to_work"
                     android:importantForAutofill="no"
                     android:textSize="15sp"
@@ -290,6 +300,7 @@
                 </LinearLayout>
 
                 <EditText
+                    android:inputType="time"
                     android:visibility="invisible"
                     android:id="@+id/editText_declaration_addRegistry"
                     android:layout_width="wrap_content"
@@ -303,7 +314,8 @@
                     app:layout_constraintStart_toStartOf="@+id/linearLayout"
                     app:layout_constraintTop_toBottomOf="@+id/editText_porcentExtraWork_registry"
                     app:layout_constraintVertical_bias="0.65999997"
-                    tools:ignore="SmallSp" />
+                    tools:ignore="SmallSp"
+                    android:importantForAutofill="no" />
 
 
                 <TextView

@@ -22,7 +22,7 @@ public class SalaryUtil {
         money = new Money();
     }
 
-    public Double calculateSalaryPerHour(String salary, int hourForWeek) {
+    Double calculateSalaryPerHour(String salary, int hourForWeek) {
         double moneyPerHour = 0.0;
         try {
             moneyPerHour = money.moneyToDouble(salary, Locale.FRANCE).doubleValue() / (hourForWeek * 5);
@@ -35,7 +35,6 @@ public class SalaryUtil {
 
     public double calculateINSS() {
         double salary = user.getSalary();
-        System.out.println("salario em calculateINSS = " + salary);
         if (salary <= 1045) {
             return money.doubleWithTwiDecimal(salary * 0.075);
         } else if (salary > 1045 && salary <= 2080.60) {
@@ -50,7 +49,6 @@ public class SalaryUtil {
     }
 
     public double calculateIRRF() {
-        System.out.println("SALARIO DO USUARIO: " + user.getSalary());
         double salary = user.getSalary() - calculateINSS();
         if (salary <= 1903.98) {
             return 0.00;
@@ -82,13 +80,13 @@ public class SalaryUtil {
 
         double salaryDay = user.getSalaryPerHour() * DateUtil.getInstanceDateUtil().getHourInt(registry.getRequiredTimeToWorkString());
         salaryDay += (user.getSalaryPerHour() / 60) * DateUtil.getInstanceDateUtil().getMinuteInt(registry.getRequiredTimeToWorkString());
-        System.out.println("retorno SalarioDay Minuto" + salaryDay);
+        //System.out.println("retorno SalarioDay Minuto" + salaryDay);
         if (extraTime.equals("00:00"))
             return salaryDay;
 
         double extraSalaryDouble;
 
-        System.out.println("retorno SalarioDay" + salaryDay);
+        //System.out.println("retorno SalarioDay" + salaryDay);
 
         if (extraTime.charAt(0) == '-') {
             extraTime = extraTime.substring(1);
@@ -97,9 +95,9 @@ public class SalaryUtil {
             return money.doubleWithTwiDecimal(salaryDay - extraSalaryDouble);
         } else {
             extraSalaryDouble = (user.getSalaryPerHour() * ((registry.getPercent() / 100f) + 1.0)) * DateUtil.getInstanceDateUtil().getHourInt(extraTime);
-            System.out.println("ExtraSalary 1" + extraSalaryDouble);
+            //System.out.println("ExtraSalary 1" + extraSalaryDouble);
             extraSalaryDouble += ((user.getSalaryPerHour() * ((registry.getPercent() / 100f) + 1)) / 60) * DateUtil.getInstanceDateUtil().getMinuteInt(extraTime);
-            System.out.println("ExtraSalary 1" + extraSalaryDouble);
+            //System.out.println("ExtraSalary 1" + extraSalaryDouble);
             return money.doubleWithTwiDecimal(salaryDay + extraSalaryDouble);
         }
     }

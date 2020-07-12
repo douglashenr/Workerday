@@ -156,7 +156,7 @@ public class DateUtil {
         }
     }
 
-    public int getHourInt(String time){
+    public int getHourInt(String time) {
         TimeZone timeZone = TimeZone.getDefault();
         try {
             return (int) TimeUnit.MILLISECONDS.toHours(convertStringTimeToDateObject(time).getTime()) + (int) TimeUnit.MILLISECONDS.toHours(timeZone.getOffset(convertStringTimeToCalendar(time).getTime().getTime()));
@@ -166,7 +166,7 @@ public class DateUtil {
         return 0;
     }
 
-    public int getMinuteInt (String time){
+    public int getMinuteInt(String time) {
         try {
             return (int) ((convertStringTimeToDateObject(time).getTime() / (1000 * 60)) % 60);
         } catch (Exception e) {
@@ -196,12 +196,12 @@ public class DateUtil {
     }
 
     public String calculateExtraTimeFromRegistryToString(Registry registry) {
-        System.out.println("RET" + calculateExtraTimeFromRegistryToLong(registry));
+        //System.out.println("RET" + calculateExtraTimeFromRegistryToLong(registry));
         if (calculateExtraTimeFromRegistryToLong(registry) == -4 || calculateExtraTimeFromRegistryToLong(registry) == -3 ||
                 calculateExtraTimeFromRegistryToLong(registry) == -2 || calculateExtraTimeFromRegistryToLong(registry) == -1)
             return "00:00h";
 
-        System.out.println("RET" + calculateExtraTimeFromRegistryToLong(registry));
+        //System.out.println("RET" + calculateExtraTimeFromRegistryToLong(registry));
 
 
         return getTimeLongToStringFormat(calculateExtraTimeFromRegistryToLong(registry));
@@ -268,7 +268,7 @@ public class DateUtil {
         return hour + ":" + minute + "h";
     }
 
-    public Date convertStringTimeToDateObject(String time) throws Exception {
+    private Date convertStringTimeToDateObject(String time) throws Exception {
 
         return formatTime.parse(time);
     }

@@ -37,22 +37,24 @@ public class InformationFragment extends Fragment {
 
         setView();
 
+        User user = new User(getActivity());
+        SalaryUtil salaryUtil = new SalaryUtil(user);
+        Money money = new Money();
+
+        textViewINSS.setText("INSS: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateINSS())));
+        textViewIRRF.setText("IRRF: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateIRRF())));
+        textViewNetSalary.setText("Salario liquido: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateNetSalary())));
+        textViewDeduction.setText("Deduções: R$ " + user.getUserJSON().getDeduction());
+        textViewFGTS.setText("FGTS: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateFGTS())));
+        textViewGrossSalary.setText("Base calculo: R$ " + money.doubleToStringMoney(String.valueOf(user.getSalary())));
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        User user = new User(getActivity());
-        SalaryUtil salaryUtil = new SalaryUtil(user);
-        Money money = new Money();
 
-        textViewINSS.setText("INSS: R$ " +  money.doubleToStringMoney(String.valueOf(salaryUtil.calculateINSS())));
-        textViewIRRF.setText("IRRF: R$ " +  money.doubleToStringMoney(String.valueOf(salaryUtil.calculateIRRF())));
-        textViewNetSalary.setText("Salario liquido: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateNetSalary())));
-        textViewDeduction.setText("Deduções: R$ " + user.getUserJSON().getDeduction());
-        textViewFGTS.setText("FGTS: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateFGTS())));
-        textViewGrossSalary.setText("Base calculo: R$ " + money.doubleToStringMoney(String.valueOf(user.getSalary())));
     }
 
     private void setView() {

@@ -21,7 +21,6 @@ import br.com.dhsoftware.workerday.util.DialogUtil;
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private SharedPreferences prefs = null;
-    private BottomNavigationView bottomNavigationView;
     private FragmentController fragmentController;
 
     @Override
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void setView() {
-        bottomNavigationView = findViewById(R.id.bottomNavigation_navigation_mainActivity);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation_navigation_mainActivity);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 

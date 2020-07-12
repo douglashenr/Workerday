@@ -1,6 +1,7 @@
 package br.com.dhsoftware.workerday.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -48,6 +50,7 @@ import br.com.dhsoftware.workerday.util.DateUtil;
 import br.com.dhsoftware.workerday.util.DialogUtil;
 import br.com.dhsoftware.workerday.util.ImageUtil;
 import br.com.dhsoftware.workerday.util.JSONUser;
+import br.com.dhsoftware.workerday.util.TouchEditText;
 import br.com.dhsoftware.workerday.util.enumObservation;
 
 
@@ -57,18 +60,17 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     private EditText editTextDateWorked, editTextEntranceTime, editTextEntranceLunchTime, editTextLeaveLunchTime,
             editTextLeaveTime, editTextRequiredTime, editTextPercentExtraWork, editTextTimeDeclaration;
     private EditText editTextSetDataOrTimeFromPicker;
-    private RadioGroup buttonGroup;
     private RadioButton radioButtonAtestado, radioButtonDeclaration, radioButtonNothing, radioButtonAbsence;
     private enumObservation observation;
     private Registry registryBundle;
     private FragmentController fragmentController;
-    private CardView cardViewEntrance, cardViewLeave, cardViewEntranceLunch, cardViewLeaveLunch;
     private ImageView imageViewEntrance, imageViewLeave, imageViewEntranceLunch, imageViewLeaveLunch;
     private File photoFile;
     private Dao dao;
     private ImageUtil imageUtil;
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private boolean isTherePermission = false;
+    private TouchEditText touch;
 
     private DialogUtil dialogUtil;
 
@@ -90,8 +92,23 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_add_registry, container, false);
-
+        touch = new TouchEditText();
+        imageUtil = new ImageUtil(getContext());
         setView();
+
+        registryBundle = null;
+        Bundle bundle = null;
+        bundle = getArguments();
+        try {
+            registryBundle = (Registry) Objects.requireNonNull(bundle).getSerializable("registry");
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+
+        if (registryBundle != null) {
+            setRegistryFromBundle();
+        }
 
         return view;
     }
@@ -146,52 +163,47 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     @Override
     public void onStart() {
         super.onStart();
-        imageUtil = new ImageUtil(getContext());
+
         dao = new Dao(getActivity());
 
         observation = enumObservation.NORMAL;
         fragmentController = new FragmentController(getFragmentManager());
-        registryBundle = null;
-        Bundle bundle = null;
-        bundle = getArguments();
-        try {
-            registryBundle = (Registry) bundle.getSerializable("registry");
-        } catch (Exception e) {
-            e.getMessage();
-        }
 
-
-        if (registryBundle != null) {
-            setRegistryFromBundle();
-        }
 
         dialogUtil = new DialogUtil(getActivity());
 
     }
 
+
+    @SuppressLint("ClickableViewAccessibility")
     private void setView() {
         editTextDateWorked = view.findViewById(R.id.editText_dateWorked_registry);
         editTextDateWorked.setOnClickListener(this);
 
         editTextEntranceTime = view.findViewById(R.id.editText_entranceTime_registry);
         editTextEntranceTime.setOnClickListener(this);
+        editTextEntranceTime.setOnTouchListener(touch);
 
         editTextEntranceLunchTime = view.findViewById(R.id.editText_entranceLunchTime_registry);
         editTextEntranceLunchTime.setOnClickListener(this);
+        editTextEntranceLunchTime.setOnTouchListener(touch);
 
         editTextLeaveLunchTime = view.findViewById(R.id.editText_leaveLunchTime_registry);
         editTextLeaveLunchTime.setOnClickListener(this);
+        editTextLeaveLunchTime.setOnTouchListener(touch);
 
         editTextLeaveTime = view.findViewById(R.id.editText_leaveTime_registry);
         editTextLeaveTime.setOnClickListener(this);
+        editTextLeaveTime.setOnTouchListener(touch);
 
         editTextRequiredTime = view.findViewById(R.id.editText_requiredTimeToWorkTime_registry);
         editTextRequiredTime.setOnClickListener(this);
+        editTextRequiredTime.setOnTouchListener(touch);
 
         editTextPercentExtraWork = view.findViewById(R.id.editText_porcentExtraWork_registry);
         editTextPercentExtraWork.setOnClickListener(this);
 
-        buttonGroup = view.findViewById(R.id.button_group_registry);
+        RadioGroup buttonGroup = view.findViewById(R.id.button_group_registry);
         buttonGroup.setOnCheckedChangeListener(this);
 
         radioButtonAtestado = view.findViewById(R.id.button_atestado_registry);
@@ -200,16 +212,16 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         radioButtonAbsence = view.findViewById(R.id.button_absence_registry);
 
 
-        cardViewEntrance = view.findViewById(R.id.cardView_entrance_AddRegistry);
+        CardView cardViewEntrance = view.findViewById(R.id.cardView_entrance_AddRegistry);
         cardViewEntrance.setOnClickListener(this);
 
-        cardViewEntranceLunch = view.findViewById(R.id.cardView_entranceLunch_AddRegistry);
+        CardView cardViewEntranceLunch = view.findViewById(R.id.cardView_entranceLunch_AddRegistry);
         cardViewEntranceLunch.setOnClickListener(this);
 
-        cardViewLeave = view.findViewById(R.id.cardView_leave_AddRegistry);
+        CardView cardViewLeave = view.findViewById(R.id.cardView_leave_AddRegistry);
         cardViewLeave.setOnClickListener(this);
 
-        cardViewLeaveLunch = view.findViewById(R.id.cardView_leaveLunch_AddRegistry);
+        CardView cardViewLeaveLunch = view.findViewById(R.id.cardView_leaveLunch_AddRegistry);
         cardViewLeaveLunch.setOnClickListener(this);
 
         imageViewEntrance = view.findViewById(R.id.imageView_entrance_addRegistry);
@@ -533,7 +545,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         }
     }
 
-    public void isTherePermission() {
+    private void isTherePermission() {
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getContext(),
@@ -743,8 +755,6 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
         insertOrSetModifyInDao(registry);
 
-
-        System.out.println(registry);
     }
 
     private void insertOrSetModifyInDao(Registry registry) {
@@ -786,4 +796,25 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         super.onDestroy();
         dao.close();
     }
+
+    /*@Override
+    public boolean onTouch(View v, MotionEvent event) {
+        final int DRAWABLE_LEFT = 0;
+        final int DRAWABLE_TOP = 1;
+        final int DRAWABLE_RIGHT = 2;
+        final int DRAWABLE_BOTTOM = 3;
+
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            EditText editText = (EditText) v;
+            if(event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())){
+                editText.setText("");
+                return true;
+            }
+        }
+
+
+
+
+                return false;
+    }*/
 }

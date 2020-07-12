@@ -55,8 +55,7 @@ public class MoneyTextWatcher implements TextWatcher {
         String value = s.toString();
         if (!value.equals("")) {
             String cleanString = clearCurrencyToNumber(value);
-            String formattedAmount = transformToCurrency(cleanString);
-            lastAmount = formattedAmount;
+            lastAmount = transformToCurrency(cleanString);
             lastCursorPosition = editText.getSelectionStart();
         }
     }
@@ -72,7 +71,7 @@ public class MoneyTextWatcher implements TextWatcher {
         return result;
     }
 
-    private boolean isCurrencyValue(String currencyValue, boolean podeSerZero) {
+    /*private boolean isCurrencyValue(String currencyValue, boolean podeSerZero) {
         boolean result;
 
         if (currencyValue == null || currencyValue.length() == 0) {
@@ -81,7 +80,7 @@ public class MoneyTextWatcher implements TextWatcher {
             result = podeSerZero || !currencyValue.equals("0,00");
         }
         return result;
-    }
+    }*/
 
     private String transformToCurrency(String value) {
         double parsed = Double.parseDouble(value);

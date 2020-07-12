@@ -48,7 +48,7 @@ public class JSONUser {
         }
     }
 
-    public String read() {
+    private String read() {
         try {
             FileInputStream fis = context.openFileInput(USERPATH);
             InputStreamReader isr = new InputStreamReader(fis);
@@ -66,16 +66,15 @@ public class JSONUser {
         }
     }
 
-    public boolean create() {
+    private void create() {
         try {
             FileOutputStream fos = context.openFileOutput(USERPATH, Context.MODE_PRIVATE);
             if (jsonObjectEmpty.toString() != null) {
                 fos.write(jsonObjectEmpty.toString().getBytes());
             }
             fos.close();
-            return true;
         } catch (IOException ioException) {
-            return false;
+            ioException.getMessage();
         }
     }
 
@@ -91,7 +90,7 @@ public class JSONUser {
         }
     }
 
-    public boolean isFilePresent() {
+    private boolean isFilePresent() {
         String path = context.getFilesDir().getAbsolutePath() + "/" + USERPATH;
         File file = new File(path);
         return file.exists();
@@ -147,7 +146,7 @@ public class JSONUser {
         //System.out.println("Adicionado salario em JSON: " + read());
     }
 
-    public JSONObject getObjectJSONUserFromStorage() {
+    private JSONObject getObjectJSONUserFromStorage() {
         try {
             jsonUser = new JSONObject(read());
         } catch (JSONException e) {

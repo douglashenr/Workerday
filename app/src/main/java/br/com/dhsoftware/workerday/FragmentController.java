@@ -52,10 +52,10 @@ public class FragmentController extends FragmentActivity {
         createFragment(new UserSettingsFragment(), FRAGMENT_TAG_USERSETTINGS);
     }
 
-    public void setFragmentAddRegistry(AddRegistryFragment addRegistryFragment){
-        if(addRegistryFragment == null) {
+    public void setFragmentAddRegistry(AddRegistryFragment addRegistryFragment) {
+        if (addRegistryFragment == null) {
             createFragment(new AddRegistryFragment(), FRAGMENT_TAG_REGISTRY);
-        }else{
+        } else {
             createFragment(addRegistryFragment, FRAGMENT_TAG_REGISTRY);
         }
     }

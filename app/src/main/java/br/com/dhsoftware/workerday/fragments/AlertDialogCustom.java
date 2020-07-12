@@ -68,16 +68,13 @@ public class AlertDialogCustom implements View.OnClickListener {
     private void saveDataToJson() {
         JSONUser jsonUser = new JSONUser(context);
 
-        if (!salary.getText().toString().equals("")) {
-            jsonUser.setSalaryJSON(salary.getText().toString());
-        }
+        jsonUser.setSalaryJSON(salary.getText().toString());
 
-        if (!deduction.getText().toString().equals("")) {
-            jsonUser.setDeductionJSON(deduction.getText().toString());
-        }
 
-        if (!percentExtraSalary.getText().toString().equals("")) {
-            jsonUser.setPercentExtraSalaryJSON(percentExtraSalary.getText().toString());
-        }
+        jsonUser.setDeductionJSON(deduction.getText().toString());
+
+
+        jsonUser.setPercentExtraSalaryJSON(percentExtraSalary.getText().toString());
+
     }
 }

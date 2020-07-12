@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
-import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.fragments.AlertDialogCustom;
-import br.com.dhsoftware.workerday.model.Registry;
 
 public class DialogUtil {
 
@@ -37,7 +35,6 @@ public class DialogUtil {
     public void showToast(String text, int duration) {
         Toast.makeText(context, text, duration).show();
     }
-
 
 
 }

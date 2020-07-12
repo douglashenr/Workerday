@@ -16,9 +16,9 @@ public class Money {
         return (BigDecimal) format.parse(amount.replaceAll("[^\\d.,]", ""));
     }
 
-    public String doubleToStringMoney (String money){
+    public String doubleToStringMoney(String money) {
 
-        if(money.charAt(money.length() - 2) == '.')
+        if (money.charAt(money.length() - 2) == '.')
             money = money + "0";
 
         if (money == null) {
@@ -28,7 +28,7 @@ public class Money {
         }
 
         double parsed = Double.parseDouble(money);
-        System.out.println(parsed + " Esse é o parsed");
+        //System.out.println(parsed + " Esse é o parsed");
         String formatted = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format((parsed / 100));
         formatted = formatted.replaceAll("[^(0-9)(.,)]", "");
 
@@ -37,14 +37,14 @@ public class Money {
 
 
     public double doubleWithTwiDecimal(Double number) {
-        return truncateDecimal(number, 2).doubleValue();
+        return truncateDecimal(number).doubleValue();
     }
 
-    private BigDecimal truncateDecimal(double x, int numberOfDecimals) {
+    private BigDecimal truncateDecimal(double x) {
         if (x > 0) {
-            return new BigDecimal(String.valueOf(x)).setScale(numberOfDecimals, BigDecimal.ROUND_FLOOR);
+            return new BigDecimal(String.valueOf(x)).setScale(2, BigDecimal.ROUND_FLOOR);
         } else {
-            return new BigDecimal(String.valueOf(x)).setScale(numberOfDecimals, BigDecimal.ROUND_CEILING);
+            return new BigDecimal(String.valueOf(x)).setScale(2, BigDecimal.ROUND_CEILING);
         }
     }
 }

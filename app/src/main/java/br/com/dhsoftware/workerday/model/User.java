@@ -25,7 +25,6 @@ public class User implements Serializable {
     }
 
 
-
     public User(Context context) {
         this.context = context;
 
@@ -37,11 +36,21 @@ public class User implements Serializable {
         Money money = new Money();
         userJSON = new JSONUser(context);
         try {
+            //if(userJSON.getDeduction().equals(""))
+            if(userJSON.getDeduction().equals(""))
+                setDeduction(0.00);
+            else
             setDeduction(money.moneyToDouble(userJSON.getDeduction(), Locale.FRANCE).doubleValue());
+
             setSalary(money.moneyToDouble(userJSON.getSalary(), Locale.FRANCE).doubleValue());
             setTimeForWeek(Integer.parseInt(userJSON.getTimeForWeek()));
             setSalaryPerHour(money.doubleWithTwiDecimal(Double.valueOf(userJSON.getSalaryPerHour())));
-            setPercentExtraSalary(Integer.parseInt(userJSON.getPercentExtraSalary()));
+            if (userJSON.getPercentExtraSalary().equals("")) {
+                setPercentExtraSalary(0);
+            } else {
+                setPercentExtraSalary(Integer.parseInt(userJSON.getPercentExtraSalary()));
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,7 +87,7 @@ public class User implements Serializable {
     }
 
     public Double getSalaryPerHour() {
-        if(salaryPerHour == 0.0){
+        if (salaryPerHour == 0.0) {
             return 0.0;
         }
         return salaryPerHour;
