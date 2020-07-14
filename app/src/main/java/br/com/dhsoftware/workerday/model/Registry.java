@@ -12,7 +12,6 @@ import java.util.Comparator;
 
 import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.util.DateUtil;
-import br.com.dhsoftware.workerday.util.enumObservation;
 
 public class Registry implements Serializable {
     private Calendar day = null;

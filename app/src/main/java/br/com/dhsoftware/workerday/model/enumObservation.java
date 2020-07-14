@@ -1,4 +1,4 @@
-package br.com.dhsoftware.workerday.util;
+package br.com.dhsoftware.workerday.model;
 
 public enum enumObservation {
     ATESTADO,

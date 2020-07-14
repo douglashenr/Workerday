@@ -13,6 +13,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import br.com.dhsoftware.workerday.model.Registry;
+import br.com.dhsoftware.workerday.model.enumObservation;
 
 public class DateUtil {
 
@@ -221,17 +222,37 @@ public class DateUtil {
             symbol = "-";
         }
 
-        if (minute < 10 && hour < 10)
-            return symbol + "0" + hour + ":" + "0" + minute + "h";
+        return symbol + formatCorrectStringTime(hour, minute);
+    }
+
+    public String formatCorrectStringDate(int day, int month, int year){
+        String monthString = String.valueOf(month);
+        String dayString = String.valueOf(day);
+        if (month < 10) {
+            monthString = "0" + monthString;
+        }
+        if (day < 10)
+            dayString = "0" + dayString;
+
+        return dayString + "/" + monthString + "/" + year;
+
+    }
+
+    public String formatCorrectStringTime(int hour, int minute){
+        String hourString, minuteString;
+        if (hour < 10) {
+            hourString = "0" + hour;
+        } else {
+            hourString = String.valueOf(hour);
+        }
 
         if (minute < 10) {
-            return symbol + hour + ":" + "0" + minute + "h";
-        }
-        if (hour < 10) {
-            return symbol + "0" + hour + ":" + minute + "h";
+            minuteString = "0" + minute;
+        } else {
+            minuteString = String.valueOf(minute);
         }
 
-        return symbol + hour + ":" + minute + "h";
+        return hourString + ":" + minuteString;
     }
 
     public String calculateTimeFromRegistryToString(Registry registry) {

@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 
 public class JSONUser {
@@ -27,7 +28,6 @@ public class JSONUser {
         salaryUtil = new SalaryUtil();
 
         if (!isFilePresent()) {
-            createObjectJSONUserEmpty();
             create();
             //System.out.println("JSON quando iniciado construtor: " + getObjectJSONUserFromStorage().toString());
         }
@@ -43,7 +43,7 @@ public class JSONUser {
             jsonObjectEmpty.put("timeForWeek", "44");
             jsonObjectEmpty.put("salaryPerHour", "");
 
-        } catch (Exception e) {
+        } catch (JSONException e) {
             e.getMessage();
         }
     }
@@ -68,10 +68,11 @@ public class JSONUser {
 
     private void create() {
         try {
+            createObjectJSONUserEmpty();
             FileOutputStream fos = context.openFileOutput(USERPATH, Context.MODE_PRIVATE);
-            if (jsonObjectEmpty.toString() != null) {
-                fos.write(jsonObjectEmpty.toString().getBytes());
-            }
+
+            fos.write(jsonObjectEmpty.toString().getBytes());
+
             fos.close();
         } catch (IOException ioException) {
             ioException.getMessage();
@@ -148,7 +149,7 @@ public class JSONUser {
 
     private JSONObject getObjectJSONUserFromStorage() {
         try {
-            jsonUser = new JSONObject(read());
+            jsonUser = new JSONObject(Objects.requireNonNull(read()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
