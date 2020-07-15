@@ -2,8 +2,10 @@ package br.com.dhsoftware.workerday.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -522,17 +524,16 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
     private void startIntent() {
         if (permissionUtil.isTherePermission()) {
-            photoFile = new File(imagePathActually);
-
             startActivityForResult(intentUtil.startIntentGetImage(photoFile), 1);
         } else {
             permissionUtil.requestPermission();
         }
     }
 
-    private void checkImageView(ImageView imageView){
+    private void checkImageView(ImageView imageView) {
+        photoFile = new File(imagePathActually);
         if (!imageView.getTag().toString().equals(""))
-            dialogUtil.imageDialog(imageView);
+            imageDialog(imageView, photoFile);
         else
             startIntent();
     }
@@ -542,6 +543,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        System.out.println("veio pra cá");
 
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
@@ -687,6 +689,32 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         this.editTextSetDataOrTimeFromPicker = editTextSetDataOrTimeFromPicker;
     }
 
+
+
+    public void imageDialog(final ImageView imageView, final File photoFile){
+        AlertDialog.Builder builderAlertDialog = new AlertDialog.Builder(getContext());
+        builderAlertDialog.setTitle("Selecione uma ação:");
+        builderAlertDialog.setItems(R.array.dialogImage, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:
+                        dialogUtil.showToast("Imagem deletada!", Toast.LENGTH_LONG);
+                        imageView.setImageBitmap(null);
+                        imageView.setTag("");
+                        break;
+                    case 1:
+                        intentUtil.startIntentOpenImage(imageView.getTag().toString());
+                        break;
+
+                    case 2:
+                        dialogUtil.showToast("Alterar imagem", Toast.LENGTH_LONG);
+                        startActivityForResult(intentUtil.startIntentGetImage(photoFile), 1);
+                        break;
+                }
+            }
+        }).show();
+    }
 
     @Override
     public void onStop() {

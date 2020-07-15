@@ -18,7 +18,7 @@
         tools:ignore="AllowBackup">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~6300978111"/>
+            android:value="ca-app-pub-4426897147988304~7946569018"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
