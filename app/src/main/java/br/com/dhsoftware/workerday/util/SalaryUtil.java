@@ -13,7 +13,7 @@ public class SalaryUtil {
     private Money money;
     private User user;
 
-    public SalaryUtil(User user) {
+    public SalaryUtil(final User user) {
         money = new Money();
         this.user = user;
     }
@@ -63,9 +63,16 @@ public class SalaryUtil {
         }
     }
 
+    public double calculateTransportation(){
+        if(user == null || user.getSalary() == 0.0)
+            return 0.0;
+
+        return money.doubleWithTwiDecimal(user.getSalary() * 0.06);
+    }
+
 
     public Double calculateNetSalary() {
-        return money.doubleWithTwiDecimal(user.getSalary() - (calculateIRRF() + user.getDeduction() + calculateINSS()));
+        return money.doubleWithTwiDecimal(user.getSalary() - (calculateIRRF() + user.getDeduction() + calculateINSS() + calculateTransportation()));
     }
 
     public double calculateFGTS() {

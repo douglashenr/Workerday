@@ -18,6 +18,7 @@ public class User implements Serializable {
     private ArrayList<Registry> registries;
     private Context context;
     private JSONUser userJSON;
+    private boolean transportation;
 
 
     public JSONUser getUserJSON() {
@@ -54,8 +55,16 @@ public class User implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //setTransportation(userJSON.getTransportation());
     }
 
+    public boolean isTransportation() {
+        return transportation;
+    }
+
+    public void setTransportation(boolean transportation) {
+        this.transportation = transportation;
+    }
 
     private void setPercentExtraSalary(int percentExtraSalary) {
         this.percentExtraSalary = percentExtraSalary;

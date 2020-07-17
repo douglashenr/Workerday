@@ -42,6 +42,7 @@ public class JSONUser {
             jsonObjectEmpty.put("percentExtraSalary", "");
             jsonObjectEmpty.put("timeForWeek", "44");
             jsonObjectEmpty.put("salaryPerHour", "");
+            //jsonObjectEmpty.put("transportation", "false");
 
         } catch (JSONException e) {
             e.getMessage();
@@ -167,6 +168,13 @@ public class JSONUser {
             Log.d("USER", "Error to get salary from storage");
             return "";
         }
+    }
+
+    public boolean getTransportation(){
+        if(getInfoFromJSON("transportation") == "true")
+            return true;
+
+        return false;
     }
 
 
