@@ -2,8 +2,11 @@ package br.com.dhsoftware.workerday.util;
 
 import android.content.Context;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -11,6 +14,7 @@ import java.nio.channels.FileChannel;
 public class FileUtil {
 
     private Context context;
+    private String USERPATH = "user.json";
 
     public FileUtil(Context context) {
         this.context = context;
@@ -39,6 +43,28 @@ public class FileUtil {
 
     public String getNewPath() {
         return context.getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpeg";
+    }
+
+
+
+    public void writeFileFromJSON(JSONObject json){
+        FileOutputStream fos = null;
+        try {
+            fos = context.openFileOutput(USERPATH, Context.MODE_PRIVATE);
+
+            fos.write(json.toString().getBytes());
+
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public boolean isFilePresent(String path) {
+        File file = new File(path);
+        return file.exists();
     }
 
 

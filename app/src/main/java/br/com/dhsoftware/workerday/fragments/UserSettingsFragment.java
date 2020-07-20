@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ public class UserSettingsFragment extends Fragment implements View.OnClickListen
     private JSONUser jsonUser;
     private DialogUtil dialogUtil;
     private FragmentController fragmentController;
+    private CheckBox checkBoxCompTime;
 
     public UserSettingsFragment() {
         // Required empty public constructor
@@ -63,6 +65,7 @@ public class UserSettingsFragment extends Fragment implements View.OnClickListen
         editTextPercentExtraSalary.setText(jsonUser.getPercentExtraSalary());
         editTextTimePerWeek.setText(jsonUser.getTimeForWeek());
         imageButtonSaveUser.setOnClickListener(this);
+        checkBoxCompTime.setChecked(jsonUser.getCompTime());
     }
 
     private void setView() {
@@ -73,6 +76,7 @@ public class UserSettingsFragment extends Fragment implements View.OnClickListen
         editTextTimePerWeek = view.findViewById(R.id.editText_timeForWeek_userSettings);
         editTextPercentExtraSalary = view.findViewById(R.id.editText_percentExtraSalary_userSettings);
         imageButtonSaveUser = view.findViewById(R.id.button_save_userSettings);
+        checkBoxCompTime = view.findViewById(R.id.checkBox_compensatoryTimeOff_userSettings);
     }
 
 
@@ -88,5 +92,6 @@ public class UserSettingsFragment extends Fragment implements View.OnClickListen
         jsonUser.setPercentExtraSalaryJSON(editTextPercentExtraSalary.getText().toString());
         jsonUser.setDeductionJSON(editTextDeduction.getText().toString());
         jsonUser.setTimeForWeekJSON(editTextTimePerWeek.getText().toString());
+        jsonUser.setCompTime(String.valueOf(checkBoxCompTime.isChecked()));
     }
 }

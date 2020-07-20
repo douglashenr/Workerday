@@ -21,28 +21,28 @@ public class JSONUser {
     private JSONObject jsonObjectEmpty, jsonUser;
     private Context context;
     private SalaryUtil salaryUtil;
+    private FileUtil fileUtil;
 
     public JSONUser(Context context) {
         this.context = context;
         jsonObjectEmpty = new JSONObject();
         salaryUtil = new SalaryUtil();
+        fileUtil = new FileUtil(context);
 
-        if (!isFilePresent()) {
+        if (!fileUtil.isFilePresent(context.getFilesDir().getAbsolutePath() + "/" + USERPATH)) {
             create();
-            //System.out.println("JSON quando iniciado construtor: " + getObjectJSONUserFromStorage().toString());
         }
     }
 
     private void createObjectJSONUserEmpty() {
         try {
-            //jsonObjectEmpty.put("name", "");
-            //jsonObjectEmpty.put("e-mail", "");
             jsonObjectEmpty.put("salary", "");
             jsonObjectEmpty.put("deduction", "0.0");
             jsonObjectEmpty.put("percentExtraSalary", "");
             jsonObjectEmpty.put("timeForWeek", "44");
             jsonObjectEmpty.put("salaryPerHour", "");
             //jsonObjectEmpty.put("transportation", "false");
+            jsonObjectEmpty.put("compTime", "false");
 
         } catch (JSONException e) {
             e.getMessage();
@@ -59,8 +59,6 @@ public class JSONUser {
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
-
-            //System.out.println("Lido pelo método read: " + sb.toString());
             return sb.toString();
         } catch (IOException ioException) {
             return null;
@@ -68,35 +66,17 @@ public class JSONUser {
     }
 
     private void create() {
-        try {
-            createObjectJSONUserEmpty();
-            FileOutputStream fos = context.openFileOutput(USERPATH, Context.MODE_PRIVATE);
+        createObjectJSONUserEmpty();
+        fileUtil.writeFileFromJSON(jsonObjectEmpty);
 
-            fos.write(jsonObjectEmpty.toString().getBytes());
-
-            fos.close();
-        } catch (IOException ioException) {
-            ioException.getMessage();
-        }
     }
 
     private void writeFileJson(JSONObject object) {
-        try {
-            FileOutputStream fos = context.openFileOutput(USERPATH, Context.MODE_PRIVATE);
+        fileUtil.writeFileFromJSON(object);
 
-            fos.write(object.toString().getBytes());
-
-            fos.close();
-        } catch (IOException ioException) {
-            ioException.getMessage();
-        }
     }
 
-    private boolean isFilePresent() {
-        String path = context.getFilesDir().getAbsolutePath() + "/" + USERPATH;
-        File file = new File(path);
-        return file.exists();
-    }
+
 
     public void setSalaryJSON(String salary) {
         try {
@@ -148,6 +128,15 @@ public class JSONUser {
         //System.out.println("Adicionado salario em JSON: " + read());
     }
 
+    public void setCompTime(String compTime) {
+        try {
+            writeFileJson(getObjectJSONUserFromStorage().put("compTime", compTime));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //System.out.println("Adicionado salario em JSON: " + read());
+    }
+
     private JSONObject getObjectJSONUserFromStorage() {
         try {
             jsonUser = new JSONObject(Objects.requireNonNull(read()));
@@ -170,11 +159,20 @@ public class JSONUser {
         }
     }
 
-    public boolean getTransportation(){
+    /*public boolean getTransportation(){
         if(getInfoFromJSON("transportation") == "true")
             return true;
 
         return false;
+    }*/
+
+    public boolean getCompTime() {
+        if (getInfoFromJSON("compTime").equals("")) {
+            setCompTime("false");
+        }
+
+        System.out.println(jsonUser.toString());
+        return getInfoFromJSON("compTime").equals("true");
     }
 
 
@@ -183,6 +181,9 @@ public class JSONUser {
     }
 
     public String getDeduction() {
+        if(getInfoFromJSON("deduction").equals(""))
+            return "0,00";
+
         return getInfoFromJSON("deduction");
     }
 

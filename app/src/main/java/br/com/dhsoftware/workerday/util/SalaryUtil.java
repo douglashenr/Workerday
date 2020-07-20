@@ -2,6 +2,8 @@ package br.com.dhsoftware.workerday.util;
 
 import android.content.Context;
 
+import org.json.JSONException;
+
 import java.text.ParseException;
 import java.util.Locale;
 
@@ -72,7 +74,7 @@ public class SalaryUtil {
 
 
     public Double calculateNetSalary() {
-        return money.doubleWithTwiDecimal(user.getSalary() - (calculateIRRF() + user.getDeduction() + calculateINSS() + calculateTransportation()));
+        return money.doubleWithTwiDecimal(user.getSalary() - (calculateIRRF() + user.getDeduction() + calculateINSS()));
     }
 
     public double calculateFGTS() {
@@ -108,5 +110,6 @@ public class SalaryUtil {
             return money.doubleWithTwiDecimal(salaryDay + extraSalaryDouble);
         }
     }
+
 
 }

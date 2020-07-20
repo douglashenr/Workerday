@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         adView = findViewById(R.id.adView3);
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice("FA3AC5C649C3A729C6B2090CF17A7C11")
+                .addTestDevice("12B6ABC9A6E9620930D5E97C709BA0B6")
                 .build();
 
         adView.loadAd(adRequest);

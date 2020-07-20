@@ -137,12 +137,12 @@
             android:contentDescription="@string/save_applications_settings" />
 
         <CheckBox
-            android:id="@+id/checkBox_transportation_userSettings"
+            android:id="@+id/checkBox_compensatoryTimeOff_userSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Vale transporte"
-            android:visibility="invisible"
+            android:text="Banco de horas"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/editText_timeForWeek_userSettings"
             app:layout_constraintTop_toBottomOf="@+id/editText_timeForWeek_userSettings" />
 
