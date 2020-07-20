@@ -21,6 +21,7 @@ import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.fragments.AddRegistryFragment;
 import br.com.dhsoftware.workerday.model.Registry;
+import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.DateUtil;
 import br.com.dhsoftware.workerday.util.Money;
 import br.com.dhsoftware.workerday.util.SalaryUtil;
@@ -31,12 +32,16 @@ public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<Recycl
     private Context context;
     private RecyclerView recyclerView;
     private FragmentManager fragmentManager;
+    private Money money;
+    private User user;
 
     public RecyclerViewAdapterMainActivity(ArrayList<Registry> registries, Context context, RecyclerView recyclerView, FragmentManager fragmentManager) {
         this.registries = registries;
         this.context = context;
         this.recyclerView = recyclerView;
         this.fragmentManager = fragmentManager;
+        money = new Money();
+        user = new User(context);
     }
 
     @NonNull
@@ -55,14 +60,20 @@ public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<Recycl
         holder.textViewDay.setText(DateUtil.getInstanceDateUtil().nameOfDay(registry.getDay()));
         String timeWorked = DateUtil.getInstanceDateUtil().calculateTimeFromRegistryToString(registry);
         holder.textViewTimeWorked.setText("Horas trabalhadas: " + timeWorked);
-        String extraTime = DateUtil.getInstanceDateUtil().calculateExtraTimeFromRegistryToString(registry);
-        holder.textViewExtraTime.setText("Hora extra realizada: " + extraTime);
-        SalaryUtil salaryUtil = new SalaryUtil();
-        extraTime = extraTime.substring(0, extraTime.length() - 1);
+        if(!user.isCompTime()) {
+            String extraTime = DateUtil.getInstanceDateUtil().calculateExtraTimeFromRegistryToString(registry);
+            holder.textViewExtraTime.setText("Hora extra realizada: " + extraTime);
+            SalaryUtil salaryUtil = new SalaryUtil();
+            extraTime = extraTime.substring(0, extraTime.length() - 1);
 
-        Money money = new Money();
-        holder.textViewDayValue.setText("Valor do dia: R$ " +
-                money.doubleToStringMoney(String.valueOf(salaryUtil.calculateSalaryPerDay(registry, context, extraTime))));
+
+            holder.textViewDayValue.setText("Valor do dia: R$ " +
+                    money.doubleToStringMoney(String.valueOf(salaryUtil.calculateSalaryPerDay(registry, context, extraTime))));
+        }else{
+            holder.textViewDayValue.setVisibility(View.INVISIBLE);
+            String extraTime = DateUtil.getInstanceDateUtil().calculateExtraTimeFromRegistryToString(registry);
+            holder.textViewExtraTime.setText("Para o banco de horas: " + extraTime);
+        }
 
 
     }
@@ -113,13 +124,6 @@ public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<Recycl
                             dialog.cancel();
                         }
                     }).show();
-
-
-                    /*registries.remove(position);
-                    recyclerView.removeViewAt(position);
-                    .notifyItemRemoved(position);
-                    mAdapter.notifyItemRangeChanged(position, list.size());*/
-
                 }
             });
 

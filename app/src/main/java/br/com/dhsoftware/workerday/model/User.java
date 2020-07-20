@@ -19,6 +19,7 @@ public class User implements Serializable {
     private Context context;
     private JSONUser userJSON;
     private boolean transportation;
+    private boolean compTime;
 
 
     public JSONUser getUserJSON() {
@@ -42,7 +43,7 @@ public class User implements Serializable {
                 setDeduction(0.00);
             else
             setDeduction(money.moneyToDouble(userJSON.getDeduction(), Locale.FRANCE).doubleValue());
-
+            setCompTime(userJSON.getCompTime());
             setSalary(money.moneyToDouble(userJSON.getSalary(), Locale.FRANCE).doubleValue());
             setTimeForWeek(Integer.parseInt(userJSON.getTimeForWeek()));
             setSalaryPerHour(money.doubleWithTwiDecimal(Double.valueOf(userJSON.getSalaryPerHour())));
@@ -70,6 +71,13 @@ public class User implements Serializable {
         this.percentExtraSalary = percentExtraSalary;
     }
 
+    public boolean isCompTime() {
+        return compTime;
+    }
+
+    public void setCompTime(boolean compTime) {
+        this.compTime = compTime;
+    }
 
     public double getSalary() {
         return salary;
@@ -96,9 +104,9 @@ public class User implements Serializable {
     }
 
     public Double getSalaryPerHour() {
-        if (salaryPerHour == 0.0) {
+       /* if (salaryPerHour == 0.0) {
             return 0.0;
-        }
+        }*/
         return salaryPerHour;
     }
 

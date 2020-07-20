@@ -88,17 +88,61 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
+            android:id="@+id/textView15"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:gravity="end"
+            android:paddingVertical="5dp"
             android:text="*valor aproximado sem contar horas extras"
             android:textSize="10sp"
-            android:layout_marginHorizontal="10dp"
-            android:paddingVertical="5dp"
             app:layout_constraintEnd_toEndOf="@+id/cardView"
             app:layout_constraintStart_toStartOf="@+id/cardView"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
             tools:ignore="SmallSp" />
+
+        <TextView
+            android:textColor="@color/colorSecondaryText"
+            android:id="@+id/textViewTotalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Total horas extras/banco de horas:"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <EditText
+            android:hint="De: 15/07/2018"
+            android:id="@+id/editText_filterOne_fragmentInformation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="date"
+            app:layout_constraintEnd_toStartOf="@+id/divider4"
+            app:layout_constraintStart_toStartOf="@+id/textViewTotalTime"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTotalTime" />
+
+        <EditText
+            android:hint="Para: 19/12/2019"
+            android:gravity="end"
+            android:id="@+id/editText_filterTwo_fragmentInformation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/divider4"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTotalTime" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTotalTime"
+            app:layout_constraintBottom_toBottomOf="@+id/editText_filterTwo_fragmentInformation"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
