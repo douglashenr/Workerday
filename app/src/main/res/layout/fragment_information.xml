@@ -144,5 +144,13 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewTotalTime"
             app:layout_constraintBottom_toBottomOf="@+id/editText_filterTwo_fragmentInformation"/>
 
+        <TextView
+            android:id="@+id/textView_result_fragmentInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resultado:"
+            app:layout_constraintStart_toStartOf="@+id/editText_filterOne_fragmentInformation"
+            app:layout_constraintTop_toBottomOf="@+id/editText_filterOne_fragmentInformation" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

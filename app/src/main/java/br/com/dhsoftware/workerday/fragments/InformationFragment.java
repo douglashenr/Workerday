@@ -1,5 +1,6 @@
 package br.com.dhsoftware.workerday.fragments;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,17 +8,25 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
 
 import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.model.User;
+import br.com.dhsoftware.workerday.util.DateUtil;
 import br.com.dhsoftware.workerday.util.JSONUser;
 import br.com.dhsoftware.workerday.util.Money;
 import br.com.dhsoftware.workerday.util.SalaryUtil;
 
-public class InformationFragment extends Fragment {
+public class InformationFragment extends Fragment implements DatePickerDialog.OnDateSetListener, View.OnClickListener {
     private View view;
-    private TextView textViewNetSalary, textViewGrossSalary, textViewINSS, textViewIRRF, textViewDeduction, textViewFGTS;
+    private TextView textViewNetSalary, textViewGrossSalary, textViewINSS, textViewIRRF, textViewDeduction, textViewFGTS, textViewResult;
+    private EditText editTextOne, editTextTwo, editTextActually;
 
 
     public InformationFragment() {
@@ -64,5 +73,47 @@ public class InformationFragment extends Fragment {
         textViewDeduction = view.findViewById(R.id.textView_deduction_information);
         textViewFGTS = view.findViewById(R.id.textView_fgts_information);
         textViewGrossSalary = view.findViewById(R.id.textView_grossSalary_information);
+        editTextOne = view.findViewById(R.id.editText_filterOne_fragmentInformation);
+        editTextOne.setOnClickListener(this);
+        editTextTwo = view.findViewById(R.id.editText_filterTwo_fragmentInformation);
+        editTextTwo.setOnClickListener(this);
+        textViewResult = view.findViewById(R.id.textView_result_fragmentInformation);
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        month++;
+        String date = DateUtil.getInstanceDateUtil().formatCorrectStringDate(dayOfMonth, month, year);
+
+        editTextActually.setText(date);
+        if(!editTextOne.getText().toString().equals("") && editTextTwo.getText().toString().equals("")){
+            calculateTotalCompTimeOrExtraTime();
+        }
+
+    }
+
+    private void datePickerDialog() {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.editText_filterOne_fragmentInformation:
+                editTextActually = editTextOne;
+                datePickerDialog();
+                break;
+            case R.id.editText_filterTwo_fragmentInformation:
+                editTextActually = editTextTwo;
+                datePickerDialog();
+                break;
+        }
+    }
+
+
+    public void calculateTotalCompTimeOrExtraTime(){
+
     }
 }
