@@ -23,7 +23,7 @@ import br.com.dhsoftware.workerday.fragments.AddRegistryFragment;
 import br.com.dhsoftware.workerday.model.Registry;
 import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.DateUtil;
-import br.com.dhsoftware.workerday.util.Money;
+
 import br.com.dhsoftware.workerday.util.SalaryUtil;
 
 public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<RecyclerViewAdapterMainActivity.ViewHolder> {
@@ -32,7 +32,6 @@ public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<Recycl
     private Context context;
     private RecyclerView recyclerView;
     private FragmentManager fragmentManager;
-    private Money money;
     private User user;
 
     public RecyclerViewAdapterMainActivity(ArrayList<Registry> registries, Context context, RecyclerView recyclerView, FragmentManager fragmentManager) {
@@ -40,7 +39,6 @@ public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<Recycl
         this.context = context;
         this.recyclerView = recyclerView;
         this.fragmentManager = fragmentManager;
-        money = new Money();
         user = new User(context);
     }
 
@@ -68,7 +66,8 @@ public class RecyclerViewAdapterMainActivity extends RecyclerView.Adapter<Recycl
 
 
             holder.textViewDayValue.setText("Valor do dia: R$ " +
-                    money.doubleToStringMoney(String.valueOf(salaryUtil.calculateSalaryPerDay(registry, context, extraTime))));
+                    salaryUtil.doubleToStringMoney(user.getGrossSalary().getSalaryPerDay(registry, extraTime)));
+
         }else{
             holder.textViewDayValue.setVisibility(View.INVISIBLE);
             String extraTime = DateUtil.getInstanceDateUtil().calculateExtraTimeFromRegistryToString(registry);

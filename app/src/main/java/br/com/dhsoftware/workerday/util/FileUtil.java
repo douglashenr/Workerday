@@ -48,6 +48,7 @@ public class FileUtil {
 
 
     public void writeFileFromJSON(JSONObject json){
+        //FileOutputStream para saida(writer), Stream é fluxo
         FileOutputStream fos = null;
         try {
             fos = context.openFileOutput(USERPATH, Context.MODE_PRIVATE);

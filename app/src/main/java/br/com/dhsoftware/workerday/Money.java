@@ -1,4 +1,4 @@
-package br.com.dhsoftware.workerday.util;
+package br.com.dhsoftware.workerday;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -6,18 +6,18 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
-public class Money {
+public abstract class Money {
 
-    public BigDecimal moneyToDouble(String amount, Locale locale) throws ParseException {
-        NumberFormat format = NumberFormat.getNumberInstance(locale);
+    public BigDecimal moneyToDouble(String amount) throws Exception {
+        NumberFormat format = NumberFormat.getNumberInstance(Locale.FRANCE);
         if (format instanceof DecimalFormat) {
             ((DecimalFormat) format).setParseBigDecimal(true);
         }
         return (BigDecimal) format.parse(amount.replaceAll("[^\\d.,]", ""));
     }
 
-    public String doubleToStringMoney(String money) {
-
+    public String doubleToStringMoney(double doubleMoney) {
+        String money = String.valueOf(doubleMoney);
         if (money.charAt(money.length() - 2) == '.')
             money = money + "0";
 
@@ -36,15 +36,4 @@ public class Money {
     }
 
 
-    public double doubleWithTwiDecimal(Double number) {
-        return truncateDecimal(number).doubleValue();
-    }
-
-    private BigDecimal truncateDecimal(double x) {
-        if (x > 0) {
-            return new BigDecimal(String.valueOf(x)).setScale(2, BigDecimal.ROUND_FLOOR);
-        } else {
-            return new BigDecimal(String.valueOf(x)).setScale(2, BigDecimal.ROUND_CEILING);
-        }
-    }
 }

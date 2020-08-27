@@ -40,7 +40,6 @@ public class JSONUser {
             jsonObjectEmpty.put("deduction", "0.0");
             jsonObjectEmpty.put("percentExtraSalary", "");
             jsonObjectEmpty.put("timeForWeek", "44");
-            jsonObjectEmpty.put("salaryPerHour", "");
             //jsonObjectEmpty.put("transportation", "false");
             jsonObjectEmpty.put("compTime", "false");
 
@@ -68,7 +67,6 @@ public class JSONUser {
     private void create() {
         createObjectJSONUserEmpty();
         fileUtil.writeFileFromJSON(jsonObjectEmpty);
-
     }
 
     private void writeFileJson(JSONObject object) {
@@ -81,21 +79,20 @@ public class JSONUser {
     public void setSalaryJSON(String salary) {
         try {
             writeFileJson(getObjectJSONUserFromStorage().put("salary", salary));
-            setSalaryPerHour();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         //System.out.println("Adicionado salario em JSON: " + read());
     }
 
-    private void setSalaryPerHour() throws JSONException {
-        //String salaryPerHour receive a String calculated from salaryUtil.calculateSalaryPerHour that return a double
-        String salaryPerHour = String.valueOf(salaryUtil.calculateSalaryPerHour(getObjectJSONUserFromStorage().getString("salary"),
-                Integer.parseInt(getObjectJSONUserFromStorage().getString("timeForWeek"))));
-
-        //After calculate salaryPerHour, set the string to valueName salaryPerHour
-        writeFileJson(getObjectJSONUserFromStorage().put("salaryPerHour", salaryPerHour));
-    }
+//    private void setSalaryPerHour() throws JSONException {
+//        //String salaryPerHour receive a String calculated from salaryUtil.calculateSalaryPerHour that return a double
+//        String salaryPerHour = String.valueOf(salaryUtil.calculateSalaryPerHour(getObjectJSONUserFromStorage().getString("salary"),
+//                Integer.parseInt(getObjectJSONUserFromStorage().getString("timeForWeek"))));
+//
+//        //After calculate salaryPerHour, set the string to valueName salaryPerHour
+//        writeFileJson(getObjectJSONUserFromStorage().put("salaryPerHour", salaryPerHour));
+//    }
 
     public String getSalaryPerHour() {
         return getInfoFromJSON("salaryPerHour");

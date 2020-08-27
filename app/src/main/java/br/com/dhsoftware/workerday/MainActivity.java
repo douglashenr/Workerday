@@ -9,16 +9,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
+
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.Arrays;
 
 import br.com.dhsoftware.workerday.util.DialogUtil;
 
@@ -54,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice("FA3AC5C649C3A729C6B2090CF17A7C11")
                 .addTestDevice("12B6ABC9A6E9620930D5E97C709BA0B6")
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
 
         adView.loadAd(adRequest);

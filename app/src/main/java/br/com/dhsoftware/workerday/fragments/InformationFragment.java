@@ -19,9 +19,11 @@ import java.util.Objects;
 import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.model.User;
 import br.com.dhsoftware.workerday.util.DateUtil;
-import br.com.dhsoftware.workerday.util.JSONUser;
-import br.com.dhsoftware.workerday.util.Money;
+import br.com.dhsoftware.workerday.util.DoubleUtil;
 import br.com.dhsoftware.workerday.util.SalaryUtil;
+import br.com.dhsoftware.workerday.util.discount.FGTS;
+import br.com.dhsoftware.workerday.util.discount.INSS;
+import br.com.dhsoftware.workerday.util.discount.IRRF;
 
 public class InformationFragment extends Fragment implements DatePickerDialog.OnDateSetListener, View.OnClickListener {
     private View view;
@@ -48,14 +50,14 @@ public class InformationFragment extends Fragment implements DatePickerDialog.On
 
         User user = new User(getActivity());
         SalaryUtil salaryUtil = new SalaryUtil(user);
-        Money money = new Money();
+        DoubleUtil doubleUtil = new DoubleUtil();
 
-        textViewINSS.setText("INSS: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateINSS())));
-        textViewIRRF.setText("IRRF: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateIRRF())));
-        textViewNetSalary.setText("Salario liquido: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateNetSalary())));
+        textViewINSS.setText("INSS: R$ " + salaryUtil.calculateDiscountToString(user.getGrossSalary().getGrossSalary(), new INSS()));
+        textViewIRRF.setText("IRRF: R$ " + salaryUtil.calculateDiscountToString(user.getGrossSalary().getGrossSalary(), new IRRF(new INSS())));
+        textViewNetSalary.setText("Salario liquido: R$ " + user.getGrossSalary().doubleToStringMoney(salaryUtil.calculateNetSalary()));
         textViewDeduction.setText("Deduções: R$ " + user.getUserJSON().getDeduction());
-        textViewFGTS.setText("FGTS: R$ " + money.doubleToStringMoney(String.valueOf(salaryUtil.calculateFGTS())));
-        textViewGrossSalary.setText("Base calculo: R$ " + money.doubleToStringMoney(String.valueOf(user.getSalary())));
+        textViewFGTS.setText("FGTS: R$ " + salaryUtil.calculateDiscountToString(user.getGrossSalary().getGrossSalary(), new FGTS()));
+        textViewGrossSalary.setText("Base calculo: R$ " + user.getGrossSalary().doubleToStringMoney(user.getGrossSalary().getGrossSalary()));
 
         return view;
     }
