@@ -33,14 +33,6 @@ public class SalaryUtil extends Money {
         return discount.doubleToStringMoney(calculateDiscount(value, discount));
     }
 
-//    public double calculateTransportation(){
-//        if(user == null || user.getGrossSalary().getGrossSalary() == 0.0)
-//            return 0.0;
-//
-//        return money.doubleWithTwiDecimal(user.getGrossSalary() * 0.06);
-//    }
-
-
     public Double calculateNetSalary() {
         return doubleUtil.doubleWithTwoDecimal(user.getGrossSalary().getGrossSalary() - (calculateDiscount(user.getGrossSalary().getGrossSalary(), new IRRF(new INSS()))+ user.getDeduction() + calculateDiscount(user.getGrossSalary().getGrossSalary(), new INSS())));
     }

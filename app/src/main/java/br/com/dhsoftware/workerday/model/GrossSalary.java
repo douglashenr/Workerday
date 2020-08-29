@@ -17,9 +17,9 @@ public class GrossSalary extends Money {
         this.timeForWeek = 0;
     }
 
-    public GrossSalary(String grossSalary) {
+    GrossSalary(String grossSalary) {
         try {
-            this.grossSalary = new DoubleUtil().doubleWithTwoDecimal(moneyToDouble(grossSalary).doubleValue());
+            this.grossSalary = new DoubleUtil().doubleWithTwoDecimal(moneyToDouble(grossSalary));
         } catch (Exception e) {
             e.printStackTrace();
             this.grossSalary = 0;
@@ -68,7 +68,6 @@ public class GrossSalary extends Money {
 
         double salaryDay = getSalaryPerHour() * DateUtil.getInstanceDateUtil().getHourInt(registry.getRequiredTimeToWorkString());
         salaryDay += (getSalaryPerHour() / 60) * DateUtil.getInstanceDateUtil().getMinuteInt(registry.getRequiredTimeToWorkString());
-        //System.out.println("retorno SalarioDay Minuto" + salaryDay);
         if (extraTime.equals("00:00"))
             return salaryDay;
 

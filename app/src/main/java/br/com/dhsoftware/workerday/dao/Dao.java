@@ -107,16 +107,16 @@ public class Dao extends SQLiteOpenHelper {
         db.delete("Registry", "id_registry = ?", params);
     }
 
-    public boolean isDateSet(String date){
+    public boolean isDateNotSet(String date){
         ArrayList<String> stringArrayList;
         stringArrayList = getArrayStringDateFromDao();
 
         for(int i = 0; i < stringArrayList.size(); i++){
             if(stringArrayList.get(i).equals(date)){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     private ArrayList<String> getArrayStringDateFromDao(){

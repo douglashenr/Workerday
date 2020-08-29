@@ -4,7 +4,6 @@ import android.content.Context;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import br.com.dhsoftware.workerday.util.DoubleUtil;
 import br.com.dhsoftware.workerday.util.JSONUser;
@@ -41,7 +40,7 @@ public class User implements Serializable {
             if(userJSON.getDeduction().equals(""))
                 setDeduction(0.00);
             else
-            setDeduction(new Deduction().moneyToDouble(userJSON.getDeduction()).doubleValue());
+            setDeduction(new Deduction().moneyToDouble(userJSON.getDeduction()));
             setCompTime(userJSON.getCompTime());
             setGrossSalary(new GrossSalary(userJSON.getSalary()));
             setTimeForWeek(Integer.parseInt(userJSON.getTimeForWeek()));

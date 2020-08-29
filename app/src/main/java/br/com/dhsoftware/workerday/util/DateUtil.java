@@ -197,12 +197,10 @@ public class DateUtil {
     }
 
     public String calculateExtraTimeFromRegistryToString(Registry registry) {
-        //System.out.println("RET" + calculateExtraTimeFromRegistryToLong(registry));
         if (calculateExtraTimeFromRegistryToLong(registry) == -4 || calculateExtraTimeFromRegistryToLong(registry) == -3 ||
                 calculateExtraTimeFromRegistryToLong(registry) == -2 || calculateExtraTimeFromRegistryToLong(registry) == -1)
             return "00:00h";
 
-        //System.out.println("RET" + calculateExtraTimeFromRegistryToLong(registry));
 
 
         return getTimeLongToStringFormat(calculateExtraTimeFromRegistryToLong(registry));
@@ -256,16 +254,17 @@ public class DateUtil {
     }
 
     public String calculateTimeFromRegistryToString(Registry registry) {
-        if (calculateTimeFromRegistryToLong(registry) == -1)
+        long calculate = calculateTimeFromRegistryToLong(registry);
+        if (calculate == -1)
             return "00:00h";
 
-        if (calculateTimeFromRegistryToLong(registry) == -2)
+        if (calculate == -2)
             return "00:00h (ATESTADO)";
 
-        if (calculateTimeFromRegistryToLong(registry) == -3)
+        if (calculate == -3)
             return "00:00h (FALTA)";
 
-        if (calculateTimeFromRegistryToLong(registry) == -4) {
+        if (calculate == -4) {
             return "00:00h (ERRO)";
         }
 

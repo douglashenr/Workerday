@@ -3,7 +3,6 @@ package br.com.dhsoftware.workerday.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,6 +37,7 @@ import br.com.dhsoftware.workerday.FragmentController;
 import br.com.dhsoftware.workerday.R;
 import br.com.dhsoftware.workerday.dao.Dao;
 import br.com.dhsoftware.workerday.model.Registry;
+import br.com.dhsoftware.workerday.util.DatePickerUtil;
 import br.com.dhsoftware.workerday.util.DateUtil;
 import br.com.dhsoftware.workerday.util.DialogUtil;
 import br.com.dhsoftware.workerday.util.FileUtil;
@@ -48,9 +47,10 @@ import br.com.dhsoftware.workerday.util.PermissionUtil;
 import br.com.dhsoftware.workerday.util.JSONUser;
 import br.com.dhsoftware.workerday.util.TouchEditText;
 import br.com.dhsoftware.workerday.model.enumObservation;
+import br.com.dhsoftware.workerday.util.condition.CheckDateInDao;
 
 
-public class AddRegistryFragment extends Fragment implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener, RadioGroup.OnCheckedChangeListener
+public class AddRegistryFragment extends Fragment implements View.OnClickListener, TimePickerDialog.OnTimeSetListener, RadioGroup.OnCheckedChangeListener
         , Serializable {
     private View view;
     private EditText editTextDateWorked, editTextEntranceTime, editTextEntranceLunchTime, editTextLeaveLunchTime,
@@ -71,6 +71,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     private DialogUtil dialogUtil;
 
     private String imagePathActually, imagePathEntrance, imagePathLeave, imagePathEntranceLunch, imagePathLeaveLunch;
+    private DatePickerUtil datePickerUtil;
 
     public AddRegistryFragment() {
         // Required empty public constructor
@@ -165,7 +166,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     @Override
     public void onStart() {
         super.onStart();
-
+        datePickerUtil = new DatePickerUtil();
         dao = new Dao(getActivity());
 
         fragmentController = new FragmentController(getFragmentManager());
@@ -253,33 +254,6 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         JSONUser jsonUser = new JSONUser(getActivity());
         if (!jsonUser.getPercentExtraSalary().equals(""))
             editTextPercentExtraWork.setText(jsonUser.getPercentExtraSalary());
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        /*month++ serve para arrumar o bug que retorna sempre o numero do mês anterior
-        Também verifico se o mês ou o dia é menor que 10 para adicionar um 0 na frente, pois é necessario para o
-        SimpleFormatData
-         */
-        month++;
-        String date = DateUtil.getInstanceDateUtil().formatCorrectStringDate(dayOfMonth, month, year);
-
-
-        //Irá verificar se a Data já existe no banco de dados, se existir não irá adicionar
-        if (checkDateFromDao(date)) {
-            editTextSetDataOrTimeFromPicker.setText(date);
-        }
-
-
-    }
-
-    private boolean checkDateFromDao(String date) {
-        if (dao.isDateSet(date)) {
-            dialogUtil.infoDialog(getString(R.string.date_already_registred));
-            return false;
-        } else {
-            return true;
-        }
     }
 
 
@@ -471,7 +445,7 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
 
             case R.id.editText_dateWorked_registry:
                 setEditTextSetDataOrTimeFromPicker(editTextDateWorked);
-                datePickerDialog();
+                datePickerUtil.datePickerDialog(getActivity(), editTextDateWorked, new CheckDateInDao(dao));
                 break;
 
             case R.id.editText_entranceTime_registry:
@@ -543,8 +517,6 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        System.out.println("veio pra cá");
-
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 dialogUtil.showToast(getString(R.string.image_received), Toast.LENGTH_LONG);
@@ -593,12 +565,6 @@ public class AddRegistryFragment extends Fragment implements DatePickerDialog.On
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), this, calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), true);
         timePickerDialog.show();
-    }
-
-    private void datePickerDialog() {
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(getActivity()), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
     }
 
 

@@ -8,12 +8,12 @@ import java.util.Locale;
 
 public abstract class Money {
 
-    public BigDecimal moneyToDouble(String amount) throws Exception {
+    public double moneyToDouble(String amount) throws Exception {
         NumberFormat format = NumberFormat.getNumberInstance(Locale.FRANCE);
         if (format instanceof DecimalFormat) {
             ((DecimalFormat) format).setParseBigDecimal(true);
         }
-        return (BigDecimal) format.parse(amount.replaceAll("[^\\d.,]", ""));
+        return format.parse(amount.replaceAll("[^\\d.,]", "")).doubleValue();
     }
 
     public String doubleToStringMoney(double doubleMoney) {
@@ -28,7 +28,6 @@ public abstract class Money {
         }
 
         double parsed = Double.parseDouble(money);
-        //System.out.println(parsed + " Esse é o parsed");
         String formatted = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format((parsed / 100));
         formatted = formatted.replaceAll("[^(0-9)(.,)]", "");
 

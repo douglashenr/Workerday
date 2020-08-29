@@ -117,6 +117,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:focusable="false"
             android:inputType="date"
             app:layout_constraintEnd_toStartOf="@+id/divider4"
             app:layout_constraintStart_toStartOf="@+id/textViewTotalTime"
@@ -125,6 +126,7 @@
         <EditText
             android:hint="Para: 19/12/2019"
             android:gravity="end"
+            android:focusable="false"
             android:id="@+id/editText_filterTwo_fragmentInformation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
