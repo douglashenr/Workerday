@@ -42,7 +42,7 @@ public class FileUtil {
 
 
     public String getNewPath() {
-        return context.getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpeg";
+        return context.getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".png";
     }
 
 

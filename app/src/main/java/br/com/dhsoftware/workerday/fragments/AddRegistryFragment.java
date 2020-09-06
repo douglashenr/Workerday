@@ -60,7 +60,6 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
     private Registry registryBundle;
     private FragmentController fragmentController;
     private ImageView imageViewEntrance, imageViewLeave, imageViewEntranceLunch, imageViewLeaveLunch;
-    private File photoFile;
     private Dao dao;
     private ImageUtil imageUtil;
     private TouchEditText touch;
@@ -69,8 +68,10 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
     private IntentUtil intentUtil;
 
     private DialogUtil dialogUtil;
+    private File photoFileActually;
 
-    private String imagePathActually, imagePathEntrance, imagePathLeave, imagePathEntranceLunch, imagePathLeaveLunch;
+    private String imagePathActually;
+    private ImageView imageActually;
     private DatePickerUtil datePickerUtil;
 
     public AddRegistryFragment() {
@@ -93,19 +94,21 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
         imageUtil = new ImageUtil(getContext());
         setView();
 
-        registryBundle = null;
-        Bundle bundle = null;
-        bundle = getArguments();
-        try {
-            registryBundle = (Registry) Objects.requireNonNull(bundle).getSerializable("registry");
-        } catch (Exception e) {
-            e.getMessage();
+        if(getArguments() != null){
+            registryBundle = null;
+            Bundle bundle = getArguments();
+            try {
+                registryBundle = (Registry) Objects.requireNonNull(bundle).getSerializable("registry");
+            } catch (Exception e) {
+                e.getMessage();
+            }
+
+            if (registryBundle != null) {
+                setRegistryFromBundle();
+            }
         }
 
 
-        if (registryBundle != null) {
-            setRegistryFromBundle();
-        }
 
         return view;
     }
@@ -421,7 +424,6 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
 
         if (String.valueOf(group.getCheckedRadioButtonId()).equals(String.valueOf(radioButtonNothing.getId()))) {
             editTextTimeDeclaration.setVisibility(View.INVISIBLE);
-
         }
     }
 
@@ -444,7 +446,6 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
                 break;
 
             case R.id.editText_dateWorked_registry:
-                setEditTextSetDataOrTimeFromPicker(editTextDateWorked);
                 datePickerUtil.datePickerDialog(getActivity(), editTextDateWorked, new CheckDateInDao(dao));
                 break;
 
@@ -473,24 +474,16 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
                 validator();
                 break;
             case R.id.cardView_entrance_AddRegistry:
-                imagePathEntrance = fileUtil.getNewPath();
-                imagePathActually = imagePathEntrance;
-                checkImageView(imageViewEntrance);
+                actionImageView(imageViewEntrance);
                 break;
             case R.id.cardView_leave_AddRegistry:
-                imagePathLeave = fileUtil.getNewPath();
-                imagePathActually = imagePathLeave;
-                checkImageView(imageViewLeave);
+                actionImageView(imageViewLeave);
                 break;
             case R.id.cardView_leaveLunch_AddRegistry:
-                imagePathLeaveLunch = fileUtil.getNewPath();
-                imagePathActually = imagePathLeaveLunch;
-                checkImageView(imageViewLeaveLunch);
+                actionImageView(imageViewLeaveLunch);
                 break;
             case R.id.cardView_entranceLunch_AddRegistry:
-                imagePathEntranceLunch = fileUtil.getNewPath();
-                imagePathActually = imagePathEntranceLunch;
-                checkImageView(imageViewEntranceLunch);
+                actionImageView(imageViewEntranceLunch);
                 break;
         }
     }
@@ -498,18 +491,27 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
 
     private void startIntent() {
         if (permissionUtil.isTherePermission()) {
-            startActivityForResult(intentUtil.startIntentGetImage(photoFile), 1);
+            startActivityForResult(intentUtil.startIntentGetImage(photoFileActually), 1);
         } else {
             permissionUtil.requestPermission();
         }
     }
 
-    private void checkImageView(ImageView imageView) {
-        photoFile = new File(imagePathActually);
-        if (!imageView.getTag().toString().equals(""))
-            imageDialog(imageView, photoFile);
-        else
+    /*
+        No método actionImageView, ele verifica se a imageView já possui uma imagem.
+        Se tiver, ela mostra um dialog para saber se a pessoa quer excluir, alterar ou abrir a imagem
+     */
+    private void actionImageView(ImageView imageView) {
+        imageActually = imageView;
+        if (!imageView.getTag().toString().equals("")){
+            File file = new File(imageView.getTag().toString());
+            imageDialog(imageView, file);
+        }
+        else {
+            imagePathActually = fileUtil.getNewPath();
+            photoFileActually = new File(imagePathActually);
             startIntent();
+        }
     }
 
 
@@ -523,41 +525,32 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
 
                 if (data == null) {
                     imageUtil.compressImage(imagePathActually);
-                    imageUtil.putImageInImageView(checkImageViewSelected(), imagePathActually);
+                    imageUtil.putImageInImageView(imageActually, imagePathActually);
                 } else {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContext().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
+                    String picturePath;
+                        System.out.println("Resultado retorno data" + data.getData());
+                        Uri selectedImage = data.getData();
+                        System.out.println("Resultado retorno" + selectedImage.toString());
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = getContext().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        picturePath = cursor.getString(columnIndex);
+                        cursor.close();
 
-                    File filePath = new File(picturePath);
+                        File filePath = new File(picturePath);
+
                     try {
-                        fileUtil.copyFile(filePath, photoFile);
+                        fileUtil.copyFile(filePath, photoFileActually);
                     } catch (IOException io) {
                         io.printStackTrace();
                     }
 
                     imageUtil.compressImage(imagePathActually);
-                    imageUtil.putImageInImageView(checkImageViewSelected(), imagePathActually);
+                    imageUtil.putImageInImageView(imageActually, imagePathActually);
                 }
             }
         }
-    }
-
-    private ImageView checkImageViewSelected() {
-        if (imagePathActually.equals(imagePathEntrance))
-            return imageViewEntrance;
-        if (imagePathActually.equals(imagePathLeave))
-            return imageViewLeave;
-        if (imagePathActually.equals(imagePathEntranceLunch))
-            return imageViewEntranceLunch;
-        if (imagePathActually.equals(imagePathLeaveLunch))
-            return imageViewLeaveLunch;
-
-        return null;
     }
 
 
@@ -619,11 +612,15 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
         registry.setLeave(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextLeaveTime.getText().toString()));
         //if (!editTextPercentExtraWork.getText().toString().equals("") && !editTextPercentExtraWork.getText().toString().equals(null)) {
 
-        if (!editTextPercentExtraWork.getText().toString().equals("")) {
+
+
+        registry.setPercent(editTextPercentExtraWork.getText().toString().equals("") ? 0 :
+                Integer.parseInt(editTextPercentExtraWork.getText().toString()));
+        /*if (!editTextPercentExtraWork.getText().toString().equals("")) {
             registry.setPercent(Integer.parseInt(editTextPercentExtraWork.getText().toString()));
         } else {
             registry.setPercent(0);
-        }
+        }*/
 
         registry.setRequiredTimeToWork(DateUtil.getInstanceDateUtil().convertStringTimeToCalendar(editTextRequiredTime.getText().toString()));
 
@@ -657,7 +654,7 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
 
 
 
-    public void imageDialog(final ImageView imageView, final File photoFile){
+    public void imageDialog(ImageView imageView, File photoFile){
         AlertDialog.Builder builderAlertDialog = new AlertDialog.Builder(getContext());
         builderAlertDialog.setTitle("Selecione uma ação:");
         builderAlertDialog.setItems(R.array.dialogImage, new DialogInterface.OnClickListener() {
@@ -670,7 +667,7 @@ public class AddRegistryFragment extends Fragment implements View.OnClickListene
                         imageView.setTag("");
                         break;
                     case 1:
-                        intentUtil.startIntentOpenImage(imageView.getTag().toString());
+                        intentUtil.startIntentOpenImage(photoFile.toURI().toString());
                         break;
 
                     case 2:
