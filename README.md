@@ -1,3 +1,3 @@
 # Workerday
 
-### Projeto feita para o MBA de Desenvolvimento Mobile
+### Projeto feito para o MBA de Desenvolvimento Mobile
